@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author Nachonga
- *
- */
-module SistemaVentasaurus {
-}
