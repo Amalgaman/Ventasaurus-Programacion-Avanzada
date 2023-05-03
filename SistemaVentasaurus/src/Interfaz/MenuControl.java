@@ -4,9 +4,9 @@ import javax.swing.JOptionPane;
 
 public class MenuControl {
 	public static void principal() {
-		String[] opciones = {"Elegir Concierto","Ver Solicitudes de Devolucion","Generar Devolucion","Salir"};
+		String[] opciones = {"Elegir Concierto","Salir"};
 		int eleccion=JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - Control", 0, 0, null, opciones, 0);
-		if (eleccion!=3) {
+		if (eleccion==0) {
 			listaConciertos();
 		} else {
 			MenuPrincipal.principal();
