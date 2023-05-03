@@ -6,15 +6,29 @@ public class MenuPrincipal {
 
 	public static void principal() {
 		String[] opciones = {"Ver conciertos","Solicitar Devolucion","Ingreso Empleado","Salir"};
-		int eleccion=JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - Administracion", 0, 0, null, opciones, 0);
-		if (eleccion==2) {
-			if (login()) {
+		int eleccion=JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - ¡ Bienvenido !", 0, 0, null, opciones, 0);
+	switch (eleccion) {
+	case 0:
+		MenuCliente.listaConciertosCliente();
+		break;
+	case 1:
+		MenuCliente.SolicitudDeDevolucion();
+		break;
+	case 2:
+		if (login()) {
 				MenuControl.principal();
 			} else {
 				JOptionPane.showMessageDialog(null, "Incorrecto");
 				principal();
 			}
-		}
+		break;
+	case 3:
+		
+		break;
+	default:
+		break;
+	}
+		
 	}
 	
 	public static boolean login() {
