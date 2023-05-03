@@ -1,5 +1,7 @@
 package Interfaz;
 
-public class MenuEmpleado {
 
+public class MenuEmpleado {
+		
+	
 }
