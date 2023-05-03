@@ -8,9 +8,7 @@ public class MenuControl {
 		int eleccion=JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - Control", 0, 0, null, opciones, 0);
 		if (eleccion==0) {
 			listaConciertos();
-		} else {
-			MenuPrincipal.principal();
-		}
+		} 
 	}
 	
 	public static void listaConciertos() {
@@ -28,8 +26,6 @@ public class MenuControl {
 				);
 		if (opConcierto!=null) {
 			control();
-		} else {
-			principal();
 		}
 	}
 	

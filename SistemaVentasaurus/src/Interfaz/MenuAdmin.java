@@ -112,7 +112,7 @@ public class MenuAdmin {
 		}else if (opSolicitud.equals("Generar Solicitud")) {
 			altaSolicitud();
 		}else {
-			JOptionPane.showOptionDialog(null, opSolicitud
+			op = JOptionPane.showOptionDialog(null, opSolicitud
 					+" \nLos Redondos 19/02/2023"
 					+" \nCantidad: 2"
 					+" \nPrecio $2200", "Ventasaurus - Administracion", 0, 0, null, abmSolicitud, 0);

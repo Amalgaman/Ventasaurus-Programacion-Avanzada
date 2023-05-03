@@ -46,10 +46,7 @@ public class MenuCliente {
 				, opcionesConcierto // el objeto
 				, opcionesConcierto[0] // posicion del que va aparecer seleccionado
 		);
-if (opConcierto==null) {
-	MenuPrincipal.principal();
-}else {
-	
+		if (opConcierto!=null) {
 		op = JOptionPane.showOptionDialog(null,
 				opConcierto + " \nLa aclamada banda hara su gira de despedida"
 						+ " \na lo grande, realizando un recorrido por sus"
@@ -66,8 +63,7 @@ if (opConcierto==null) {
 		default:
 			break;
 		}
-
-}
+		}
 	}
 
 	public static void SolicitudDeDevolucion() {
