@@ -8,10 +8,6 @@ public class Main {
 		
 		MenuPrincipal.principal();
 		
-//			MenuCliente.clienteVerMenu();
-
-	//		MenuAdmin.principal();
-
 	}
 
 }

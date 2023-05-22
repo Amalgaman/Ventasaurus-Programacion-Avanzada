@@ -1,8 +1,15 @@
 package Interfaz;
 
+import java.util.LinkedList;
+
 import javax.swing.JOptionPane;
 
+import Datos.Concierto;
+import Negocio.Verifica;
+
 public class MenuAdmin {
+	
+	static Verifica verifica = new Verifica();
 	
 	public static void principal() {
 		//Variables inicializadas
@@ -27,13 +34,24 @@ public class MenuAdmin {
 	}
 	
 	public static void listaConciertos() {
+		
 		//Variables inicializadas
-		int op = 0;
+		int op = 0, i=0, cElegido=0;
 		String opConcierto = " ";
 		String[] abmConcierto ={"Editar Informacion","Cancelar Concierto","Eliminar Concierto","Volver"};
 		
 		//lista de conciertos
-		String[] opcionesConcierto ={"Crear Concierto","Los Redondos 03/05/2023","SodaStereo 08/05/2023","Las Pastillas del Abuelo 08/10/2023","Hermetica 12/05/2023","Fito Paez 13/07/2023","Leon Gieco 08/05/2023","Sumo 24/10/2023"};
+		LinkedList<Concierto> listaTraida = verifica.verificaListaConciertos();
+		System.out.print(listaTraida.size());
+		String[] conciertoLista = new String[listaTraida.size()+1];
+		conciertoLista[0] = "Crear nuevo Concierto";
+		
+		i=1;
+		
+		for (Concierto concierto : listaTraida) {
+			conciertoLista[i] = concierto.getNombre();
+			i++;
+		}
 		
 		opConcierto = (String) JOptionPane.showInputDialog(
 				null // para que se muestre centrado
@@ -41,22 +59,29 @@ public class MenuAdmin {
 				,"Ventasaurus - Administracion" // Titulo de la ventana
 				,JOptionPane.QUESTION_MESSAGE // Icono
 				,null //null para icono defecto de la ventana
-				,opcionesConcierto // el objeto
-				,opcionesConcierto[0] // posicion del que va aparecer seleccionado
+				,conciertoLista // el objeto
+				,conciertoLista[0] // posicion del que va aparecer seleccionado
 				);
 		
 		//Esto es para salir del menu sin que se rompa
 		if(opConcierto == null) {
 		  
-		}else if (opConcierto.equals("Crear Concierto")) {
+		}else {
+			
+		 if (opConcierto.equals("Crear nuevo Concierto")) {
 			altaConcierto();
 		}else {
-			op = JOptionPane.showOptionDialog(null, opConcierto
-					+" \nLa aclamada banda hara su gira de despedida"
-					+" \na lo grande, realizando un recorrido por sus"
-					+" \ngrandes exitos ¿Que estas esperando? Saca tu"
-					+" \nentrada."
-					+" \nPrecios desde $1200", "Ventasaurus - Administracion", 0, 0, null, abmConcierto, 0);
+			for (Concierto concierto : listaTraida) {
+				if (opConcierto.equals(concierto.getNombre())) {
+					cElegido = listaTraida.indexOf(concierto);
+				}
+			}
+			
+			op = JOptionPane.showOptionDialog(null, listaTraida.get(cElegido).getNombre()
+					+" \n"+listaTraida.get(cElegido).getDescripcion()
+					+" \nFecha: "+listaTraida.get(cElegido).getFecha()
+					+" \nDireccion: "+listaTraida.get(cElegido).getDireccion()
+					+" \nCupos: "+listaTraida.get(cElegido).getEntDisponibles(), "Ventasaurus - Administracion", 0, 0, null, abmConcierto, 0);
 			
 			switch(op) {
 			case 0:
@@ -66,25 +91,35 @@ public class MenuAdmin {
 				JOptionPane.showMessageDialog(null, "Concierto cancelado con exito");
 				break;
 			case 2:
-				JOptionPane.showMessageDialog(null, "Concierto eliminado con exito");
+				if(verifica.eliminarConcierto(listaTraida.get(cElegido).getId())) {
+					JOptionPane.showMessageDialog(null, "Concierto eliminado con exito");
+				}else {
+					JOptionPane.showMessageDialog(null, "No se pudo eliminar el concierto");
+				}
+				
 				break;
 			default:
 				break;	
 			}
 		}
+		 listaConciertos();
 	}
-	
+	}
 	public static void altaConcierto(){
 		//En el futuro podriamos armar un Formulario con JFrame, por ahora son JOptionPanel
-
-		JOptionPane.showInputDialog("Introduzca nombre del concierto");
-		JOptionPane.showInputDialog("Introduzca descripcion");
-		JOptionPane.showInputDialog("Introduzca precio de entrada");
-		JOptionPane.showInputDialog("Introduzca direccion del concierto");
 		
-		JOptionPane.showMessageDialog(null, "El concierto se genero con exito");
+		String nombre = JOptionPane.showInputDialog("Introduzca nombre del concierto");
+		String descripcion = JOptionPane.showInputDialog("Introduzca descripcion");
+		String direccion = JOptionPane.showInputDialog("Introduzca direccion del concierto");
+		String fecha = JOptionPane.showInputDialog("Introduzca fecha del concierto");
+		int eDisponibles = Integer.parseInt(JOptionPane.showInputDialog("Introduzca cantidad de cupos totales"));
 		
-		listaConciertos();
+		if(verifica.validarConcierto(nombre, descripcion, direccion, fecha, eDisponibles)) {
+			JOptionPane.showMessageDialog(null, "El concierto se genero con exito");
+		}else {
+			JOptionPane.showMessageDialog(null, "El alta del concierto no pudo concretarse");
+		}
+		
 	}
 	
 	public static void listaSolicitudes() {
