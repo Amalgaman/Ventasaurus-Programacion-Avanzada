@@ -12,7 +12,25 @@ public class Concierto {
 	private String descripcion;
 	private String direccion;
 	private String fecha;
+	private boolean cancelado;
 	private int entDisponibles;
+	private LinkedList<Localidad> localidades;
+
+	public boolean isCancelado() {
+		return cancelado;
+	}
+
+	public void setCancelado(boolean cancelado) {
+		this.cancelado = cancelado;
+	}
+
+	public LinkedList<Localidad> getLocalidades() {
+		return localidades;
+	}
+
+	public void setLocalidades(LinkedList<Localidad> localidades) {
+		this.localidades = localidades;
+	}
 
 	Conexion con = new Conexion();
 	
@@ -20,14 +38,19 @@ public class Concierto {
 	
 	PreparedStatement stmt;
 
-	public Concierto(int id,String nombre, String descripcion, String direccion, String fecha, int entDisponibles) {
+	
+
+	public Concierto(int id, String nombre, String descripcion, String direccion, String fecha, boolean cancelado,
+			int entDisponibles, LinkedList<Localidad> localidades) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.direccion = direccion;
 		this.fecha = fecha;
+		this.cancelado = cancelado;
 		this.entDisponibles = entDisponibles;
+		this.localidades = localidades;
 	}
 
 	public String getNombre() {
