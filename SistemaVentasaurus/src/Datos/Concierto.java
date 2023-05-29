@@ -13,8 +13,7 @@ public class Concierto {
 	private String direccion;
 	private String fecha;
 	private boolean cancelado;
-	private int entDisponibles;
-	private LinkedList<Localidad> localidades;
+
 
 	public boolean isCancelado() {
 		return cancelado;
@@ -22,14 +21,6 @@ public class Concierto {
 
 	public void setCancelado(boolean cancelado) {
 		this.cancelado = cancelado;
-	}
-
-	public LinkedList<Localidad> getLocalidades() {
-		return localidades;
-	}
-
-	public void setLocalidades(LinkedList<Localidad> localidades) {
-		this.localidades = localidades;
 	}
 
 	Conexion con = new Conexion();
@@ -40,8 +31,7 @@ public class Concierto {
 
 	
 
-	public Concierto(int id, String nombre, String descripcion, String direccion, String fecha, boolean cancelado,
-			int entDisponibles, LinkedList<Localidad> localidades) {
+	public Concierto(int id, String nombre, String descripcion, String direccion, boolean cancelado, String fecha) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -49,8 +39,6 @@ public class Concierto {
 		this.direccion = direccion;
 		this.fecha = fecha;
 		this.cancelado = cancelado;
-		this.entDisponibles = entDisponibles;
-		this.localidades = localidades;
 	}
 
 	public String getNombre() {
@@ -93,17 +81,10 @@ public class Concierto {
 		this.fecha = fecha;
 	}
 
-	public int getEntDisponibles() {
-		return entDisponibles;
-	}
-
-	public void setEntDisponibles(int entDisponibles) {
-		this.entDisponibles = entDisponibles;
-	}
 
 	public boolean guardarConcierto() {
 		
-		String sql ="INSERT INTO `concierto`(`nombre`, `descripcion`, `direccion`, `fecha`, `entradas_disponibles`) VALUES (?,?,?,?,?)";
+		String sql ="INSERT INTO `concierto`(`nombre`, `descripcion`, `direccion`, `fecha`, `cancelado`) VALUES (?,?,?,?,?)";
 		
 		try {
 			
@@ -112,7 +93,7 @@ public class Concierto {
 			stmt.setString(2, this.getDescripcion());
 			stmt.setString(3, this.getDireccion());
 			stmt.setString(4, this.getFecha());
-			stmt.setInt(5, this.getEntDisponibles());
+			stmt.setBoolean(5, this.isCancelado());
 			stmt.executeUpdate();
 			return true;
 			
@@ -126,7 +107,7 @@ public class Concierto {
 	public LinkedList<Concierto> traerConciertos() {
 		LinkedList<Concierto> conciertos = new LinkedList<Concierto>();
 		String sql ="SELECT * FROM `concierto`";
-		//  Datos: (int id, String nombre, String descripcion, String direccion, String fecha, int entDisponibles)
+		//  Datos: int id, String nombre, String descripcion, String direccion, boolean cancelado, String fecha, int entDisponibles, LinkedList<Localidad> localidades
 		String[] datos = new String[6]; 
 		
 		try {
@@ -141,7 +122,7 @@ public class Concierto {
 				datos[3]= result.getString(4);
 				datos[4]= result.getString(5);
 				datos[5]= result.getString(6);
-				conciertos.add(new Concierto(Integer.parseInt(datos[0]),datos[1],datos[2],datos[3],datos[4],Integer.parseInt(datos[5])));
+				conciertos.add(new Concierto(Integer.parseInt(datos[0]),datos[1],datos[2],datos[3],Boolean.parseBoolean(datos[4]),datos[5]));
 				 
 			}
 			
