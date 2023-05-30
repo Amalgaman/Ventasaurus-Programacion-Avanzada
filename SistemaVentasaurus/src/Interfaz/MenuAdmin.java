@@ -114,22 +114,29 @@ public class MenuAdmin {
 		String direccion = JOptionPane.showInputDialog("Introduzca direccion del concierto");
 		String fecha = JOptionPane.showInputDialog("Introduzca fecha del concierto");
 		
-		if(verifica.validarConcierto(nombre, descripcion, direccion, fecha)) {
+		//Validamos la informacion ingresada, devolvemos el id del concierto creado. Si la operacion falla, devuelve 0
+		int id = verifica.validarConcierto(nombre, descripcion, direccion, fecha);
+		
+		if(id > 0) {
+			
 			JOptionPane.showMessageDialog(null, "El concierto se genero con exito");
 			String nombreLoc;
 			int cupoLoc;
 			double precioLoc;
+			
+			//Generamos las localidades, minimo 1
 			do {
 				nombreLoc = JOptionPane.showInputDialog("Introduzca nombre de la localidad");
 				cupoLoc = Integer.parseInt(JOptionPane.showInputDialog("Introduzca cupos totales"));
 				precioLoc = Double.parseDouble(JOptionPane.showInputDialog("Introduzca precio de localidad"));
 				
-				if(verifica.validarLocalidad(nombreLoc, cupoLoc, precioLoc, 1)) {
+				if(verifica.validarLocalidad(nombreLoc, cupoLoc, precioLoc, id)) {
 					JOptionPane.showMessageDialog(null, "La localidad se guardo con exito");
 				}else {
 					JOptionPane.showMessageDialog(null, "Hubo un error al guardar la localidad");
 				}
 			}while(JOptionPane.showConfirmDialog(null, "¿Ingresar otra localidad?") == 0);
+		
 		}else {
 			JOptionPane.showMessageDialog(null, "El alta del concierto no pudo concretarse");
 		}

@@ -13,7 +13,7 @@ public class Concierto {
 	private String direccion;
 	private String fecha;
 	private boolean cancelado;
-
+	private LinkedList<Localidad> localidades;
 
 	public boolean isCancelado() {
 		return cancelado;
@@ -81,25 +81,48 @@ public class Concierto {
 		this.fecha = fecha;
 	}
 
+	public int traerIdConcierto(){
+		String sql ="SELECT max(id) FROM `concierto`";
+		int id = 0;
+		try {
+			
+			stmt = (PreparedStatement) conexion.prepareStatement(sql);
+			ResultSet result = stmt.executeQuery();
+			
+			while(result.next()) {
+			id = 1 + result.getInt(1);
+			}
 
-	public boolean guardarConcierto() {
+			    return id;
+			}catch(Exception excepcion){
+				System.out.println(excepcion.getMessage());
+				return 0;
+			}
+	}
+	
+	
+	public int guardarConcierto() {
 		
-		String sql ="INSERT INTO `concierto`(`nombre`, `descripcion`, `direccion`, `fecha`, `cancelado`) VALUES (?,?,?,?,?)";
+		int id = this.traerIdConcierto();
+		
+		System.out.println(id);
+		String sql ="INSERT INTO `concierto`(`id`,`nombre`, `descripcion`, `direccion`, `fecha`, `cancelado`) VALUES (?,?,?,?,?,?)";
 		
 		try {
 			
 			stmt = (PreparedStatement) conexion.prepareStatement(sql);
-			stmt.setString(1, this.getNombre());
-			stmt.setString(2, this.getDescripcion());
-			stmt.setString(3, this.getDireccion());
-			stmt.setString(4, this.getFecha());
-			stmt.setBoolean(5, this.isCancelado());
+			stmt.setInt(1, id);
+			stmt.setString(2, this.getNombre());
+			stmt.setString(3, this.getDescripcion());
+			stmt.setString(4, this.getDireccion());
+			stmt.setString(5, this.getFecha());
+			stmt.setBoolean(6, this.isCancelado());
 			stmt.executeUpdate();
-			return true;
+			return id;
 			
 		}catch(Exception excepcion){
 			System.out.println(excepcion.getMessage());
-			return false;
+			return 0;
 		}
 		
 	}

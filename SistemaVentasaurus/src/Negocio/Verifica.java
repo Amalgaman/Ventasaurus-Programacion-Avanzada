@@ -16,7 +16,7 @@ public class Verifica {
 		return conciertos;
 	}
 	
-	public boolean validarConcierto(String nombre,String descripcion, String direccion, String fecha) {
+	public int validarConcierto(String nombre,String descripcion, String direccion, String fecha) {
 	
 	nuevoconcierto.setNombre(nombre);
 	nuevoconcierto.setDescripcion(descripcion);
