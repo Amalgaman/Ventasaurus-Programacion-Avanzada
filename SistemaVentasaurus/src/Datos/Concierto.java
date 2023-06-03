@@ -40,6 +40,16 @@ public class Concierto {
 		this.fecha = fecha;
 		this.cancelado = cancelado;
 	}
+	public Concierto(int id, String nombre, String descripcion, String direccion, boolean cancelado, String fecha,LinkedList<Localidad> localidades) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.direccion = direccion;
+		this.fecha = fecha;
+		this.cancelado = cancelado;
+		this.localidades = localidades;
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -146,7 +156,7 @@ public class Concierto {
 		String sql ="SELECT * FROM `concierto`";
 		//  Datos: int id, String nombre, String descripcion, String direccion, boolean cancelado, String fecha, int entDisponibles, LinkedList<Localidad> localidades
 		String[] datos = new String[6]; 
-
+		Localidad localidad = new Localidad(0, "", 0, 0,0);
 		
 		try {
 			
@@ -160,14 +170,17 @@ public class Concierto {
 				datos[3]= result.getString(4);
 				datos[4]= result.getString(5);
 				datos[5]= result.getString(6);
-				conciertos.add(new Concierto(Integer.parseInt(datos[0]),datos[1],datos[2],datos[3],Boolean.parseBoolean(datos[4]),datos[5]));
+				conciertos.add(new Concierto(Integer.parseInt(datos[0])
+						,datos[1]
+						,datos[2]
+						,datos[3]
+						,Boolean.parseBoolean(datos[4])
+						,datos[5]
+						,localidad.traerLocalidadesXConcierto(Integer.parseInt(datos[0]))));
 				 
 			}
-					
-			for (Concierto concierto : conciertos) {
-				concierto.completarLocalidades();
-			}
-				return conciertos;
+				
+			return conciertos;
 			
 		}catch(Exception excepcion){
 			System.out.println(excepcion.getMessage());
@@ -211,9 +224,4 @@ public class Concierto {
 		}
 	}
 	
-	public void completarLocalidades() {
-		Localidad localidad = new Localidad(0, "", 0, 0,0);
-		
-		this.setLocalidades(localidad.traerLocalidadesXConcierto(this.id));
-	}
 }

@@ -142,7 +142,7 @@ public class Localidad {
 				
 				localidades.add(new Localidad(Integer.parseInt(datos[0]),datos[2],Integer.parseInt(datos[3]),0,Double.parseDouble(datos[2]))); 
 			}
-			
+			System.out.println(localidades);
 			return localidades;
 			
 		}catch(Exception excepcion){
