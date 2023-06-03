@@ -3,9 +3,11 @@ package Negocio;
 import java.util.LinkedList;
 
 import Datos.Concierto;
+import Datos.Empleado;
 import Datos.Localidad;
 
 public class Verifica {
+	Empleado nuevoempleado = new Empleado(null, null, null, null, null, null);
 	Concierto nuevoconcierto = new Concierto(0,"","","",false,"");
 	Localidad nuevalocalidad = new Localidad(0,"", 0, 0,0);
 	
@@ -68,5 +70,10 @@ public class Verifica {
 		}else {
 			return false;
 		}
+	}
+	
+	public String verificaIngresarEmpleado(String dni, String password){
+		
+		return nuevoempleado.ingresar(dni,password); 
 	}
 }

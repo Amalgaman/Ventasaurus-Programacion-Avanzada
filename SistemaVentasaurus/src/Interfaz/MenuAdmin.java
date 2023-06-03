@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 import Datos.Concierto;
+import Datos.Localidad;
 import Negocio.Verifica;
 
 public class MenuAdmin {
@@ -42,7 +43,7 @@ public class MenuAdmin {
 		
 		//lista de conciertos
 		LinkedList<Concierto> listaTraida = verifica.verificaListaConciertos();
-		System.out.print(listaTraida.size());
+	
 		String[] conciertoLista = new String[listaTraida.size()+1];
 		conciertoLista[0] = "Crear nuevo Concierto";
 		
@@ -76,6 +77,7 @@ public class MenuAdmin {
 					cElegido = listaTraida.indexOf(concierto);
 				}
 			}
+			System.out.println(listaTraida.get(cElegido).getLocalidades());
 			
 			op = JOptionPane.showOptionDialog(null, listaTraida.get(cElegido).getNombre()
 					+" \n"+listaTraida.get(cElegido).getDescripcion()
@@ -83,7 +85,7 @@ public class MenuAdmin {
 					+" \nDireccion: "+listaTraida.get(cElegido).getDireccion()
 					+" \nCancelado: "+listaTraida.get(cElegido).isCancelado()
 					, "Ventasaurus - Administracion", 0, 0, null, abmConcierto, 0);
-			
+		
 			switch(op) {
 			case 0:
 				altaConcierto();

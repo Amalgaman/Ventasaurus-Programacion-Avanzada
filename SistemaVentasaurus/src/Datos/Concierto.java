@@ -81,6 +81,14 @@ public class Concierto {
 		this.fecha = fecha;
 	}
 
+	public LinkedList<Localidad> getLocalidades() {
+		return localidades;
+	}
+
+	public void setLocalidades(LinkedList<Localidad> localidades) {
+		this.localidades = localidades;
+	}
+
 	public int traerIdConcierto(){
 		String sql ="SELECT max(id) FROM `concierto`";
 		int id = 0;
@@ -92,8 +100,9 @@ public class Concierto {
 			while(result.next()) {
 			id = 1 + result.getInt(1);
 			}
-
+			    conexion.close();
 			    return id;
+			    
 			}catch(Exception excepcion){
 				System.out.println(excepcion.getMessage());
 				return 0;
@@ -105,26 +114,31 @@ public class Concierto {
 		
 		int id = this.traerIdConcierto();
 		
-		System.out.println(id);
-		String sql ="INSERT INTO `concierto`(`id`,`nombre`, `descripcion`, `direccion`, `fecha`, `cancelado`) VALUES (?,?,?,?,?,?)";
-		
-		try {
-			
-			stmt = (PreparedStatement) conexion.prepareStatement(sql);
-			stmt.setInt(1, id);
-			stmt.setString(2, this.getNombre());
-			stmt.setString(3, this.getDescripcion());
-			stmt.setString(4, this.getDireccion());
-			stmt.setString(5, this.getFecha());
-			stmt.setBoolean(6, this.isCancelado());
-			stmt.executeUpdate();
-			return id;
-			
-		}catch(Exception excepcion){
-			System.out.println(excepcion.getMessage());
+		if(id <= 0) {
 			return 0;
-		}
+		}else {
+			String sql ="INSERT INTO `concierto`(`id`,`nombre`, `descripcion`, `direccion`, `fecha`, `cancelado`) VALUES (?,?,?,?,?,?)";
 		
+			try {
+				
+				stmt = (PreparedStatement) conexion.prepareStatement(sql);
+				stmt.setInt(1, id);
+				stmt.setString(2, this.getNombre());
+				stmt.setString(3, this.getDescripcion());
+				stmt.setString(4, this.getDireccion());
+				stmt.setString(5, this.getFecha());
+				stmt.setBoolean(6, this.isCancelado());
+				stmt.executeUpdate();
+				conexion.close();
+				return id;
+				
+			}catch(Exception excepcion){
+				System.out.println(excepcion.getMessage());
+				return 0;
+			}
+		
+		}
+
 	}
 	
 	public LinkedList<Concierto> traerConciertos() {
@@ -132,6 +146,7 @@ public class Concierto {
 		String sql ="SELECT * FROM `concierto`";
 		//  Datos: int id, String nombre, String descripcion, String direccion, boolean cancelado, String fecha, int entDisponibles, LinkedList<Localidad> localidades
 		String[] datos = new String[6]; 
+
 		
 		try {
 			
@@ -148,8 +163,11 @@ public class Concierto {
 				conciertos.add(new Concierto(Integer.parseInt(datos[0]),datos[1],datos[2],datos[3],Boolean.parseBoolean(datos[4]),datos[5]));
 				 
 			}
-			
-			return conciertos;
+					
+			for (Concierto concierto : conciertos) {
+				concierto.completarLocalidades();
+			}
+				return conciertos;
 			
 		}catch(Exception excepcion){
 			System.out.println(excepcion.getMessage());
@@ -166,6 +184,7 @@ public class Concierto {
 			stmt = (PreparedStatement) conexion.prepareStatement(sql);
 			stmt.setInt(1, id);
 			stmt.executeUpdate();
+			conexion.close();
 			return true;
 			
 		}catch(Exception excepcion){
@@ -183,11 +202,18 @@ public class Concierto {
 			stmt = (PreparedStatement) conexion.prepareStatement(sql);
 			stmt.setInt(1, id);
 			stmt.executeUpdate();
+			conexion.close();
 			return true;
 			
 		}catch(Exception excepcion){
 			System.out.println(excepcion.getMessage());
 			return false;
 		}
+	}
+	
+	public void completarLocalidades() {
+		Localidad localidad = new Localidad(0, "", 0, 0,0);
+		
+		this.setLocalidades(localidad.traerLocalidadesXConcierto(this.id));
 	}
 }

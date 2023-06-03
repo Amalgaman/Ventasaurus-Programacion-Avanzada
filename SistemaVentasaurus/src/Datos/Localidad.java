@@ -95,6 +95,7 @@ public class Localidad {
 		String sql ="SELECT * FROM `localidad`";
 		//  Datos: 
 		String[] datos = new String[6]; 
+		Entrada entrada = new Entrada(0, "", "", "", "");
 		
 		try {
 			
@@ -107,8 +108,39 @@ public class Localidad {
 				datos[2]= result.getString(3); //nombre
 				datos[3]= result.getString(4); //cupos
 
-				localidades.add(new Localidad(Integer.parseInt(datos[0]),datos[2],Integer.parseInt(datos[3]),0,Double.parseDouble(datos[2])));
+				//int id, String nombre, int cuposTotal, int cuposDisponibles,double precio
+				localidades.add(new Localidad(Integer.parseInt(datos[0]),datos[2],Integer.parseInt(datos[3]),Integer.parseInt(datos[3]) - entrada.contarEntradas(Integer.parseInt(datos[0])),Double.parseDouble(datos[1])));
 				 
+			}
+			
+			return localidades;
+			
+		}catch(Exception excepcion){
+			System.out.println(excepcion.getMessage());
+			return null;
+		}
+	
+	}
+	public LinkedList<Localidad> traerLocalidadesXConcierto(int idConcierto) {
+		LinkedList<Localidad> localidades = new LinkedList<Localidad>();
+		String sql ="SELECT * FROM `localidad` WHERE id_concierto = ?";
+		//  Datos: 
+		String[] datos = new String[6]; 
+			
+		try {
+			
+			stmt = (PreparedStatement) conexion.prepareStatement(sql);
+			stmt.setInt(1, idConcierto);
+			ResultSet result = stmt.executeQuery();
+			
+			while(result.next()) {
+				datos[0]= result.getString(1); //id
+				datos[1]= result.getString(2); //precio
+				datos[2]= result.getString(3); //nombre
+				datos[3]= result.getString(4); //cupos
+
+				
+				localidades.add(new Localidad(Integer.parseInt(datos[0]),datos[2],Integer.parseInt(datos[3]),0,Double.parseDouble(datos[2]))); 
 			}
 			
 			return localidades;

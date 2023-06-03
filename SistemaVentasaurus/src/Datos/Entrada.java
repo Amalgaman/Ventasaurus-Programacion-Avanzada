@@ -1,16 +1,27 @@
 package Datos;
 
+import java.sql.ResultSet;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+
 public class Entrada {
 	private int id;
-	private String tipo;
+	private String localidad;
 	private String precio;
 	private String concierto;
 	private String codigoDevolucion;
 	
-	public Entrada(int id, String tipo, String precio, String concierto, String codigoDevolucion) {
+	Conexion con = new Conexion();
+	
+	Connection conexion = (Connection) con.conectar();
+	
+	PreparedStatement stmt;
+	
+	public Entrada(int id, String localidad, String precio, String concierto, String codigoDevolucion) {
 		super();
 		this.id = id;
-		this.tipo = tipo;
+		this.localidad = localidad;
 		this.precio = precio;
 		this.concierto = concierto;
 		this.codigoDevolucion = codigoDevolucion;
@@ -24,12 +35,12 @@ public class Entrada {
 		this.id = id;
 	}
 
-	public String getTipo() {
-		return tipo;
+	public String getLocalidad() {
+		return localidad;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setLocalidad(String localidad) {
+		this.localidad = localidad;
 	}
 
 	public String getPrecio() {
@@ -56,4 +67,26 @@ public class Entrada {
 		this.codigoDevolucion = codigoDevolucion;
 	}
 	
+	public int contarEntradas(int idLocalidad) {
+		String sql ="SELECT COUNT(*) FROM `entrada` WHERE id_localidad = ?";
+		int entradas = 0;
+		
+		try {
+			
+			stmt = (PreparedStatement) conexion.prepareStatement(sql);
+			stmt.setInt(1, idLocalidad);
+			ResultSet result = stmt.executeQuery();
+			
+			while(result.next()) {
+				 entradas =Integer.parseInt(result.getString(1)) ;
+			}
+			
+			return entradas;
+			
+		}catch(Exception excepcion){
+			System.out.println(excepcion.getMessage());
+			return -1;
+		}
+			
+	}
 }

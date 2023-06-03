@@ -2,8 +2,11 @@ package Interfaz;
 
 import javax.swing.JOptionPane;
 
+import Negocio.Verifica;
+
 public class MenuPrincipal {
 
+	static Verifica verifica = new Verifica();
 	
 	public static void principal() {
 		String[] opciones = {"Ver conciertos","Solicitar Devolucion","Ingreso Empleado","Salir"};
@@ -21,15 +24,23 @@ public class MenuPrincipal {
 			break;
 		case 2:
 			switch(login()) {
-			case 0:
+			case "null": //Esto es por si el usuario toca "Cancelar" o "Cerrar"
+				break;
+			case "admin":
 				MenuAdmin.principal();
 				break;
-			case 1:
+			case "control":
 				MenuControl.principal();
 				break;
-			default:
-				JOptionPane.showMessageDialog(null, "Incorrecto");
+			case "incorrecto":
+				JOptionPane.showMessageDialog(null, "DNI o Contraseña incorrectos");
 				break;
+			case "error":
+				JOptionPane.showMessageDialog(null, "Error al conectar con servidor");
+				break;
+			default:
+				JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado");
+				break;	
 			}
 			break;
 		default:
@@ -41,24 +52,19 @@ public class MenuPrincipal {
 		
 	}
 	
-	public static int login() {
+	public static String login() {
 		String dni = JOptionPane.showInputDialog("Ingresar dni");
 		
 		if (dni==null) {
-			principal();
-		}
-		String codigo = JOptionPane.showInputDialog("Ingresar codigo");
-		
-		if (codigo==null) {
-			principal();
-		}
-		
-		if (dni.equals("1234") && codigo.equals("1234")) {
-			return 0;
-		} if (dni.equals("4321") && codigo.equals("1234")) {
-			return 1;
+			return "null";
 		}else {
-			return 3;
+			String password = JOptionPane.showInputDialog("Ingresar contraseña");
+			if (password==null) {
+				return "null";
+			}else {
+				return verifica.verificaIngresarEmpleado(dni, password);
+			}
 		}
+		
 	}
 }

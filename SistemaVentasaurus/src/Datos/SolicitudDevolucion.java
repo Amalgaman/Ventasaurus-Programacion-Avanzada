@@ -9,6 +9,7 @@ public class SolicitudDevolucion {
 	private double dinero;
 	private String fecha;
 	private LinkedList<Entrada> lista;
+	
 	public SolicitudDevolucion(int id, String estado, double dinero, String fecha, LinkedList<Entrada> lista) {
 		super();
 		this.id = id;

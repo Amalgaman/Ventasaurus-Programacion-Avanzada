@@ -1,5 +1,7 @@
 package Datos;
 
+import java.sql.ResultSet;
+
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
@@ -76,5 +78,29 @@ public class Empleado {
 		this.rol = rol;
 	}
 	
-	
+	public String ingresar(String dni,String password) {
+		
+		String sql ="SELECT rol FROM `empleado` where dni=? AND password=?";
+			
+			try {
+				
+				stmt = (PreparedStatement) conexion.prepareStatement(sql);
+				stmt.setInt(1, Integer.parseInt(dni));
+				stmt.setString(2, password);
+				ResultSet result = stmt.executeQuery();
+				
+				if(!result.next()) {
+					return "incorrecto";
+				}else {
+					this.setRol(result.getString(1));
+				
+				return this.getRol();
+				}
+				
+			}catch(Exception excepcion){
+				System.out.println(excepcion.getMessage());
+				return "error";
+			}
+
+    }
 }
