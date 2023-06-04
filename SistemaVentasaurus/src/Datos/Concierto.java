@@ -1,6 +1,7 @@
 package Datos;
 
 import java.sql.ResultSet;
+
 import java.util.LinkedList;
 
 import com.mysql.jdbc.Connection;
