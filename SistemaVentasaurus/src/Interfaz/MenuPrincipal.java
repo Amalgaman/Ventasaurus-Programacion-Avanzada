@@ -13,7 +13,7 @@ public class MenuPrincipal {
 		int eleccion;
 		boolean cerrar = false;
 		do {
-			eleccion=JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - ¡ Bienvenido !", 0, 0, null, opciones, 0);
+			eleccion=JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - ¡ Bienvenido !", 0, 3, null, opciones, 0);
 	
 		switch (eleccion) {
 		case 0:
@@ -26,10 +26,10 @@ public class MenuPrincipal {
 			switch(login()) {
 			case "null": //Esto es por si el usuario toca "Cancelar" o "Cerrar"
 				break;
-			case "admin":
+			case "admin": //12345678  1234
 				MenuAdmin.principal();
 				break;
-			case "control":
+			case "control": //?
 				MenuControl.principal();
 				break;
 			case "incorrecto":
@@ -53,8 +53,7 @@ public class MenuPrincipal {
 	}
 	
 	public static String login() {
-		String dni = JOptionPane.showInputDialog("Ingresar dni");
-		
+		String dni = JOptionPane.showInputDialog("Ingresar dni");	
 		if (dni==null) {
 			return "null";
 		}else {

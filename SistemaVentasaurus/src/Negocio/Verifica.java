@@ -42,6 +42,8 @@ public class Verifica {
 		}
 	}
 	
+	//public 
+	
    public LinkedList<Localidad> verificaListaLocalidades(){
 		
 		LinkedList<Localidad> localidades = nuevalocalidad.traerLocalidades();
