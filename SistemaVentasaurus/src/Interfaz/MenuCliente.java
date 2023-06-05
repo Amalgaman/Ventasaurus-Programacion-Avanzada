@@ -1,9 +1,28 @@
 package Interfaz;
 
+
+import java.util.LinkedList;
+
+import java.sql.ResultSet;
+
 import javax.swing.JOptionPane;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+
+import Datos.Conexion;
+
+import Datos.Entrada;
 
 public class MenuCliente {
 
+	
+	
+	Conexion con = new Conexion();
+	
+	Connection conexion = (Connection) con.conectar();
+	
+	PreparedStatement stmt;
 	/*public static void clienteVerMenu() {
 		String[] opciones = { "Ver Conciertos", "Comprar entradas", "Solicitar devolucion", "Salir" };
 		int xd;
@@ -30,7 +49,7 @@ public class MenuCliente {
 		// listaConciertos();
 	}
 */
-	public static void listaConciertosCliente() {
+	public  void listaConciertosCliente() {
 		String opConcierto;
 		int op;
 		String[] opcClienteConc = { "Comprar entradas", "Volver" };
@@ -66,32 +85,53 @@ public class MenuCliente {
 		}
 	}
 
-	public static void SolicitudDeDevolucion() {
+	public void SolicitudDeDevolucion() {
 		
-		String opDevolucion;
+		String sql ="SELECT entrada.id, c_devolucion, concierto.nombre, localidad.nombre, localidad.precio  FROM `entrada` INNER JOIN localidad on localidad.id = entrada.id_localidad INNER JOIN concierto on localidad.id_concierto= concierto.id WHERE entrada.id_cliente=(SELECT id FROM cliente WHERE dni='?');";
+		String[] datos = new String[5];
+		LinkedList<Entrada> entradas =new LinkedList<Entrada>();
+		int dni=Integer.parseInt(JOptionPane.showInputDialog("Ingresar dni"));
+		try {
+			
+			stmt = (PreparedStatement) conexion.prepareStatement(sql);
+			stmt.setInt(1, dni);
+			ResultSet result = stmt.executeQuery();
+			while(result.next()) {
+				datos[0]= result.getString(1); //id
+				datos[1]= result.getString(2); //codigo
+				datos[2]= result.getString(3); //nombre conc
+				datos[3]= result.getString(4); //localidad
+				datos[4]= result.getString(5); //precio
+				
+				entradas.add(new Entrada(Integer.parseInt(datos[0]),datos[3],datos[4],datos[2],datos[1]));
+			}
+				conexion.close();
+				String[] opcionesDev= new String[entradas.size()];
+				int i=0;
+				for (Entrada entrada : entradas) {
+					opcionesDev[i]=entrada.toString();
+					i++;
+				}
+
+				String opDevolucion = (String) JOptionPane.showInputDialog(null // para que se muestre centrado
+						, "Selecciona una entrada para generar una devolucion" // Mensaje de la ventana
+						, "Ventasaurus - Devoluciones" // Titulo de la ventana
+						, JOptionPane.QUESTION_MESSAGE // Icono
+						, null // null para icono defecto de la ventana
+						, opcionesDev // el objeto
+						, opcionesDev[0] // posicion del que va aparecer seleccionado
+				);
+				JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "
+						+ "\nSe le mandara un mail cuando el admin lo apruebe");
+		}catch(Exception excepcion){
+			System.out.println(excepcion.getMessage());
+		}
 		
-		String[] opcionesDev = { "Los Redondos 03/05/2023  x2 ", "SodaStereo 08/05/2023  x1",
-				"Las Pastillas del Abuelo 08/10/2023  x3", "Hermetica 12/05/2023  x2", "Fito Paez 13/07/2023  x4",
-				"Leon Gieco 08/05/2023  x2", "Sumo 24/10/2023 x1"};
-		String dni;
-		do {
-				dni=JOptionPane.showInputDialog(null, "Ingrese su DNI");
-		} while (dni.length()!=8);
-		opDevolucion = (String) JOptionPane.showInputDialog(null // para que se muestre centrado
-				, "Selecciona un Concierto para generar una devolucion" // Mensaje de la ventana
-				, "Ventasaurus - Devoluciones" // Titulo de la ventana
-				, JOptionPane.QUESTION_MESSAGE // Icono
-				, null // null para icono defecto de la ventana
-				, opcionesDev // el objeto
-				, opcionesDev[0] // posicion del que va aparecer seleccionado
-		);
-		JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "
-				+ "\nSe le mandara un mail cuando el admin lo apruebe");
 		MenuPrincipal.principal();
 
 	}
 
-	public static void CompraryPagar(String nombreConcierto) {// se entrga los tickets al cliente
+	public  void CompraryPagar(String nombreConcierto) {// se entrga los tickets al cliente
 		int cantEntradas;
 		do {
 			cantEntradas = Integer
