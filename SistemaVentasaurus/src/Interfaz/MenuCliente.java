@@ -1,15 +1,20 @@
 package Interfaz;
 
-import javax.swing.JOptionPane;
+import java.util.LinkedList;
+
+import javax.swing.*;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
+
+import Datos.Concierto;
 
 //import java.util.Date;
 
 //import java.sql.Date;
 
 import Datos.Conexion;
+import Negocio.Verifica;
 
 public class MenuCliente {
 
@@ -30,6 +35,7 @@ public class MenuCliente {
 	 */
 	public static void listaConciertosCliente() {
 		String opConcierto;
+		ImageIcon icon = new ImageIcon("src/img/tickets.png");	
 		int op;
 		String[] opcClienteConc = { "Comprar entradas", "Volver" };
 		String[] opcionesConcierto = { "Los Redondos 03/05/2023", "SodaStereo 08/05/2023",
@@ -40,7 +46,7 @@ public class MenuCliente {
 				, "Selecciona un Concierto" // Mensaje de la ventana
 				, "Ventasaurus - Conciertos" // Titulo de la ventana
 				, JOptionPane.QUESTION_MESSAGE // Icono
-				, null // null para icono defecto de la ventana
+				, icon // null para icono defecto de la ventana
 				, opcionesConcierto // el objeto
 				, opcionesConcierto[0] // posicion del que va aparecer seleccionado
 		);
@@ -65,11 +71,39 @@ public class MenuCliente {
 
 	public static void SolicitudDeDevolucion() {
 		String opDevolucion;
+		//
+		/*
+		 
+		LinkedList<Concierto> listaTraida = verifica.verificaListaConciertos();
+	
+		String[] conciertoLista = new String[listaTraida.size()+1];
+		conciertoLista[0] = "Crear nuevo Concierto";
+		
+		i=1;
+		
+		for (Concierto concierto : listaTraida) {
+			conciertoLista[i] = concierto.getNombre();
+			i++;
+		}
+		
+		opConcierto = (String) JOptionPane.showInputDialog(
+				null // para que se muestre centrado
+				,"Selecciona un Concierto" // Mensaje de la ventana
+				,"Ventasaurus - Administracion" // Titulo de la ventana
+				,JOptionPane.QUESTION_MESSAGE // Icono
+				,null //null para icono defecto de la ventana
+				,conciertoLista // el objeto
+				,conciertoLista[0] // posicion del que va aparecer seleccionado
+				); 
+		 
+		 
+		 */
 		String[] opcionesDev = { "Los Redondos 03/05/2023  x2 ", "SodaStereo 08/05/2023  x1",
 				"Las Pastillas del Abuelo 08/10/2023  x3", "Hermetica 12/05/2023  x2", "Fito Paez 13/07/2023  x4",
 				"Leon Gieco 08/05/2023  x2", "Sumo 24/10/2023 x1" };
+		//
 		String dni;
-
+		ImageIcon icon = new ImageIcon("src/img/pago.png");
 		do {
 			dni = JOptionPane.showInputDialog(null, "Ingrese su DNI");
 		} while (dni == null || dni.length() <= 7);
@@ -80,7 +114,7 @@ public class MenuCliente {
 					, "Selecciona un Concierto para generar una devolucion" // Mensaje de la ventana
 					, "Ventasaurus - Devoluciones" // Titulo de la ventana
 					, JOptionPane.QUESTION_MESSAGE // Icono
-					, null // null para icono defecto de la ventana
+					, icon // null para icono defecto de la ventana
 					, opcionesDev // el objeto
 					, opcionesDev[0] // posicion del que va aparecer seleccionado
 			);
@@ -149,18 +183,19 @@ public class MenuCliente {
 // averiguar valor 
 	public static void CompraryPagar(String nombreConcierto) {
 		int cantEntradas = 0;
+		ImageIcon icon = new ImageIcon("src/img/pago.png");
 		try {
 			cantEntradas = Integer
-					.parseInt(JOptionPane.showInputDialog(null, "Ingresar cantidad de tickets a comprar"));
-
+					.parseInt(JOptionPane.showInputDialog(null, "Ingresar cantidad de tickets a comprar",""));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocurrio el siguiente error al tratar de comprar las entradas:\n" + e);
+			JOptionPane.showMessageDialog(null, "No pudiste compraste entradas");
 		}
-		if (cantEntradas <= 0) {
-			JOptionPane.showMessageDialog(null, "No compraste entradas");
-		} else {
+		if (cantEntradas > 0) {
 			JOptionPane.showMessageDialog(null, "Compraste " + cantEntradas + " entrada/s para : " + nombreConcierto
-					+ "\nPrecio final de la compra : 'x'"/* precio sacado de la base de datos */);
+					+ "\nPrecio final de la compra : 'x'","Gracias por comprar en Ventasaurus"/* precio sacado de la base de datos */, 0, icon);
+		}else {
+			JOptionPane.showMessageDialog(null, "No compraste entradas");
 		}
 
 		listaConciertosCliente();
