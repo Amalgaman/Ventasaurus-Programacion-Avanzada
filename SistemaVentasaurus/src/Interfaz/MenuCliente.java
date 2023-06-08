@@ -32,7 +32,8 @@ public class MenuCliente {
 	PreparedStatement stmt;
 
 	public static void listaConciertosCliente() {
-		//no va
+		//conectado a la base
+//		revisar
 
 		int i=0;
 		LinkedList<Concierto> listaTraida = verifica.verificaListaConciertos();
@@ -46,6 +47,8 @@ public class MenuCliente {
 
 		String opConcierto;
 		ImageIcon icon = new ImageIcon("src/img/tickets.png");
+		ImageIcon iconBanda = new ImageIcon("src/img/dinosrock.png");
+
 		int op;
 		String[] opcClienteConc = { "Comprar entradas", "Volver" };
 	
@@ -73,7 +76,7 @@ public class MenuCliente {
 		op = JOptionPane.showOptionDialog(null, opConcierto + " \nLa aclamada banda hara su gira de despedida"
 				+ " \na lo grande, realizando un recorrido por sus"
 				+ " \ngrandes exitos ¿Que estas esperando? Saca tu" + " \nentrada." + " \nPrecios desde $1200",
-				"Ventasaurus - Administracion", 0, 0, null, opcClienteConc, 0);
+				"Ventasaurus - Conciertos", 0, 0, iconBanda, opcClienteConc, 0);
 		switch (op) {
 		case 0:
 			CompraryPagar(opConcierto);
@@ -91,6 +94,7 @@ public class MenuCliente {
 	}
 
 	public static void SolicitudDeDevolucion() {
+		//falta conectarlo a la base d datos
 		String opDevolucion;
 		//
 		/*
@@ -161,7 +165,7 @@ public class MenuCliente {
 		// MenuPrincipal.principal();
 	}
 
-	public static void guardarDevolucion() { // falta la validacion y agregarlo a la base
+	public static void guardarDevolucion() { // falta todo xd
 		/*
 		 * no va :(
 		 * 
@@ -199,11 +203,13 @@ public class MenuCliente {
 // se entrga los tickets al cliente
 // averiguar valor 
 	public static void CompraryPagar(String nombreConcierto) {
+		//falta conectarlo a la base d datos
 		int cantEntradas = 0;
 		ImageIcon icon = new ImageIcon("src/img/pago.png");
+		ImageIcon icon2 = new ImageIcon("src/img/ticket.jpg");
 		try {
 			cantEntradas = Integer
-					.parseInt(JOptionPane.showInputDialog(null, "Ingresar cantidad de tickets a comprar", ""));
+					.parseInt((String) JOptionPane.showInputDialog(null, "Ingresar cantidad de tickets a comprar", "Ventasaurus", JOptionPane.PLAIN_MESSAGE, icon2, null, ""));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocurrio el siguiente error al tratar de comprar las entradas:\n" + e);
 			JOptionPane.showMessageDialog(null, "No pudiste compraste entradas");
