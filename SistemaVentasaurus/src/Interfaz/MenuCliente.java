@@ -157,6 +157,7 @@ public class MenuCliente {
 				SolicitudDevolucion soli = new SolicitudDevolucion(1, "En proceso", 1200, null, null);
 
 				//rellenar con datos
+				//fecha automatica'preguntar
 				soli.guardarSolicitud();
 				JOptionPane.showMessageDialog(null,
 						"Solicitud recibida exitosamente" + "\nRecibirá un mail cuando la devolución se apruebe",
