@@ -1,5 +1,6 @@
 package Datos;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -88,19 +89,21 @@ public int guardarSolicitud() {
 	
 	PreparedStatement stmt;
 	int id = this.traerIdSolicitud();
-	String fecha =JOptionPane.showInputDialog(null,"Fecha de devolucion del ticket");
-	LocalDate fechaTicket = LocalDate.parse(fecha);
+	String estado = "En proceso";
+	int idCliente = (int) (Math.random() * 1+1);
+	 LocalDate fechaActual = LocalDate.now();
 		if(id <= 0) {
 			return 0;
 		}else {
-			String sql ="INSERT INTO `devolucion`(`id`, `creacion`, `id_cliente`) VALUES (?,?,?)";
+			String sql ="INSERT INTO `devolucion`(`id`, `estado`,`creacion`, `id_cliente`) VALUES (?,?,?,?)";
 		
 			try {
 				
 				stmt = (PreparedStatement) conexion.prepareStatement(sql);
 				stmt.setInt(1, id);
-				stmt.setString(2, fecha);
-				stmt.setLong(3, 1);
+				stmt.setString(2, estado);
+				stmt.setObject(3, Date.valueOf(fechaActual));
+				stmt.setLong(4, idCliente);
 				stmt.executeUpdate();
 			//	conexion.close();
 				return id;
