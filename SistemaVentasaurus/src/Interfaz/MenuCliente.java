@@ -154,14 +154,14 @@ public class MenuCliente {
 			);
 			// no toma el else?
 			if (opDevolucion != null && !opDevolucion.isEmpty()) {
+				SolicitudDevolucion soli = new SolicitudDevolucion(1, "En proceso", 1200, null, null);
+
+				//rellenar con datos
+				soli.guardarSolicitud();
 				JOptionPane.showMessageDialog(null,
 						"Solicitud recibida exitosamente" + "\nRecibirá un mail cuando la devolución se apruebe",
 						"Recibido", 1, null);
-				SolicitudDevolucion soli = new SolicitudDevolucion(1, "En proceso", Math.random(), null, null);
-//	revisar funcinamiento
-				// no funciona bien
-//			Parameter index out of range (1 > number of parameters, which is 0).
-				soli.guardarSolicitud();
+				
 			} else {
 				JOptionPane.showMessageDialog(null,
 						"No se eligio ningun concierto / Ocurrio un error al elegir el concierto"
