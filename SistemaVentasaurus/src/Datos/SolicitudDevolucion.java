@@ -2,6 +2,9 @@ package Datos;
 
 import java.util.LinkedList;
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+
 public class SolicitudDevolucion {
 
 	private int id;
@@ -47,6 +50,36 @@ public class SolicitudDevolucion {
 	}
 	public void setLista(LinkedList<Entrada> lista) {
 		this.lista = lista;
+	}
+	
+public int guardarSolicitud() {
+	Conexion con = new Conexion();
+	
+	Connection conexion = (Connection) con.conectar();
+	
+	PreparedStatement stmt;
+		if(id <= 0) {
+			return 0;
+		}else {
+			String sql ="INSERT INTO `devolucion`(`id`, `creacion`, `id_cliente`) VALUES ('?,?,?)";
+		
+			try {
+				
+				stmt = (PreparedStatement) conexion.prepareStatement(sql);
+				stmt.setInt(1, id);
+				stmt.setString(2, this.getFecha());
+				stmt.setLong(2, this.getId());
+				stmt.executeUpdate();
+			//	conexion.close();
+				return id;
+				
+			}catch(Exception excepcion){
+				System.out.println(excepcion.getMessage());
+				return 0;
+			}
+		
+		}
+
 	}
 	
 }

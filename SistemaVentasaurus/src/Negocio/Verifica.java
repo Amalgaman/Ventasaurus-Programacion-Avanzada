@@ -2,6 +2,9 @@ package Negocio;
 
 import java.util.LinkedList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 import Datos.Concierto;
 import Datos.Empleado;
 import Datos.Localidad;
@@ -42,7 +45,24 @@ public class Verifica {
 		}
 	}
 	
-	//public 
+	public void CantEntradas(int cantEntradas,String nombreConcierto) {
+		ImageIcon icon = new ImageIcon("src/img/pago.png");
+		if (cantEntradas > 0) {
+			JOptionPane.showMessageDialog(null,
+					"Compraste " + cantEntradas + " entrada/s para : " + nombreConcierto
+					/*+ "\nFecha del concierto :"+ fechaConcierto */+"\nPrecio final de la compra : 'x'",
+					"Gracias por comprar en Ventasaurus"/* precio sacado de la base de datos */, 0, icon);
+		} else {
+			JOptionPane.showMessageDialog(null, "No compraste entradas");
+		}
+	}
+	
+	public void verificarDni(int dni) {
+		do {
+			dni = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese su DNI"));
+		} while (dni<=11111111 || dni>=99999999);
+
+	}
 	
    public LinkedList<Localidad> verificaListaLocalidades(){
 		
