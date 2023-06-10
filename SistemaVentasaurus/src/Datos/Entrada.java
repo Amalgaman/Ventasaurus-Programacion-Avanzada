@@ -70,7 +70,7 @@ public class Entrada {
 	
 	@Override
 	public String toString() {
-		return "["+concierto+"] [" + localidad + "] [" + precio + "]";
+		return id+"["+concierto+"] [" + localidad + "] [" + precio + "]";
 	}
 
 	public int contarEntradas(int idLocalidad) {

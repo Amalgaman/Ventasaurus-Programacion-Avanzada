@@ -87,11 +87,23 @@ public class MenuCliente {
 
 	public void SolicitudDeDevolucion() {
 		
-		String sql ="SELECT entrada.id, c_devolucion, concierto.nombre, localidad.nombre, localidad.precio  FROM `entrada` INNER JOIN localidad on localidad.id = entrada.id_localidad INNER JOIN concierto on localidad.id_concierto= concierto.id WHERE entrada.id_cliente=(SELECT id FROM cliente WHERE dni=?)";
-		String[] datos = new String[5]; 
-		System.out.println("creacion");
-		LinkedList<Entrada> entradas =new LinkedList<Entrada>();
+		String sql="SELECT id FROM cliente WHERE dni=?";
 		int dni=Integer.parseInt(JOptionPane.showInputDialog("Ingresar dni"));
+		int idcliente=-1;
+		try {
+			
+			stmt = (PreparedStatement) conexion.prepareStatement(sql);
+			stmt.setInt(1, dni);
+			ResultSet result = stmt.executeQuery();
+			while(result.next()) {
+				idcliente=Integer.parseInt(result.getString(1)); //id
+			}
+		}catch(Exception excepcion){
+			System.out.println(excepcion.getMessage());
+		}
+		sql ="SELECT entrada.id, c_devolucion, concierto.nombre, localidad.nombre, localidad.precio  FROM `entrada` INNER JOIN localidad on localidad.id = entrada.id_localidad INNER JOIN concierto on localidad.id_concierto= concierto.id WHERE entrada.id_cliente=(SELECT id FROM cliente WHERE dni=?)";
+		String[] datos = new String[5]; 
+		LinkedList<Entrada> entradas =new LinkedList<Entrada>();
 		try {
 			
 			stmt = (PreparedStatement) conexion.prepareStatement(sql);
@@ -105,14 +117,14 @@ public class MenuCliente {
 				datos[4]= result.getString(5); //precio
 				entradas.add(new Entrada(Integer.parseInt(datos[0]),datos[3],datos[4],datos[2],datos[1]));
 			}
-				conexion.close();
+				//Ventana.main(entradas);
 				String[] opcionesDev= new String[entradas.size()+1];
 				int i=0;
 				for (Entrada entrada : entradas) {
 					opcionesDev[i]=entrada.toString();
 					i++;
 				}
-
+				
 				String opDevolucion = (String) JOptionPane.showInputDialog(null // para que se muestre centrado
 						, "Selecciona una entrada para generar una devolucion" // Mensaje de la ventana
 						, "Ventasaurus - Devoluciones" // Titulo de la ventana
@@ -121,6 +133,49 @@ public class MenuCliente {
 						, opcionesDev // el objeto
 						, opcionesDev[0] // posicion del que va aparecer seleccionado
 				);
+				for (Entrada entrada : entradas) {
+					if (entrada.toString().equals(opDevolucion)) {
+						int devolucionid=-1;
+						sql ="INSERT INTO `devolucion` (`estado`, `creacion`, `id_cliente`) VALUES ('pendiente', ?, ?);";
+						
+						try {
+							
+							stmt = (PreparedStatement) conexion.prepareStatement(sql);
+							stmt.setInt(2, idcliente);
+							stmt.setString(1,"2022-01-01");
+							stmt.executeUpdate();
+							
+						}catch(Exception excepcion){
+							System.out.println(excepcion.getMessage());
+							
+						}
+						sql ="SELECT MAX(id) FROM devolucion;";
+						try {
+							
+							stmt = (PreparedStatement) conexion.prepareStatement(sql);
+							result = stmt.executeQuery();
+							while(result.next()) {
+								devolucionid=Integer.parseInt(result.getString(1)); //id
+							}
+						}catch(Exception excepcion){
+							System.out.println(excepcion.getMessage());
+						}
+						sql ="INSERT INTO `detalle_devolucion` (`id_devolucion`, `id_entrada`) VALUES (?, ?);";
+						
+						try {
+							
+							stmt = (PreparedStatement) conexion.prepareStatement(sql);
+							stmt.setInt(1, devolucionid);
+							stmt.setInt(2, entrada.getId());
+							stmt.executeUpdate();
+							conexion.close();
+							
+						}catch(Exception excepcion){
+							System.out.println(excepcion.getMessage());
+							
+						}
+					}
+				}
 				JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "+ opDevolucion
 						+ "\nSe le mandara un mail cuando el admin lo apruebe");
 		}catch(Exception excepcion){
