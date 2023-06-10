@@ -19,6 +19,7 @@ import Negocio.Verifica;
 
 public class MenuCliente {
 
+	//iconos significados
 	// 3 pregunta
 	// 2 advertencia
 	// 1 info
@@ -52,11 +53,6 @@ public class MenuCliente {
 		int op;
 		String[] opcClienteConc = { "Comprar entradas", "Volver" };
 
-		// String[] opcionesConcierto = { "Los Redondos 03/05/2023", "SodaStereo
-		// 08/05/2023",
-		// "Las Pastillas del Abuelo 08/10/2023", "Hermetica 12/05/2023", "Fito Paez
-		// 13/07/2023",
-		// "Leon Gieco 08/05/2023", "Sumo 24/10/2023" };
 
 //si la lista esta vacia decir que no hay conciertos
 		if (conciertoLista.length == 0) {
@@ -91,37 +87,13 @@ public class MenuCliente {
 					break;
 				}
 			}
-
 		}
-
 	}
 
 	public static void SolicitudDeDevolucion() {
 		// falta conectarlo a la base d datos
 		String opDevolucion;
 
-		//
-		/*
-		 * 
-		 * LinkedList<Concierto> listaTraida = verifica.verificaListaConciertos();
-		 * 
-		 * String[] conciertoLista = new String[listaTraida.size()+1]; conciertoLista[0]
-		 * = "Crear nuevo Concierto";
-		 * 
-		 * i=1;
-		 * 
-		 * for (Concierto concierto : listaTraida) { conciertoLista[i] =
-		 * concierto.getNombre(); i++; }
-		 * 
-		 * opConcierto = (String) JOptionPane.showInputDialog( null // para que se
-		 * muestre centrado ,"Selecciona un Concierto" // Mensaje de la ventana
-		 * ,"Ventasaurus - Administracion" // Titulo de la ventana
-		 * ,JOptionPane.QUESTION_MESSAGE // Icono ,null //null para icono defecto de la
-		 * ventana ,conciertoLista // el objeto ,conciertoLista[0] // posicion del que
-		 * va aparecer seleccionado );
-		 * 
-		 * 
-		 */
 		int i = 0;
 		LinkedList<Concierto> listaTraida = verifica.verificaListaConciertos();
 
@@ -132,12 +104,6 @@ public class MenuCliente {
 			i++;
 		}
 
-		/*
-		 * String[] opcionesDev = { "Los Redondos 03/05/2023  x2 ",
-		 * "SodaStereo 08/05/2023  x1", "Las Pastillas del Abuelo 08/10/2023  x3",
-		 * "Hermetica 12/05/2023  x2", "Fito Paez 13/07/2023  x4",
-		 * "Leon Gieco 08/05/2023  x2", "Sumo 24/10/2023 x1" };
-		 */
 		int dni = 0;
 		try {
 			verifica.verificarDni(dni);
@@ -155,13 +121,14 @@ public class MenuCliente {
 			// no toma el else?
 			if (opDevolucion != null && !opDevolucion.isEmpty()) {
 				SolicitudDevolucion soli = new SolicitudDevolucion(1, "En proceso", 1200, null, null);
+				ImageIcon icon2 = new ImageIcon("src/img/correo.png");
 
 				//rellenar con datos
 				//fecha automatica'preguntar
 				soli.guardarSolicitud();
 				JOptionPane.showMessageDialog(null,
 						"Solicitud recibida exitosamente" + "\nRecibirá un mail cuando la devolución se apruebe",
-						"Recibido", 1, null);
+						"Recibido", 1, icon2);
 				
 			} else {
 				JOptionPane.showMessageDialog(null,
@@ -175,65 +142,18 @@ public class MenuCliente {
 					"Ocurrio un error al ingresar al dni:\n" + e + "\nVolviendo al menú principal");
 		}
 
-		// el catch lo soluciona
-		/*
-		 * } catch (Exception e) { JOptionPane.showMessageDialog(null,
-		 * "Ocurrio el siguiente error al tratar de generar una devolucion: \n" + e); }
-		 */
-
-		// guardarDevolucion();
-
-		// no llamar a MenuPrincipal.principal(); el do while lo hace solo
-
-		// MenuPrincipal.principal();
 	}
 
-	public static void guardarDevolucion() { // falta todo xd
-		/*
-		 * no va :(
-		 * 
-		 * Conexion con = new Conexion();
-		 * 
-		 * Connection conexion = (Connection) con.conectar();
-		 * 
-		 * PreparedStatement stmt;
-		 * 
-		 * String devolucionEstado="";
-		 * 
-		 * // Fecha actual Date fechaActual = new Date();
-		 * 
-		 * // Convertir la fecha actual para pasar a la base de datos java.sql.Date
-		 * fechaSQL = new java.sql.Date(fechaActual.getTime());
-		 * 
-		 * String estadopedido="A revisar";
-		 * 
-		 * String sql
-		 * ="INSERT INTO `devolucion`(`id`, `estado`, `creacion`, `id_cliente`) VALUES (?,?,?,?')"
-		 * ; (
-		 * 
-		 * 
-		 * try { /* stmt = (PreparedStatement) conexion.prepareStatement(sql);
-		 * stmt.setInt(1, 0); stmt.setString(2, devolucionEstado()); stmt.setDate(3,
-		 * fechaSQL()); stmt.setInt(4, dni()); stmt.executeUpdate(); conexion.close();
-		 * 
-		 * 
-		 * }catch(Exception excepcion){ System.out.println(excepcion.getMessage());
-		 * 
-		 * }
-		 */
-	}
-
-// se entrga los tickets al cliente
 // averiguar valor 
 	public static void CompraryPagar(String nombreConcierto) {
 		// falta conectarlo a la base d datos
 		int cantEntradas = 0;
 
-		ImageIcon icon2 = new ImageIcon("src/img/ticket.jpg");
+		ImageIcon icon = new ImageIcon("src/img/ticket.jpg");
 		try {
 			cantEntradas = Integer
 					.parseInt((String) JOptionPane.showInputDialog(null, "Ingresar cantidad de tickets a comprar",
-							"Ventasaurus", JOptionPane.PLAIN_MESSAGE, icon2, null, ""));
+							"Ventasaurus", JOptionPane.PLAIN_MESSAGE, icon, null, ""));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocurrio el siguiente error al tratar de comprar las entradas:\n" + e);
 			JOptionPane.showMessageDialog(null, "No pudiste compraste entradas");

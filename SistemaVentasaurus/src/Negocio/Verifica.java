@@ -58,8 +58,10 @@ public class Verifica {
 	}
 	
 	public void verificarDni(int dni) {
+		ImageIcon icon = new ImageIcon("src/img/dni.jpg");
+		//ver si el (String) rompe algo
 		do {
-			dni = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese su DNI"));
+			dni = Integer.parseInt((String) JOptionPane.showInputDialog(null, "Ingrese su DNI","Dni",JOptionPane.PLAIN_MESSAGE, icon, null, ""));
 		} while (dni<=11111111 || dni>=99999999);
 
 	}
