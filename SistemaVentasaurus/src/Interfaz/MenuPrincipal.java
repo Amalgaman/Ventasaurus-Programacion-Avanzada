@@ -8,9 +8,9 @@ import Negocio.Verifica;
 public class MenuPrincipal {
 
 	static Verifica verifica = new Verifica();
-	MenuCliente cliente=new MenuCliente();
 	
 	public static void principal() {
+		MenuCliente cliente=new MenuCliente();
 		String[] opciones = {"Ver conciertos","Solicitar Devolucion","Ingreso Empleado","Salir"};
 		int eleccion;
 		boolean cerrar = false;
@@ -19,10 +19,10 @@ public class MenuPrincipal {
 	
 		switch (eleccion) {
 		case 0:
-			cliente.MenuCliente.listaConciertosCliente();
+			cliente.listaConciertosCliente();
 			break;
 		case 1:
-			cliente.MenuCliente.SolicitudDeDevolucion();
+			cliente.SolicitudDeDevolucion();
 			break;
 		case 2:
 			switch(login()) {

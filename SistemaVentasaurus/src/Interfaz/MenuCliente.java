@@ -87,8 +87,9 @@ public class MenuCliente {
 
 	public void SolicitudDeDevolucion() {
 		
-		String sql ="SELECT entrada.id, c_devolucion, concierto.nombre, localidad.nombre, localidad.precio  FROM `entrada` INNER JOIN localidad on localidad.id = entrada.id_localidad INNER JOIN concierto on localidad.id_concierto= concierto.id WHERE entrada.id_cliente=(SELECT id FROM cliente WHERE dni='?');";
-		String[] datos = new String[5];
+		String sql ="SELECT entrada.id, c_devolucion, concierto.nombre, localidad.nombre, localidad.precio  FROM `entrada` INNER JOIN localidad on localidad.id = entrada.id_localidad INNER JOIN concierto on localidad.id_concierto= concierto.id WHERE entrada.id_cliente=(SELECT id FROM cliente WHERE dni=?)";
+		String[] datos = new String[5]; 
+		System.out.println("creacion");
 		LinkedList<Entrada> entradas =new LinkedList<Entrada>();
 		int dni=Integer.parseInt(JOptionPane.showInputDialog("Ingresar dni"));
 		try {
@@ -102,11 +103,10 @@ public class MenuCliente {
 				datos[2]= result.getString(3); //nombre conc
 				datos[3]= result.getString(4); //localidad
 				datos[4]= result.getString(5); //precio
-				
 				entradas.add(new Entrada(Integer.parseInt(datos[0]),datos[3],datos[4],datos[2],datos[1]));
 			}
 				conexion.close();
-				String[] opcionesDev= new String[entradas.size()];
+				String[] opcionesDev= new String[entradas.size()+1];
 				int i=0;
 				for (Entrada entrada : entradas) {
 					opcionesDev[i]=entrada.toString();
@@ -121,7 +121,7 @@ public class MenuCliente {
 						, opcionesDev // el objeto
 						, opcionesDev[0] // posicion del que va aparecer seleccionado
 				);
-				JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "
+				JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "+ opDevolucion
 						+ "\nSe le mandara un mail cuando el admin lo apruebe");
 		}catch(Exception excepcion){
 			System.out.println(excepcion.getMessage());
