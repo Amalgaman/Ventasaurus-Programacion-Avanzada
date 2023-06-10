@@ -153,20 +153,18 @@ public class Localidad {
 				datos[3]= result.getString(4); //cupos
 				datos[4]= result.getString(5); //entradas compradas
 				
-				locVacia.setId(Integer.parseInt(datos[0]));
-				locVacia.setNombre(datos[2]);
-				locVacia.setPrecio(Double.parseDouble(datos[1]));
-				locVacia.setCuposTotal(Integer.parseInt(datos[3]));
-				locVacia.setCuposDisponibles(Integer.parseInt(datos[3])-Integer.parseInt(datos[4]));
+				//locVacia.setId(Integer.parseInt(datos[0]));
+				//locVacia.setNombre(datos[2]);
+				//locVacia.setPrecio(Double.parseDouble(datos[1]));
+				//locVacia.setCuposTotal(Integer.parseInt(datos[3]));
+				//locVacia.setCuposDisponibles(Integer.parseInt(datos[3])-Integer.parseInt(datos[4]));
 				
-				localidades.add(locVacia); 
+				//System.out.println(locVacia);
 				
-				System.out.println("id "+locVacia.getId());
-				System.out.println("precio "+locVacia.getPrecio());
-				System.out.println("nombre "+locVacia.getNombre());
-				System.out.println("cupos "+locVacia.getCuposTotal());
-				System.out.println("cupos disponibles "+locVacia.getCuposDisponibles());
+				//localidades.add(locVacia); 
+				localidades.add(new Localidad(Integer.parseInt(datos[0]),datos[2],Integer.parseInt(datos[3]),Integer.parseInt(datos[3])-Integer.parseInt(datos[4]),Double.parseDouble(datos[1])));
 			}
+			
 			System.out.println("Lista de localidades;");
 			for (Localidad localidad : localidades) {
 				System.out.println(localidad);
