@@ -77,14 +77,19 @@ public class MenuAdmin {
 					cElegido = listaTraida.indexOf(concierto);
 				}
 			}
-			System.out.println(listaTraida.get(cElegido).getLocalidades());
 			
-			op = JOptionPane.showOptionDialog(null, listaTraida.get(cElegido).getNombre()
+			String mensaje = listaTraida.get(cElegido).getNombre()
 					+" \n"+listaTraida.get(cElegido).getDescripcion()
 					+" \nFecha: "+listaTraida.get(cElegido).getFecha()
 					+" \nDireccion: "+listaTraida.get(cElegido).getDireccion()
 					+" \nCancelado: "+listaTraida.get(cElegido).isCancelado()
-					, "Ventasaurus - Administracion", 0, 0, null, abmConcierto, 0);
+                    +" \nLocalidades: ";
+			
+			for (Localidad localidad : listaTraida.get(cElegido).getLocalidades()) {
+				mensaje = mensaje+" \n"+localidad;
+			}
+			
+			op = JOptionPane.showOptionDialog(null, mensaje, "Ventasaurus - Administracion", 0, 0, null, abmConcierto, 0);
 		
 			switch(op) {
 			case 0:
@@ -99,7 +104,6 @@ public class MenuAdmin {
 				}else {
 					JOptionPane.showMessageDialog(null, "No se pudo eliminar el concierto");
 				}
-				
 				break;
 			default:
 				break;	

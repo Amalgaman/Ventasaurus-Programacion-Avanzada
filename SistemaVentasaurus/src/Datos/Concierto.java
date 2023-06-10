@@ -40,7 +40,7 @@ public class Concierto {
 		this.fecha = fecha;
 		this.cancelado = cancelado;
 	}
-	public Concierto(int id, String nombre, String descripcion, String direccion, boolean cancelado, String fecha,LinkedList<Localidad> localidades) {
+	public Concierto(int id, String nombre, String descripcion, String direccion, boolean cancelado, String fecha, LinkedList<Localidad> localidades) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -177,6 +177,8 @@ public class Concierto {
 						,Boolean.parseBoolean(datos[4])
 						,datos[5]
 						,localidad.traerLocalidadesXConcierto(Integer.parseInt(datos[0]))));
+			
+				
 				 
 			}
 				

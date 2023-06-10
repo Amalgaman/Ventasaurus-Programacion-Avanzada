@@ -69,6 +69,14 @@ public class Localidad {
 		this.precio = precio;
 	}
 	
+	
+	
+	@Override
+	public String toString() {
+		String mensaje = this.nombre+" - $"+this.precio+" - "+this.getCuposDisponibles()+" disponibles";
+		return mensaje;
+	}
+
 	public boolean guardarLocalidad(int idConcierto) {
 		
 		String sql ="INSERT INTO `localidad`(`nombre`, `precio`, `cupos`, `id_concierto`) VALUES (?,?,?,?)";
@@ -123,9 +131,13 @@ public class Localidad {
 	}
 	public LinkedList<Localidad> traerLocalidadesXConcierto(int idConcierto) {
 		LinkedList<Localidad> localidades = new LinkedList<Localidad>();
-		String sql ="SELECT * FROM `localidad` WHERE id_concierto = ?";
-		//  Datos: 
+		//String sql ="SELECT * FROM `localidad` WHERE id_concierto = ?";
+		
+		String sql ="SELECT loc.id,loc.precio,loc.nombre,loc.cupos,COUNT(ent.id) FROM localidad loc LEFT JOIN entrada ent ON loc.id = ent.id_localidad WHERE loc.id_concierto = ? GROUP BY loc.id";
+		
+		System.out.println(idConcierto);
 		String[] datos = new String[6]; 
+		Localidad locVacia = new Localidad(0, "", 0, 0, 0);
 			
 		try {
 			
@@ -133,16 +145,33 @@ public class Localidad {
 			stmt.setInt(1, idConcierto);
 			ResultSet result = stmt.executeQuery();
 			
+			
 			while(result.next()) {
 				datos[0]= result.getString(1); //id
 				datos[1]= result.getString(2); //precio
 				datos[2]= result.getString(3); //nombre
 				datos[3]= result.getString(4); //cupos
-
+				datos[4]= result.getString(5); //entradas compradas
 				
-				localidades.add(new Localidad(Integer.parseInt(datos[0]),datos[2],Integer.parseInt(datos[3]),0,Double.parseDouble(datos[2]))); 
+				locVacia.setId(Integer.parseInt(datos[0]));
+				locVacia.setNombre(datos[2]);
+				locVacia.setPrecio(Double.parseDouble(datos[1]));
+				locVacia.setCuposTotal(Integer.parseInt(datos[3]));
+				locVacia.setCuposDisponibles(Integer.parseInt(datos[3])-Integer.parseInt(datos[4]));
+				
+				localidades.add(locVacia); 
+				
+				System.out.println("id "+locVacia.getId());
+				System.out.println("precio "+locVacia.getPrecio());
+				System.out.println("nombre "+locVacia.getNombre());
+				System.out.println("cupos "+locVacia.getCuposTotal());
+				System.out.println("cupos disponibles "+locVacia.getCuposDisponibles());
 			}
-			System.out.println(localidades);
+			System.out.println("Lista de localidades;");
+			for (Localidad localidad : localidades) {
+				System.out.println(localidad);
+			}
+			
 			return localidades;
 			
 		}catch(Exception excepcion){
