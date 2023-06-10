@@ -34,7 +34,6 @@ public class MenuCliente {
 
 	public static void listaConciertosCliente() {
 		// conectado a la base
-//		revisar
 
 		int i = 0;
 		LinkedList<Concierto> listaTraida = verifica.verificaListaConciertos();
@@ -60,7 +59,6 @@ public class MenuCliente {
 		// "Leon Gieco 08/05/2023", "Sumo 24/10/2023" };
 
 //si la lista esta vacia decir que no hay conciertos
-//revisar
 		if (conciertoLista.length == 0) {
 			JOptionPane.showMessageDialog(null,
 					"No hay conciertos desponibles en este momento\nIntentelo mas tarde y/o comuniquese con un administrador",
@@ -75,6 +73,8 @@ public class MenuCliente {
 					, conciertoLista[0] // posicion del que va aparecer seleccionado
 			);
 
+//revisar 
+//mostrar desc de la base de datos
 			if (opConcierto != null) {
 				op = JOptionPane.showOptionDialog(null, opConcierto + " \nLa aclamada banda hara su gira de despedida"
 						+ " \na lo grande, realizando un recorrido por sus"
