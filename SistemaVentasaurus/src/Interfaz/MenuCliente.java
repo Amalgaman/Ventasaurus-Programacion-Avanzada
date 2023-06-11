@@ -135,49 +135,55 @@ public class MenuCliente {
 				);
 				for (Entrada entrada : entradas) {
 					if (entrada.toString().equals(opDevolucion)) {
-						int devolucionid=-1;
-						sql ="INSERT INTO `devolucion` (`estado`, `creacion`, `id_cliente`) VALUES ('pendiente', ?, ?);";
-						
-						try {
+						String codigo=JOptionPane.showInputDialog("Ingresar codigo de devolución");
+						if (entrada.getCodigoDevolucion().equals(codigo)) {
+							int devolucionid=-1;
+							sql ="INSERT INTO `devolucion` (`estado`, `creacion`, `id_cliente`) VALUES ('pendiente', ?, ?);";
 							
-							stmt = (PreparedStatement) conexion.prepareStatement(sql);
-							stmt.setInt(2, idcliente);
-							stmt.setString(1,"2022-01-01");
-							stmt.executeUpdate();
-							
-						}catch(Exception excepcion){
-							System.out.println(excepcion.getMessage());
-							
-						}
-						sql ="SELECT MAX(id) FROM devolucion;";
-						try {
-							
-							stmt = (PreparedStatement) conexion.prepareStatement(sql);
-							result = stmt.executeQuery();
-							while(result.next()) {
-								devolucionid=Integer.parseInt(result.getString(1)); //id
+							try {
+								
+								stmt = (PreparedStatement) conexion.prepareStatement(sql);
+								stmt.setInt(2, idcliente);
+								stmt.setString(1,"2022-01-01");
+								stmt.executeUpdate();
+								
+							}catch(Exception excepcion){
+								System.out.println(excepcion.getMessage());
+								
 							}
-						}catch(Exception excepcion){
-							System.out.println(excepcion.getMessage());
+							sql ="SELECT MAX(id) FROM devolucion;";
+							try {
+								
+								stmt = (PreparedStatement) conexion.prepareStatement(sql);
+								result = stmt.executeQuery();
+								while(result.next()) {
+									devolucionid=Integer.parseInt(result.getString(1)); //id
+								}
+							}catch(Exception excepcion){
+								System.out.println(excepcion.getMessage());
+							}
+							sql ="INSERT INTO `detalle_devolucion` (`id_devolucion`, `id_entrada`) VALUES (?, ?);";
+							
+							try {
+								
+								stmt = (PreparedStatement) conexion.prepareStatement(sql);
+								stmt.setInt(1, devolucionid);
+								stmt.setInt(2, entrada.getId());
+								stmt.executeUpdate();
+								conexion.close();
+								JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "+ opDevolucion
+										+ "\nSe le mandara un mail cuando el admin lo apruebe");
+							}catch(Exception excepcion){
+								System.out.println(excepcion.getMessage());
+								
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "Codigo incorrecto");
 						}
-						sql ="INSERT INTO `detalle_devolucion` (`id_devolucion`, `id_entrada`) VALUES (?, ?);";
 						
-						try {
-							
-							stmt = (PreparedStatement) conexion.prepareStatement(sql);
-							stmt.setInt(1, devolucionid);
-							stmt.setInt(2, entrada.getId());
-							stmt.executeUpdate();
-							conexion.close();
-							
-						}catch(Exception excepcion){
-							System.out.println(excepcion.getMessage());
-							
-						}
 					}
 				}
-				JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "+ opDevolucion
-						+ "\nSe le mandara un mail cuando el admin lo apruebe");
+				
 		}catch(Exception excepcion){
 			System.out.println(excepcion.getMessage());
 		}
