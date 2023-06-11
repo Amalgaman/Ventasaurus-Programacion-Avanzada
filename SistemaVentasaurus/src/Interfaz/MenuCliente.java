@@ -2,6 +2,7 @@ package Interfaz;
 
 import java.util.LinkedList;
 
+
 import javax.swing.*;
 
 import com.mysql.jdbc.Connection;
@@ -14,6 +15,7 @@ import Datos.Concierto;
 //import java.sql.Date;
 
 import Datos.Conexion;
+import Datos.Localidad;
 import Datos.SolicitudDevolucion;
 import Negocio.Verifica;
 
@@ -34,25 +36,24 @@ public class MenuCliente {
 	PreparedStatement stmt;
 
 	public static void listaConciertosCliente() {
-		// conectado a la base
-
 		int i = 0;
+		int conc = 0;
 		LinkedList<Concierto> listaTraida = verifica.verificaListaConciertos();
-
+	
 		String[] conciertoLista = new String[listaTraida.size()];
 
 		for (Concierto concierto : listaTraida) {
 			conciertoLista[i] = concierto.getNombre();
 			i++;
 		}
-
+	
 		String opConcierto;
 		ImageIcon icon = new ImageIcon("src/img/tickets.png");
 		ImageIcon iconBanda = new ImageIcon("src/img/dinosrock.png");
 
-		int op;
+		
 		String[] opcClienteConc = { "Comprar entradas", "Volver" };
-
+//revisar mensaje q sale con localidaes
 
 //si la lista esta vacia decir que no hay conciertos
 		if (conciertoLista.length == 0) {
@@ -60,6 +61,7 @@ public class MenuCliente {
 					"No hay conciertos desponibles en este momento\nIntentelo mas tarde y/o comuniquese con un administrador",
 					":(", JOptionPane.DEFAULT_OPTION, new ImageIcon("src/img/troste.jpg"));
 		} else if (conciertoLista.length != 0) {
+//			listaTraida.indexOf(op);
 			opConcierto = (String) JOptionPane.showInputDialog(null // para que se muestre centrado
 					, "Selecciona un Concierto" // Mensaje de la ventana
 					, "Ventasaurus - Conciertos" // Titulo de la ventana
@@ -69,13 +71,19 @@ public class MenuCliente {
 					, conciertoLista[0] // posicion del que va aparecer seleccionado
 			);
 
-//revisar 
-//mostrar desc de la base de datos
 			if (opConcierto != null) {
-				op = JOptionPane.showOptionDialog(null, opConcierto + " \nLa aclamada banda hara su gira de despedida"
-						+ " \na lo grande, realizando un recorrido por sus"
-						+ " \ngrandes exitos ¿Que estas esperando? Saca tu" + " \nentrada." + " \nPrecios desde $1200",
-						"Ventasaurus - Conciertos", 0, 0, iconBanda, opcClienteConc, 0);
+				for (Concierto concierto : listaTraida) {
+					if (opConcierto.equals(concierto.getNombre())) {
+						conc = listaTraida.indexOf(concierto);
+					}
+				}
+				int op=0;
+				op = JOptionPane.showOptionDialog(null, listaTraida.get(conc).getNombre()
+						+" \n"+listaTraida.get(conc).getDescripcion()
+						+" \nFecha: "+listaTraida.get(conc).getFecha()
+						+" \nDireccion: "+listaTraida.get(conc).getDireccion()
+						+" \nCancelado: "+listaTraida.get(conc).isCancelado() 
+		                , "Ventasaurus - Conciertos", 0, 0, iconBanda, opcClienteConc, 0);
 				switch (op) {
 				case 0:
 					CompraryPagar(opConcierto);
@@ -147,19 +155,30 @@ public class MenuCliente {
 // averiguar valor 
 	public static void CompraryPagar(String nombreConcierto) {
 		// falta conectarlo a la base d datos
-		int cantEntradas = 0;
+		Localidad local = new Localidad(0, null, 0, 0, 0);
 
+		int cantEntradas = 0;
+		int precioEntrada=0;
 		ImageIcon icon = new ImageIcon("src/img/ticket.jpg");
+	//	String todasLocalidades="";
+		 //mejorar localidades muy tosco	
 		try {
+			JOptionPane.showMessageDialog(null, "Ingresar el precio de la localidad en la siguiente pestaña (ok para continuar) \n(provisional hasta tener desplegable)");
+			precioEntrada = Integer.parseInt((String) JOptionPane.showInputDialog(null, "Ingresar el precio de la localidad a elegir\nLocalidades disponibles: \n"+local.traerLocalidades()));
 			cantEntradas = Integer
 					.parseInt((String) JOptionPane.showInputDialog(null, "Ingresar cantidad de tickets a comprar",
 							"Ventasaurus", JOptionPane.PLAIN_MESSAGE, icon, null, ""));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocurrio el siguiente error al tratar de comprar las entradas:\n" + e);
-			JOptionPane.showMessageDialog(null, "No pudiste compraste entradas");
+//			JOptionPane.showMessageDialog(null, "No pudiste compraste entradas");
 		}
-		verifica.CantEntradas(cantEntradas, nombreConcierto);
+		
+		
+		
+		if(!verifica.CantEntradas(cantEntradas, nombreConcierto,precioEntrada)){
+		}else {
 		listaConciertosCliente();
 	}
+}
 
 }
