@@ -192,7 +192,7 @@ public class MenuAdmin {
 		
 		//Esto es para salir del menu sin que se rompa
 		if(opSolicitud == null) {
-		  
+			
 		}else if (opSolicitud.equals("Generar solicitud")) {
 			MenuAdmin aux2=new MenuAdmin();
 			aux2.generarSolicitud();
@@ -224,6 +224,7 @@ public class MenuAdmin {
 				}
 			}
 			
+			listaSolicitudes();
 		}
 	}
 	
