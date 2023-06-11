@@ -2,8 +2,9 @@ package Interfaz;
 
 
 import java.util.LinkedList;
-
+import java.sql.Date;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
 
@@ -141,10 +142,11 @@ public class MenuCliente {
 							sql ="INSERT INTO `devolucion` (`estado`, `creacion`, `id_cliente`) VALUES ('pendiente', ?, ?);";
 							
 							try {
+								LocalDate fecha = LocalDate.now();
 								
 								stmt = (PreparedStatement) conexion.prepareStatement(sql);
 								stmt.setInt(2, idcliente);
-								stmt.setString(1,"2022-01-01");
+								stmt.setObject(1,Date.valueOf(fecha));
 								stmt.executeUpdate();
 								
 							}catch(Exception excepcion){
@@ -171,12 +173,12 @@ public class MenuCliente {
 								stmt.setInt(2, entrada.getId());
 								stmt.executeUpdate();
 								conexion.close();
-								JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "+ opDevolucion
-										+ "\nSe le mandara un mail cuando el admin lo apruebe");
 							}catch(Exception excepcion){
 								System.out.println(excepcion.getMessage());
 								
-							}
+							} //Borrar de esta liena al if, para implementar jframe ocn la funcion guardar que esta en la clase solicitud
+							JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "+ opDevolucion
+									+ "\nSe le mandara un mail cuando el admin lo apruebe");
 						} else {
 							JOptionPane.showMessageDialog(null, "Codigo incorrecto");
 						}
