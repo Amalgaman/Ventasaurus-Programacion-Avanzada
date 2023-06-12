@@ -179,7 +179,7 @@ public class SolicitudDevolucion {
 	public LinkedList<SolicitudDevolucion> traerSolicitudes() {
 		LinkedList<SolicitudDevolucion> solicitudes = new LinkedList<SolicitudDevolucion>();
 		//LinkedList<Entrada> entradas = new LinkedList<Entrada>();
-		String sql ="SELECT * FROM `vw_devoluciones`";
+		String sql ="SELECT * FROM vw_devoluciones WHERE id NOT in (SELECT detalle_devolucion.id_devolucion from detalle_devolucion WHERE detalle_devolucion.id_entrada in (SELECT entrada.id from entrada WHERE entrada.c_devolucion<0)) ORDER by creacion DESC;";
 		//  Datos: 
 		String[] datos = new String[11]; 
 		

@@ -244,7 +244,7 @@ public void generarSolicitud() {
 		}catch(Exception excepcion){
 			System.out.println(excepcion.getMessage());
 		}
-		sql ="SELECT entrada.id, c_devolucion, concierto.nombre, localidad.nombre, localidad.precio  FROM `entrada` INNER JOIN localidad on localidad.id = entrada.id_localidad INNER JOIN concierto on localidad.id_concierto= concierto.id WHERE entrada.id_cliente=(SELECT id FROM cliente WHERE dni=?)";
+		sql ="SELECT entrada.id, c_devolucion, concierto.nombre, localidad.nombre, localidad.precio  FROM `entrada` INNER JOIN localidad on localidad.id = entrada.id_localidad INNER JOIN concierto on localidad.id_concierto= concierto.id WHERE entrada.id_cliente=(SELECT id FROM cliente WHERE dni=?) AND c_devolucion >0 AND entrada.id not in (SELECT DISTINCT id_entrada FROM detalle_devolucion WHERE id_devolucion not in (SELECT devolucion.id FROM devolucion WHERE devolucion.estado='Aprobada'));";
 		String[] datos = new String[5]; 
 		LinkedList<Entrada> entradas =new LinkedList<Entrada>();
 		try {

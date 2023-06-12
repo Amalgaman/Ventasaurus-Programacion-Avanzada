@@ -63,7 +63,7 @@ public class MenuControl {
 		
 		LinkedList<Comprobante> entradas = new LinkedList<Comprobante>();
 		
-		String sql="SELECT entrada.id, cliente.dni FROM `entrada` INNER JOIN cliente on cliente.id=entrada.id_cliente WHERE entrada.id NOT in (SELECT DISTINCT id_entrada FROM `detalle_devolucion`) AND entrada.id_localidad in (SELECT localidad.id FROM localidad WHERE id_concierto=?);";
+		String sql="SELECT entrada.id, cliente.dni FROM `entrada` INNER JOIN cliente on cliente.id=entrada.id_cliente WHERE entrada.id NOT in (SELECT DISTINCT id_entrada FROM detalle_devolucion WHERE id_devolucion in (SELECT devolucion.id FROM devolucion WHERE devolucion.estado='Aprobada')) AND entrada.id_localidad in (SELECT localidad.id FROM localidad WHERE id_concierto=?)AND entrada.c_devolucion!=-1;";
 		try {
 		String datos[]= new String[2];
 		stmt = (PreparedStatement) conexion.prepareStatement(sql);
@@ -79,16 +79,17 @@ public class MenuControl {
 		if (dni==null) {
 			listaConciertos();
 		} else {
-			boolean flag=false;
+			int flag=0;
 			for (Comprobante comprobante : entradas) {
 				System.out.println("Cdni: "+comprobante.getDnicliente());
 				if (comprobante.getDnicliente().equals(dni)) {
-					JOptionPane.showMessageDialog(null, "Entrada validada");
-					validarEntrada(dni,id);
-					flag=true;
+					flag++;
 				}
 			}
-			if (!flag) {
+			if (flag>0) { 
+				JOptionPane.showMessageDialog(null, "Entrada validada para "+flag+" personas");
+				validarEntrada(dni,id);
+			}else{
 				JOptionPane.showMessageDialog(null, "No hay entradas para ese dni en este concierto");
 			}
 			control(id);
@@ -103,7 +104,7 @@ public class MenuControl {
 	
 	public void validarEntrada (String dni, int id) {
 		
-		String sql="DELETE FROM `entrada` WHERE id not in (SELECT id_entrada from detalle_devolucion) AND id_cliente IN (SELECT id FROM cliente WHERE dni=?)AND id_localidad in (SELECT localidad.id FROM localidad WHERE id_concierto=?);";
+		String sql="UPDATE `entrada` SET `c_devolucion` = '-1' WHERE id not in (SELECT id_entrada from detalle_devolucion WHERE id_devolucion in (SELECT devolucion.id FROM devolucion WHERE devolucion.estado='Aprobada')) AND id_cliente IN (SELECT id FROM cliente WHERE dni=?)AND id_localidad in (SELECT localidad.id FROM localidad WHERE id_concierto=?);";
 		
 		try {
 			stmt = (PreparedStatement) conexion.prepareStatement(sql);
