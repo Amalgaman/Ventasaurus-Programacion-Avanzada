@@ -3,6 +3,7 @@ package Interfaz;
 import java.util.LinkedList;
 
 
+
 import javax.swing.*;
 
 import com.mysql.jdbc.Connection;
@@ -51,7 +52,6 @@ public class MenuCliente {
 		ImageIcon icon = new ImageIcon("src/img/tickets.png");
 		ImageIcon iconBanda = new ImageIcon("src/img/dinosrock.png");
 
-		
 		String[] opcClienteConc = { "Comprar entradas", "Volver" };
 //revisar mensaje q sale con localidaes
 
@@ -77,16 +77,26 @@ public class MenuCliente {
 						conc = listaTraida.indexOf(concierto);
 					}
 				}
+			
 				int op=0;
-				op = JOptionPane.showOptionDialog(null, listaTraida.get(conc).getNombre()
-						+" \n"+listaTraida.get(conc).getDescripcion()
-						+" \nFecha: "+listaTraida.get(conc).getFecha()
-						+" \nDireccion: "+listaTraida.get(conc).getDireccion()
-						+" \nCancelado: "+listaTraida.get(conc).isCancelado() 
+				String mensaje = listaTraida.get(conc).getNombre()
+	                    +" \n"+listaTraida.get(conc).getDescripcion()
+	                    +" \nFecha: "+listaTraida.get(conc).getFecha()
+	                    +" \nDireccion: "+listaTraida.get(conc).getDireccion()
+	                    +" \nCancelado: "+listaTraida.get(conc).isCancelado()
+	                    +" \nLocalidades: ";
+
+	            for (Localidad localidad : listaTraida.get(conc).getLocalidades()) {
+	                mensaje = mensaje+" \n"+localidad;
+	            }
+
+	            
+				op = JOptionPane.showOptionDialog(null, mensaje
 		                , "Ventasaurus - Conciertos", 0, 0, iconBanda, opcClienteConc, 0);
+	            
 				switch (op) {
 				case 0:
-					CompraryPagar(opConcierto);
+					CompraryPagar(listaTraida.get(conc));
 					break;
 				case 1:
 					listaConciertosCliente();
@@ -152,33 +162,56 @@ public class MenuCliente {
 
 	}
 
-// averiguar valor 
-	public static void CompraryPagar(String nombreConcierto) {
-		// falta conectarlo a la base d datos
-		Localidad local = new Localidad(0, null, 0, 0, 0);
+
+	public static void CompraryPagar(Concierto concierto) {
 
 		int cantEntradas = 0;
 		int precioEntrada=0;
 		ImageIcon icon = new ImageIcon("src/img/ticket.jpg");
-	//	String todasLocalidades="";
-		 //mejorar localidades muy tosco	
+
 		try {
-			JOptionPane.showMessageDialog(null, "Ingresar el precio de la localidad en la siguiente pestaña (ok para continuar) \n(provisional hasta tener desplegable)");
-			precioEntrada = Integer.parseInt((String) JOptionPane.showInputDialog(null, "Ingresar el precio de la localidad a elegir\nLocalidades disponibles: \n"+local.traerLocalidades()));
-			cantEntradas = Integer
+			String[] opLocalidad = new String[concierto.getLocalidades().size()];
+
+	      int  i=0;
+	        //Para completar array con los String de las localidades
+	        for (Localidad loc : concierto.getLocalidades()) {
+	            opLocalidad[i] = loc.getNombre()+" - $"+loc.getPrecio()+" - "+loc.getCuposDisponibles()+" disponibles";
+	            i++;
+	        }
+	        
+	        //Select de localidades
+	   String opConcierto = (String) JOptionPane.showInputDialog(
+	                null // para que se muestre centrado
+	                ,"Selecciona un Concierto" // Mensaje de la ventana
+	                ,"Ventasaurus" // Titulo de la ventana
+	                ,JOptionPane.QUESTION_MESSAGE // Icono
+	                ,null //null para icono defecto de la ventana
+	                ,opLocalidad // el objeto
+	                ,opLocalidad[0] // posicion del que va aparecer seleccionado
+	                );
+	        //Para buscar la localidad seleccionada desde el String
+//	        int cantEntradas = Integer.parseInt(JOptionPane.showInputDialog("Indique la cantidad de estradas que quiere"));
+	        double precioTotal = 0;	
+	        cantEntradas = Integer
 					.parseInt((String) JOptionPane.showInputDialog(null, "Ingresar cantidad de tickets a comprar",
 							"Ventasaurus", JOptionPane.PLAIN_MESSAGE, icon, null, ""));
+	       
+	        for (Localidad localidad : concierto.getLocalidades()) {
+	            if (opConcierto.equals(localidad.toString())){
+	                 precioTotal = localidad.getPrecio() * cantEntradas;
+	                
+	            }
+	        }
+            
+            if(!verifica.CantEntradas(cantEntradas, concierto,precioTotal,precioTotal/cantEntradas)){
+            }else {
+            	listaConciertosCliente();
+            }
+		
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocurrio el siguiente error al tratar de comprar las entradas:\n" + e);
-//			JOptionPane.showMessageDialog(null, "No pudiste compraste entradas");
+
 		}
-		
-		
-		
-		if(!verifica.CantEntradas(cantEntradas, nombreConcierto,precioEntrada)){
-		}else {
-		listaConciertosCliente();
-	}
 }
 
 }

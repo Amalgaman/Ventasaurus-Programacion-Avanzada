@@ -2,6 +2,7 @@ package Negocio;
 
 import java.util.LinkedList;
 
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -45,15 +46,15 @@ public class Verifica {
 		}
 	}
 
-	public boolean CantEntradas(int cantEntradas, String nombreConcierto, int precioEntrada) {
+	public boolean CantEntradas(int cantEntradas, Concierto Concierto, double precioEntrada,double precioUnitario) {
 		ImageIcon icon = new ImageIcon("src/img/pago.png");
-		if (cantEntradas >= 1 && precioEntrada == 35000 || cantEntradas >= 1 && precioEntrada == 20000
-				|| cantEntradas >= 1 && precioEntrada == 50000) {
+		if (cantEntradas >= 1 ) {
 			JOptionPane.showMessageDialog(null,
-					"Compraste " + cantEntradas + " entrada/s para : " + nombreConcierto
-							+ "\nPrecio final de la compra : $'" + precioEntrada * cantEntradas + "'",
+					"Compraste " + cantEntradas + " entrada/s para : " + Concierto.getNombre()
+							+ "\nPrecio de la entrada : $ " + precioUnitario
+							+ "\nPrecio final de la compra : $ " + precioEntrada ,
 					"Gracias por comprar en Ventasaurus", 0, icon);
-			return true;
+		return true;
 		} else {
 			JOptionPane.showMessageDialog(null, "No compraste entradas");
 			return false;
