@@ -11,6 +11,7 @@ public class MenuPrincipal {
 	
 	public static void principal() {
 		MenuCliente cliente=new MenuCliente();
+		MenuControl control=new MenuControl();
 		String[] opciones = {"Ver conciertos","Solicitar Devolucion","Ingreso Empleado","Salir"};
 		int eleccion;
 		boolean cerrar = false;
@@ -32,7 +33,7 @@ public class MenuPrincipal {
 				MenuAdmin.principal();
 				break;
 			case "control":
-				MenuControl.principal();
+				control.principal();
 				break;
 			case "incorrecto":
 				JOptionPane.showMessageDialog(null, "DNI o Contraseña incorrectos");

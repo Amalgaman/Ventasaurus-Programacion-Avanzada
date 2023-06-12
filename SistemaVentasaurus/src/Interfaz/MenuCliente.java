@@ -119,7 +119,7 @@ public class MenuCliente {
 				entradas.add(new Entrada(Integer.parseInt(datos[0]),datos[3],datos[4],datos[2],datos[1]));
 			}
 				//Ventana.main(entradas);
-				String[] opcionesDev= new String[entradas.size()+1];
+				String[] opcionesDev= new String[entradas.size()];
 				int i=0;
 				for (Entrada entrada : entradas) {
 					opcionesDev[i]=entrada.toString();
