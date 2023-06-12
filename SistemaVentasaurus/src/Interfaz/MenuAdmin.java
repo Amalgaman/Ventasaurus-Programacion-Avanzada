@@ -54,6 +54,7 @@ public class MenuAdmin {
 			i++;
 		}
 		
+		
 		opConcierto = (String) JOptionPane.showInputDialog(
 				null // para que se muestre centrado
 				,"Selecciona un Concierto" // Mensaje de la ventana
@@ -93,17 +94,29 @@ public class MenuAdmin {
 		
 			switch(op) {
 			case 0:
-				altaConcierto();
+				modificarConcierto(listaTraida.get(cElegido));
 				break;
 			case 1:
-				JOptionPane.showMessageDialog(null, "Concierto cancelado con exito");
+				int res0 = JOptionPane.showConfirmDialog(null, "¿Esta seguro que quiere cancelar el concierto?");
+				if(res0 == 0) {
+					if(verifica.cancelarConcierto(listaTraida.get(cElegido).getId())){
+					JOptionPane.showMessageDialog(null, "Concierto cancelado con exito");
+					}else {
+						JOptionPane.showMessageDialog(null, "Hubo un error al intentar cancelar el concierto, intentelo mas tarde");
+					}
+				}
+				
 				break;
 			case 2:
-				if(verifica.eliminarConcierto(listaTraida.get(cElegido).getId())) {
+				JOptionPane.showMessageDialog(null, "Funcion Eliminar aun en desarrollo"); 
+				/*int res1 = JOptionPane.showConfirmDialog(null, "¿Esta seguro que quiere eliminar permanentemente el concierto?");
+				if(res1 == 0) {
+					if(verifica.eliminarConcierto(listaTraida.get(cElegido).getId())) {
 					JOptionPane.showMessageDialog(null, "Concierto eliminado con exito");
-				}else {
-					JOptionPane.showMessageDialog(null, "No se pudo eliminar el concierto");
-				}
+					}else {
+						JOptionPane.showMessageDialog(null, "Hubo un error al intentar eliminar el concierto, intentelo mas tarde");
+					}
+				}*/
 				break;
 			default:
 				break;	
@@ -145,6 +158,33 @@ public class MenuAdmin {
 		
 		}else {
 			JOptionPane.showMessageDialog(null, "El alta del concierto no pudo concretarse");
+		}
+		
+	}
+	
+	public static void modificarConcierto(Concierto concierto){
+		//En el futuro podriamos armar un Formulario con JFrame, por ahora son JOptionPanel
+		
+		String nombre = JOptionPane.showInputDialog("Introduzca nombre del concierto"
+				+ " \nActual: "
+				+ "  \n"+concierto.getNombre());
+		String descripcion = JOptionPane.showInputDialog("Introduzca descripcion"
+				+ " \nActual: "
+				+ "  \n"+concierto.getDescripcion());
+		String direccion = JOptionPane.showInputDialog("Introduzca direccion del concierto"
+				+ " \nActual: "
+				+ "  \n"+concierto.getDireccion());
+		String fecha = JOptionPane.showInputDialog("Introduzca fecha del concierto"
+				+ " \nActual: "
+				+ "  \n"+concierto.getFecha());
+		
+		//Validamos la informacion ingresada.
+		if(verifica.validarModificacionConcierto(nombre, descripcion, direccion, fecha ,concierto.getId())) {
+			
+			JOptionPane.showMessageDialog(null, "El concierto se modifico con exito");
+
+		}else {
+			JOptionPane.showMessageDialog(null, "Error al intentar modificar el concierto no pudo concretarse");
 		}
 		
 	}
