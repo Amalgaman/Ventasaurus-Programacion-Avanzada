@@ -1,12 +1,11 @@
 package Interfaz;
 
-import javax.swing.JOptionPane;
-
 public class Main {
 
 	public static void main(String[] args) {
 		
-		MenuPrincipal.principal();
+		JMenuPrincipal.main(args);
+		//MenuPrincipal.principal();
 		
 	}
 
