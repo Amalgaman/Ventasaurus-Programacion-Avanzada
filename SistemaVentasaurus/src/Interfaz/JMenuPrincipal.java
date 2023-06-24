@@ -56,6 +56,7 @@ public class JMenuPrincipal extends JFrame {
 				dispose();
 			}
 		});
+		
 		verConciertos.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		verConciertos.setBounds(458, 82, 226, 43);
 		contentPane.add(verConciertos);
