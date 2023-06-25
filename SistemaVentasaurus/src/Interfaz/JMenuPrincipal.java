@@ -27,6 +27,7 @@ public class JMenuPrincipal extends JFrame {
 			public void run() {
 				try {
 					JMenuPrincipal frame = new JMenuPrincipal();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,6 +53,7 @@ public class JMenuPrincipal extends JFrame {
 		verConciertos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JMenuCliente nuevo = new JMenuCliente();
+				nuevo.setLocationRelativeTo(null);
 				nuevo.setVisible(true);
 				dispose();
 			}

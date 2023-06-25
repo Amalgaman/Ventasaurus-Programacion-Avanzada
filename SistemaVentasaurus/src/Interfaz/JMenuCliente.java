@@ -18,6 +18,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -29,10 +31,14 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import java.awt.Color;
+import java.awt.Dimension;
+import javax.swing.JTextField;
+import javax.swing.JCheckBox;
 
 public class JMenuCliente extends JFrame {
 
 	private JPanel contentPane;
+	private JTextField txtInfoDelConcierto;
 
 	/**
 	 * Launch the application.
@@ -42,6 +48,7 @@ public class JMenuCliente extends JFrame {
 			public void run() {
 				try {
 					JMenuCliente frame = new JMenuCliente();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,20 +73,16 @@ public class JMenuCliente extends JFrame {
 		JLabel imgConcierto = new JLabel();
 		 ImageIcon icon = new ImageIcon("src/img/dinosrock.png");
 		 imgConcierto.setIcon(icon);
-		imgConcierto.setBounds(33, 60, 454, 391);
+		imgConcierto.setBounds(10, 97, 383, 319);
 		contentPane.add(imgConcierto);
 		
 		JTextArea dni = new JTextArea();
-		dni.setBounds(497, 42, 123, 16);
+		dni.setBounds(222, 68, 123, 16);
 		contentPane.add(dni);
-//		int z = 0;
-//		 String dniText = dni.getText();
-//		 String acum="";
-//		 char digito = 0;
-		// Mostrar un mensaje emergente y cerrarlo automáticamente después de 3 segundos
-		
+
 		
 		JButton comprarPagar = new JButton("Continuar");
+		comprarPagar.setEnabled(false);
 		comprarPagar.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		comprarPagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -100,6 +103,7 @@ public class JMenuCliente extends JFrame {
 			                mostrarMensajeError("El DNI no puede contener lo siguiente '" + letra+"'");
 			            } else {
 			                JPagar nuevo = new JPagar();
+			                nuevo.setLocationRelativeTo(null);
 			                nuevo.setVisible(true);
 			                dispose();
 			            }
@@ -138,6 +142,8 @@ public class JMenuCliente extends JFrame {
 		contentPane.add(comprarPagar);
 		
 		
+    
+		
 		
 		JButton volverMenuPrincipal = new JButton("Volver atras");
 		volverMenuPrincipal.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
@@ -146,18 +152,60 @@ public class JMenuCliente extends JFrame {
 		volverMenuPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JMenuPrincipal nuevo = new JMenuPrincipal();
+				nuevo.setLocationRelativeTo(null);
 				nuevo.setVisible(true);
 				dispose();
 			}
 		});
 		
+		JTextArea infoConciertos = new JTextArea();
+		infoConciertos.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
+		infoConciertos.setEditable(false);
+		infoConciertos.setBounds(417, 181, 257, 219);
+        infoConciertos.setLineWrap(true); // Ajuste de línea activado
+        infoConciertos.setWrapStyleWord(true); // Ajuste de palabra activado
+        infoConciertos.setPreferredSize(new Dimension(221, 206)); // Ajusta la altura del JTextArea
+        contentPane.add(infoConciertos);
+
+		
 		JComboBox listaConciertos = new JComboBox();
-		listaConciertos.setBounds(453, 111, 221, 23);
+		listaConciertos.setBounds(417, 111, 257, 23);
 		contentPane.add(listaConciertos);
 		   java.sql.Connection conn = null;
 	        Statement stmt = null;
 	        ResultSet rs = null;
-	        
+	        listaConciertos.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                String conciertoSeleccionado = (String) listaConciertos.getSelectedItem();
+
+	                if (conciertoSeleccionado != null) {
+	                    // Realizar la consulta a la base de datos para obtener la información del concierto seleccionado
+	                    try (java.sql.Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
+	                            Statement stmt = conn.createStatement()) {
+
+	                        String consulta = "SELECT * FROM concierto WHERE nombre = '" + conciertoSeleccionado + "'";
+	                      ResultSet rs = stmt.executeQuery(consulta);
+	                       
+
+	                        if (rs.next()) {
+	                            String nombre = rs.getString("nombre");
+	                            String descripcion= rs.getString("descripcion");
+	                            String direccion = rs.getString("direccion");
+	                            String fecha= rs.getString("fecha");
+
+	                            
+	                            // Mostrar la información del concierto en el JTextArea
+	                            infoConciertos.setText("Nombre: " + nombre + "\nDescripcion: " + descripcion +"\nFecha: " + fecha + "\nDireccion: " + direccion);
+	                        } else {
+	                            // No se encontró información del concierto
+	                            infoConciertos.setText("No se encontró información del concierto");
+	                        }
+	                    } catch (Exception ex) {
+	                        JOptionPane.showMessageDialog(null, "Error al obtener información del concierto:\n" + ex.getMessage());
+	                    }
+	                }
+	            }
+	        });
 	        try {
 	            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
 	            
@@ -196,16 +244,62 @@ public class JMenuCliente extends JFrame {
 		txtrIngreseSuDni.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		txtrIngreseSuDni.setEditable(false);
 		txtrIngreseSuDni.setBackground(Color.LIGHT_GRAY);
-		txtrIngreseSuDni.setBounds(509, 15, 102, 23);
+		txtrIngreseSuDni.setBounds(116, 63, 102, 23);
 		contentPane.add(txtrIngreseSuDni);
 		
 		JTextArea txtrConciertosDisponibles = new JTextArea();
-		txtrConciertosDisponibles.setText("Conciertos disponibles");
+		txtrConciertosDisponibles.setText("Lista de conciertos ");
 		txtrConciertosDisponibles.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		txtrConciertosDisponibles.setEditable(false);
 		txtrConciertosDisponibles.setBackground(Color.LIGHT_GRAY);
-		txtrConciertosDisponibles.setBounds(484, 79, 157, 25);
+		txtrConciertosDisponibles.setBounds(469, 79, 141, 21);
 		contentPane.add(txtrConciertosDisponibles);
 		
+		txtInfoDelConcierto = new JTextField();
+		txtInfoDelConcierto.setText("Informacion del concierto seleccionado");
+		txtInfoDelConcierto.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
+		txtInfoDelConcierto.setEditable(false);
+		txtInfoDelConcierto.setBounds(417, 161, 257, 23);
+		contentPane.add(txtInfoDelConcierto);
+		txtInfoDelConcierto.setColumns(10);
+		
+		
+		JCheckBox soloDisponibles = new JCheckBox("Ver solo los conciertos disponibles");
+		soloDisponibles.setFont(new Font("Comic Sans MS", Font.BOLD, 11));
+		soloDisponibles.setBounds(449, 38, 207, 34);
+		contentPane.add(soloDisponibles);
+	    soloDisponibles.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	 // Método para actualizar la lista de conciertos según el filtro de disponibilidad
+                
+                    String consulta = "SELECT * FROM concierto";
+                    if (soloDisponibles.isSelected()) {
+                        LocalDate fechaActual = LocalDate.now();
+                        String fechaActualFormato = fechaActual.format(DateTimeFormatter.ISO_LOCAL_DATE);
+                        consulta += " WHERE fecha >= '" + fechaActualFormato + "'";
+                        comprarPagar.setEnabled(true); // Mostrar el botón "Continuar"
+                    } else {
+                        comprarPagar.setEnabled(false); // Ocultar el botón "Continuar"
+                    }
+
+                    try (java.sql.Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
+                            Statement stmt = conn.createStatement();
+                            ResultSet rs = stmt.executeQuery(consulta)) {
+
+                        listaConciertos.removeAllItems();
+                        while (rs.next()) {
+                            String nombre = rs.getString("nombre");
+                            listaConciertos.addItem(nombre);
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + ex.getMessage());
+                    }
+                
+
+            }
+        });
+		
+		
 	}
+	  
 }

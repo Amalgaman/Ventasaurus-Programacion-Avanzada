@@ -43,9 +43,11 @@ public class JPagar extends JFrame {
 			public void run() {
 				try {
 					JPagar frame = new JPagar();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					JMenuPrincipal nuevo = new JMenuPrincipal();
+					nuevo.setLocationRelativeTo(null);
 					nuevo.setVisible(true);
 
 				}
@@ -90,14 +92,9 @@ public class JPagar extends JFrame {
 				lugaes.addItem(nombre);
 			}
 
-			// Utilizar el JComboBox en tu interfaz gráfica
-			// ...
-
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error \n" + e);
-//	        	  JMenuPrincipal nuevo  = new JMenuPrincipal();
-//					nuevo.setVisible(true);
-//					dispose();
+
 		}
 
 		cantEntr = new JTextField();
@@ -135,8 +132,32 @@ public class JPagar extends JFrame {
 					for (int i = 0; i < cantEntr.getText().length(); i++) {
 
 						if (!Character.isDigit(cantEntr.getText().charAt(i))) {
-//							revisar caracteres bug
-//							JOptionPane.showMessageDialog(null, "El caracter ´" + i + "´ no es valido");
+							JDialog dialogo = new JDialog();
+							dialogo.setUndecorated(true); // Quitar decoración del diálogo
+							dialogo.setSize(300, 100);
+							dialogo.setLocationRelativeTo(null); // Centrar en la pantalla
+
+							// Crear el JLabel con el mensaje
+							JLabel etiqueta = new JLabel("Lo siguiente no es valido : " + i);
+							etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+
+							// Agregar la etiqueta al diálogo
+							dialogo.getContentPane().add(etiqueta);
+
+							// Configurar el temporizador para cerrar automáticamente el diálogo 
+							int duracionMilisegundos = 4000; // 4 segundos
+							Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									dialogo.dispose(); // Cerrar el diálogo
+									volverAlMenuPrincipal(); //Volver al menu desp de cerrar
+								}
+							});
+							temporizador.setRepeats(false); // No repetir el temporizador
+							temporizador.start();
+
+							// Mostrar el diálogo
+							dialogo.setVisible(true);
+							
 						} else if (numero >= 1 && numero <= 10) {
 							// Crear y configurar el JDialog personalizado
 							JDialog dialogo = new JDialog();
@@ -165,7 +186,6 @@ public class JPagar extends JFrame {
 							// Mostrar el diálogo
 							dialogo.setVisible(true);
 
-//							JOptionPane.showMessageDialog(null, "Compraste " + cantEntr.getText() + " entradas");
 			
 							
 						} else {
@@ -175,15 +195,14 @@ public class JPagar extends JFrame {
 //							dialogo.setLocationRelativeTo(null); // Centrar en la pantalla
 
 							// Crear el JLabel con el mensaje
-							JLabel etiqueta = new JLabel("Caracter '" + cantEntr.getText() + "' no es valido");
+							JLabel etiqueta = new JLabel("'" + cantEntr.getText() + "' no es valido");
 							etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 							dialogo.setLocationRelativeTo(null); // Centrar en la pantalla
 
 							// Agregar la etiqueta al diálogo
 							dialogo.getContentPane().add(etiqueta);
 
-							// Configurar el temporizador para cerrar automáticamente el diálogo después de
-							// 3 segundos
+							// Configurar el temporizador para cerrar automáticamente el diálogo
 							int duracionMilisegundos = 4000; // 4 segundos
 							Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
@@ -195,13 +214,14 @@ public class JPagar extends JFrame {
 
 							// Mostrar el diálogo
 							dialogo.setVisible(true);
-//							JOptionPane.showMessageDialog(null, "Numero no valido");
+
 						}
 					}
 
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "Error \n" + e2);
 					 JMenuPrincipal nuevo  = new JMenuPrincipal();
+					 nuevo.setLocationRelativeTo(null);
 						nuevo.setVisible(true);
 						dispose();
 				}
@@ -218,6 +238,7 @@ public class JPagar extends JFrame {
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JMenuPrincipal nuevo = new JMenuPrincipal();
+				nuevo.setLocationRelativeTo(null);
 				nuevo.setVisible(true);
 				dispose();
 			}
