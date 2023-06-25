@@ -14,6 +14,7 @@ import com.mysql.jdbc.PreparedStatement;
 import Datos.Conexion;
 
 import Datos.Entrada;
+import Jframes.DevolverEntradas;
 
 public class MenuCliente {
 
@@ -125,7 +126,7 @@ public class MenuCliente {
 					opcionesDev[i]=entrada.toString();
 					i++;
 				}
-				
+				DevolverEntradas panel= new DevolverEntradas(dni);
 				String opDevolucion = (String) JOptionPane.showInputDialog(null // para que se muestre centrado
 						, "Selecciona una entrada para generar una devolucion" // Mensaje de la ventana
 						, "Ventasaurus - Devoluciones" // Titulo de la ventana

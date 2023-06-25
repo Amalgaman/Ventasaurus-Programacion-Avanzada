@@ -2,6 +2,7 @@ package Jframes;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -35,6 +36,8 @@ import Jframes.ModernScrollBarUI;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class DevolverEntradas extends JFrame {
 	Conexion con = new Conexion();
@@ -42,7 +45,7 @@ public class DevolverEntradas extends JFrame {
 	Connection conexion = (Connection) con.conectar();
 	
 	PreparedStatement stmt;
-    public DevolverEntradas(int id) {
+    public DevolverEntradas(int dni) {
         setTitle("Selección de entradas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
@@ -58,7 +61,7 @@ public class DevolverEntradas extends JFrame {
 		try {
 			
 			stmt = (PreparedStatement) conexion.prepareStatement(sql);
-			stmt.setInt(1, id);
+			stmt.setInt(1, dni);
 			ResultSet result = stmt.executeQuery();
 			while(result.next()) {
 				datos[0]= result.getString(1); //id
@@ -86,6 +89,7 @@ public class DevolverEntradas extends JFrame {
             //checkBox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             listPanel.add(checkBox);
         }
+        
 
         JScrollPane scrollPane = new JScrollPane(listPanel);
         scrollPane.getVerticalScrollBar().setUI(new ModernScrollBarUI());
@@ -93,7 +97,6 @@ public class DevolverEntradas extends JFrame {
         scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         panel.add(scrollPane, BorderLayout.CENTER);
-
         // Crear un panel para los botones
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(255, 255, 255));
@@ -101,7 +104,28 @@ public class DevolverEntradas extends JFrame {
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
         
+        LinkedList<Integer> ids= new LinkedList<Integer>();
+        
         JButton btnNewButton = new JButton("New button");
+        btnNewButton.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		Component[] componentes = listPanel.getComponents();
+                for (Component componente : componentes) {
+                    if (componente instanceof JCheckBox) {
+                        JCheckBox checkBox = (JCheckBox) componente;
+                        if (checkBox.isSelected()) {
+                            // Realiza la lógica correspondiente para el checkbox seleccionado
+                            System.out.println("Checkbox seleccionado: " + checkBox.getText());
+                            ids.add(Integer.parseInt(Character.toString(checkBox.getText().charAt(0))));
+                            System.out.println(ids);
+                        }
+                    }
+                }
+                dispose();
+                Devolviendo.main(ids);
+        	}
+        });
         buttonPanel.add(btnNewButton);
         
         JButton btnNewButton_1 = new JButton("New button");
@@ -126,6 +150,8 @@ public class DevolverEntradas extends JFrame {
         panel_1.add(lblNewLabel);
         setVisible(true);
     }
+    
+    
 
     public static void main(String[] args) {
     	DevolverEntradas frame = new DevolverEntradas(2);
