@@ -96,6 +96,16 @@ public class JPagar extends JFrame {
 			JOptionPane.showMessageDialog(null, "Error \n" + e);
 
 		}
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
+		btnCancelar.setBounds(399, 292, 90, 23);
+		contentPane.add(btnCancelar);
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				volverAlMenuPrincipal();
+			}
+		});
 
 		cantEntr = new JTextField();
 		cantEntr.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
@@ -166,9 +176,13 @@ public class JPagar extends JFrame {
 							dialogo.setLocationRelativeTo(null); // Centrar en la pantalla
 
 							// Crear el JLabel con el mensaje
-							JLabel etiqueta = new JLabel("Compraste " + cantEntr.getText() + " entradas para x banda");
+							JLabel etiqueta = new JLabel("Compraste " + cantEntr.getText() + " entradas para :");
 							etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 
+							//Sacar botones para evitar errores
+							btnCancelar.setEnabled(false);
+							continuar.setEnabled(false);
+							
 							// Agregar la etiqueta al diálogo
 							dialogo.getContentPane().add(etiqueta);
 
@@ -232,18 +246,7 @@ public class JPagar extends JFrame {
 		
 		
 		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
-		btnCancelar.setBounds(399, 292, 90, 23);
-		contentPane.add(btnCancelar);
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JMenuPrincipal nuevo = new JMenuPrincipal();
-				nuevo.setLocationRelativeTo(null);
-				nuevo.setVisible(true);
-				dispose();
-			}
-		});
+		
 
 		DefaultTableModel modeloTabla = new DefaultTableModel();
 		infoLugares.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
@@ -315,6 +318,7 @@ public class JPagar extends JFrame {
 	}
 	public void volverAlMenuPrincipal(){
 		JMenuPrincipal nuevo = new JMenuPrincipal();
+		nuevo.setLocationRelativeTo(null);
 		nuevo.setVisible(true);
 		dispose();
 	}

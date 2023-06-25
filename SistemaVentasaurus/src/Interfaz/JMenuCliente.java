@@ -141,21 +141,14 @@ public class JMenuCliente extends JFrame {
 		
 		comprarPagar.setBounds(417, 428, 123, 23);
 		contentPane.add(comprarPagar);
-		
-		
-    
-		
-		
+			
 		JButton volverMenuPrincipal = new JButton("Volver atras");
 		volverMenuPrincipal.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		volverMenuPrincipal.setBounds(551, 428, 123, 23);
 		contentPane.add(volverMenuPrincipal);
 		volverMenuPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JMenuPrincipal nuevo = new JMenuPrincipal();
-				nuevo.setLocationRelativeTo(null);
-				nuevo.setVisible(true);
-				dispose();
+				volverAlMenuPrincipal();
 			}
 		});
 		
@@ -207,6 +200,7 @@ public class JMenuCliente extends JFrame {
 	                }
 	            }
 	        });
+	        
 	        try {
 	            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
 	            
@@ -222,9 +216,7 @@ public class JMenuCliente extends JFrame {
 	                String nombre = rs.getString("nombre");
 	                listaConciertos.addItem(nombre);
 	            }
-	            
-	            // Utilizar el JComboBox en tu interfaz gráfica
-	            // ...
+	           
 	            
 	        } catch (Exception e) {
 	        	  JOptionPane.showMessageDialog(null, "Error \n"+e);
@@ -293,7 +285,8 @@ public class JMenuCliente extends JFrame {
                             listaConciertos.addItem(nombre);
                         }
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + ex.getMessage());
+                    	comprarPagar.setEnabled(false);
+                        JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + ex.getMessage()+ "\n\n Comuniquese con un administrador e intentelo más tarde");
                     }
                 
 
@@ -302,5 +295,10 @@ public class JMenuCliente extends JFrame {
 		
 		
 	}
-	  
+	public void volverAlMenuPrincipal(){
+		JMenuPrincipal nuevo = new JMenuPrincipal();
+		nuevo.setLocationRelativeTo(null);
+		nuevo.setVisible(true);
+		dispose();
+	}
 }
