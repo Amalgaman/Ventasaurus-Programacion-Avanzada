@@ -60,11 +60,11 @@ public class JPagar extends JFrame {
 	 */
 	public JPagar() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 515, 365);
+		setUndecorated(true);
+		setBounds(100, 100, 500, 340);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
@@ -104,11 +104,11 @@ public class JPagar extends JFrame {
 		cantEntr.setColumns(10);
 
 		JTextArea txtrElegirPlatea = new JTextArea();
-		txtrElegirPlatea.setText("Elegir platea");
+		txtrElegirPlatea.setText("Elegir ubicación");
 		txtrElegirPlatea.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 		txtrElegirPlatea.setEditable(false);
 		txtrElegirPlatea.setBackground(Color.LIGHT_GRAY);
-		txtrElegirPlatea.setBounds(76, 20, 104, 36);
+		txtrElegirPlatea.setBounds(59, 24, 124, 36);
 		contentPane.add(txtrElegirPlatea);
 
 		JTextArea txtrIngresarCantidadDe = new JTextArea();
@@ -176,6 +176,7 @@ public class JPagar extends JFrame {
 							int duracionMilisegundos = 4000; // 4 segundos
 							Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
+									
 									dialogo.dispose(); // Cerrar el diálogo
 									volverAlMenuPrincipal(); //Volver al menu desp de cerrar
 								}

@@ -62,7 +62,8 @@ public class JMenuCliente extends JFrame {
 	 */
 	public JMenuCliente() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 525);
+		setUndecorated(true);
+		setBounds(100, 100, 700, 460);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -232,11 +233,11 @@ public class JMenuCliente extends JFrame {
 	    
 		
 		JTextArea txtrEli = new JTextArea();
-		txtrEli.setText("Elegir concierto e ingresar dni para sacar un ticket");
+		txtrEli.setText("Debe ingresar dni para sacar tickets del concierto que elija");
 		txtrEli.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 		txtrEli.setEditable(false);
 		txtrEli.setBackground(Color.LIGHT_GRAY);
-		txtrEli.setBounds(30, 6, 413, 43);
+		txtrEli.setBounds(116, 9, 469, 35);
 		contentPane.add(txtrEli);
 		
 		JTextArea txtrIngreseSuDni = new JTextArea();
@@ -252,7 +253,7 @@ public class JMenuCliente extends JFrame {
 		txtrConciertosDisponibles.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		txtrConciertosDisponibles.setEditable(false);
 		txtrConciertosDisponibles.setBackground(Color.LIGHT_GRAY);
-		txtrConciertosDisponibles.setBounds(469, 79, 141, 21);
+		txtrConciertosDisponibles.setBounds(467, 86, 141, 21);
 		contentPane.add(txtrConciertosDisponibles);
 		
 		txtInfoDelConcierto = new JTextField();
@@ -266,7 +267,7 @@ public class JMenuCliente extends JFrame {
 		
 		JCheckBox soloDisponibles = new JCheckBox("Ver solo los conciertos disponibles");
 		soloDisponibles.setFont(new Font("Comic Sans MS", Font.BOLD, 11));
-		soloDisponibles.setBounds(449, 38, 207, 34);
+		soloDisponibles.setBounds(434, 44, 207, 34);
 		contentPane.add(soloDisponibles);
 	    soloDisponibles.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
