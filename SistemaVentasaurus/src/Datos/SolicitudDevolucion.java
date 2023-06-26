@@ -192,7 +192,7 @@ public class SolicitudDevolucion {
 				datos[2]= result.getString(3); //creacion
 				datos[3]= result.getString(4); //id cliente
 				datos[4]= result.getString(5); //dni
-				datos[5]= result.getString(6); //total
+				datos[5]= result.getString(7); //total
 				
 				//sql ="SELECT entrada.id 'id_entrada', localidad.precio 'precio' FROM detalle_devolucion INNER JOIN devolucion on devolucion.id=detalle_devolucion.id_devolucion INNER JOIN entrada on entrada.id=detalle_devolucion.id_entrada INNER JOIN localidad on localidad.id=entrada.id_localidad WHERE devolucion.id='?'";
 				LinkedList<Entrada> entradas = new LinkedList<Entrada>();
