@@ -5,6 +5,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+
+import Datos.Conexion;
+import Datos.Entrada;
+
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.util.LinkedList;
@@ -17,31 +24,35 @@ import java.awt.Font;
 import javax.swing.JTextArea;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 
 public class Devolviendo extends JFrame {
-
+	Conexion con = new Conexion();
+	
+	Connection conexion = (Connection) con.conectar();
+	
+	PreparedStatement stmt;
 	private JPanel contentPane;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(LinkedList<Integer> id) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+
+			public static void run(LinkedList<Entrada> ids,int dni) {
 				try {
-					Devolviendo frame = new Devolviendo(id);
+					Devolviendo frame = new Devolviendo(ids,dni);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
-		});
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Devolviendo(LinkedList<Integer> id) {
+	public Devolviendo(LinkedList<Entrada>  ids,int dni) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setLocationRelativeTo(null);
@@ -62,10 +73,67 @@ public class Devolviendo extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblNewLabel);
 		
+		
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(10, 224, 416, 29);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		String sql="SELECT id FROM cliente where dni=?";
+		int clienteid=-5;
+		try {
+			stmt = (PreparedStatement) conexion.prepareStatement(sql);
+			stmt.setInt(1, dni);
+			ResultSet result = stmt.executeQuery();
+			while(result.next()) {
+				clienteid=Integer.parseInt(result.getString(1)); //id
+			}
+		}catch(Exception excepcion){
+			System.out.println("error 1 "+excepcion.getMessage());
+		}
+		
+		sql ="INSERT INTO `devolucion` (`estado`, `creacion`, `id_cliente`) VALUES ('pendiente', ?, ?);";
+		
+		try {
+			LocalDate fecha = LocalDate.now();
+			
+			stmt = (PreparedStatement) conexion.prepareStatement(sql);
+			stmt.setInt(2, clienteid);
+			stmt.setObject(1,Date.valueOf(fecha));
+			stmt.executeUpdate();
+			
+		}catch(Exception excepcion){
+			System.out.println("error 2 "+excepcion.getMessage());
+			
+		}
+		sql ="SELECT MAX(id) FROM devolucion;";
+		int devolucionid=-5;
+		try {
+			
+			stmt = (PreparedStatement) conexion.prepareStatement(sql);
+			ResultSet result = stmt.executeQuery();
+			while(result.next()) {
+				devolucionid=Integer.parseInt(result.getString(1)); //id
+			}
+		}catch(Exception excepcion){
+			System.out.println("error 3 "+excepcion.getMessage());
+		}
+		
+		for (Entrada entrada : ids) {
+			sql ="INSERT INTO `detalle_devolucion` (`id_devolucion`, `id_entrada`) VALUES (?, ?);";
+			try {
+				
+				stmt = (PreparedStatement) conexion.prepareStatement(sql);
+				stmt.setInt(1, devolucionid);
+				stmt.setInt(2, entrada.getId());
+				stmt.executeUpdate();
+			}catch(Exception excepcion){
+				System.out.println("error 4 "+excepcion.getMessage());
+				
+			}
+		}
+		
 		
 		JButton btnNewButton = new JButton("Aceptar");
 		btnNewButton.addMouseListener(new MouseAdapter() {
@@ -76,14 +144,21 @@ public class Devolviendo extends JFrame {
 		});
 		panel_1.add(btnNewButton);
 		
-		if (id.isEmpty()) {
+		if (ids.isEmpty()) {
 			lblNewLabel.setText("No has seleccionado entradas");
 			JButton btnNewButton_1 = new JButton("Volver");
 			btnNewButton_1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					DevolverEntradas.run(dni);
+					dispose();
 				}
 			});
 			panel_1.add(btnNewButton_1);
+		} else {
+			
+			for (Entrada entrada : ids) {
+				
+			}
 		}
 	}
 }

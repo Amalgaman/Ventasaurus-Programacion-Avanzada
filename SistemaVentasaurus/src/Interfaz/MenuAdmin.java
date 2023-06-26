@@ -15,6 +15,8 @@ import Datos.Conexion;
 import Datos.Entrada;
 import Datos.Localidad;
 import Datos.SolicitudDevolucion;
+import Jframes.DevolverEntradas;
+import Jframes.GenerarSolicitudAdmin;
 import Negocio.Verifica;
 
 public class MenuAdmin {
@@ -42,7 +44,10 @@ public class MenuAdmin {
 			break;
 		case 1:
 			listaSolicitudes();
+			op=3;
 			break;
+		case 2:
+			MenuPrincipal.principal();
 		default:
 			break;	
 		}
@@ -174,6 +179,9 @@ public class MenuAdmin {
 		//lista de solicitudes
 		SolicitudDevolucion aux= new SolicitudDevolucion(0,"","",0,"",0,0,null);
 		LinkedList<SolicitudDevolucion> solicitudes = aux.traerSolicitudes();
+		if (!solicitudes.isEmpty()) {
+			
+		}
 		String[] opcionesSolicitud = new String[solicitudes.size()];
 		opcionesSolicitud[0]="Generar solicitud";
 		for (int i=1; i<solicitudes.size();i++) {
@@ -192,7 +200,7 @@ public class MenuAdmin {
 		
 		//Esto es para salir del menu sin que se rompa
 		if(opSolicitud == null) {
-			
+			principal();
 		}else if (opSolicitud.equals("Generar solicitud")) {
 			MenuAdmin aux2=new MenuAdmin();
 			aux2.generarSolicitud();
@@ -230,109 +238,13 @@ public class MenuAdmin {
 	
 public void generarSolicitud() {
 		
-		String sql="SELECT id FROM cliente WHERE dni=?";
-		int dni=Integer.parseInt(JOptionPane.showInputDialog("Ingresar dni"));
-		int idcliente=-1;
-		try {
-			
-			stmt = (PreparedStatement) conexion.prepareStatement(sql);
-			stmt.setInt(1, dni);
-			ResultSet result = stmt.executeQuery();
-			while(result.next()) {
-				idcliente=Integer.parseInt(result.getString(1)); //id
-			}
-		}catch(Exception excepcion){
-			System.out.println(excepcion.getMessage());
-		}
-		sql ="SELECT entrada.id, c_devolucion, concierto.nombre, localidad.nombre, localidad.precio  FROM `entrada` INNER JOIN localidad on localidad.id = entrada.id_localidad INNER JOIN concierto on localidad.id_concierto= concierto.id WHERE entrada.id_cliente=(SELECT id FROM cliente WHERE dni=?) AND c_devolucion >0 AND entrada.id not in (SELECT DISTINCT id_entrada FROM detalle_devolucion WHERE id_devolucion not in (SELECT devolucion.id FROM devolucion WHERE devolucion.estado='Aprobada'));";
-		String[] datos = new String[5]; 
-		LinkedList<Entrada> entradas =new LinkedList<Entrada>();
-		try {
-			
-			stmt = (PreparedStatement) conexion.prepareStatement(sql);
-			stmt.setInt(1, dni);
-			ResultSet result = stmt.executeQuery();
-			while(result.next()) {
-				datos[0]= result.getString(1); //id
-				datos[1]= result.getString(2); //codigo
-				datos[2]= result.getString(3); //nombre conc
-				datos[3]= result.getString(4); //localidad
-				datos[4]= result.getString(5); //precio
-				entradas.add(new Entrada(Integer.parseInt(datos[0]),datos[3],datos[4],datos[2],datos[1]));
-			}
-				//Ventana.main(entradas);
-				String[] opcionesDev= new String[entradas.size()];
-				int i=0;
-				for (Entrada entrada : entradas) {
-					opcionesDev[i]=entrada.toString();
-					i++;
-				}
-				
-				String opDevolucion = (String) JOptionPane.showInputDialog(null // para que se muestre centrado
-						, "Selecciona una entrada para generar una devolucion" // Mensaje de la ventana
-						, "Ventasaurus - Devoluciones" // Titulo de la ventana
-						, JOptionPane.QUESTION_MESSAGE // Icono
-						, null // null para icono defecto de la ventana
-						, opcionesDev // el objeto
-						, opcionesDev[0] // posicion del que va aparecer seleccionado
-				);
-				for (Entrada entrada : entradas) {
-					if (entrada.toString().equals(opDevolucion)) {
-						String codigo=JOptionPane.showInputDialog("Ingresar codigo de devolución");
-						if (entrada.getCodigoDevolucion().equals(codigo)) {
-							int devolucionid=-1;
-							sql ="INSERT INTO `devolucion` (`estado`, `creacion`, `id_cliente`) VALUES ('pendiente', ?, ?);";
-							
-							try {
-								LocalDate fecha = LocalDate.now();
-								stmt = (PreparedStatement) conexion.prepareStatement(sql);
-								stmt.setInt(2, idcliente);
-								stmt.setObject(1,Date.valueOf(fecha));
-								stmt.executeUpdate();
-								
-							}catch(Exception excepcion){
-								System.out.println(excepcion.getMessage());
-								
-							}
-							sql ="SELECT MAX(id) FROM devolucion;";
-							try {
-								
-								stmt = (PreparedStatement) conexion.prepareStatement(sql);
-								result = stmt.executeQuery();
-								while(result.next()) {
-									devolucionid=Integer.parseInt(result.getString(1)); //id
-								}
-							}catch(Exception excepcion){
-								System.out.println(excepcion.getMessage());
-							}
-							sql ="INSERT INTO `detalle_devolucion` (`id_devolucion`, `id_entrada`) VALUES (?, ?);";
-							
-							try {
-								
-								stmt = (PreparedStatement) conexion.prepareStatement(sql);
-								stmt.setInt(1, devolucionid);
-								stmt.setInt(2, entrada.getId());
-								stmt.executeUpdate();
-								conexion.close();
-								JOptionPane.showMessageDialog(null, "Solicitud recibida exitosamente "+ opDevolucion
-										+ "\nSe le mandara un mail cuando el admin lo apruebe");
-							}catch(Exception excepcion){
-								System.out.println(excepcion.getMessage());
-								
-							}
-						} else {
-							JOptionPane.showMessageDialog(null, "Codigo incorrecto");
-						}
-						
-					}
-				}
-				
-		}catch(Exception excepcion){
-			System.out.println(excepcion.getMessage());
-		}
-		
-		//MenuPrincipal.principal();
-
+	String aux=JOptionPane.showInputDialog("Ingresar dni");
+	if (aux!=null && !aux.equals("")) {
+		int dni=Integer.parseInt(aux);
+		GenerarSolicitudAdmin.run(dni);
+	}else {
+		this.listaSolicitudes();
+	}
 	}
 	
 	public static void altaSolicitud(){

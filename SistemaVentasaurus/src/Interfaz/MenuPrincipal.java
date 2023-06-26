@@ -1,8 +1,8 @@
 package Interfaz;
 
 import javax.swing.JOptionPane;
+import Jframes.Login;
 
-import Datos.Cliente;
 import Negocio.Verifica;
 
 public class MenuPrincipal {
@@ -24,27 +24,11 @@ public class MenuPrincipal {
 			break;
 		case 1:
 			cliente.SolicitudDeDevolucion();
+			cerrar=true;
 			break;
 		case 2:
-			switch(login()) {
-			case "null": //Esto es por si el usuario toca "Cancelar" o "Cerrar"
-				break;
-			case "admin":
-				MenuAdmin.principal();
-				break;
-			case "control":
-				control.principal();
-				break;
-			case "incorrecto":
-				JOptionPane.showMessageDialog(null, "DNI o Contraseña incorrectos");
-				break;
-			case "error":
-				JOptionPane.showMessageDialog(null, "Error al conectar con servidor");
-				break;
-			default:
-				JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado");
-				break;	
-			}
+			Login.run();
+			cerrar=true;
 			break;
 		default:
 			cerrar = true;

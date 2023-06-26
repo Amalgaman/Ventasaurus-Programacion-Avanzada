@@ -30,6 +30,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import Datos.Conexion;
 import Datos.Entrada;
+import Interfaz.MenuAdmin;
 import Interfaz.MenuCliente;
 import Jframes.ModernScrollBarUI;
 import javax.swing.JLabel;
@@ -39,19 +40,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JTextField;
 
-public class DevolverEntradas extends JFrame {
+public class GenerarSolicitudAdmin extends JFrame {
 	Conexion con = new Conexion();
 	
 	Connection conexion = (Connection) con.conectar();
 	
 	PreparedStatement stmt;
 	
-	MenuCliente cliente= new MenuCliente();
+	MenuAdmin admin= new MenuAdmin();
 	private JTextField txtCdigoDeDevolucin;
 	
 	public static void run(int id) {
 		try {
-			DevolverEntradas frame = new DevolverEntradas(id);
+			GenerarSolicitudAdmin frame = new GenerarSolicitudAdmin(id);
 			frame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,7 +60,7 @@ public class DevolverEntradas extends JFrame {
 	}
 	
 	
-    public DevolverEntradas(int dni) {
+    public GenerarSolicitudAdmin(int dni) {
         setTitle("Selección de entradas"+dni);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
@@ -187,7 +188,7 @@ public class DevolverEntradas extends JFrame {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		dispose();
-        		cliente.SolicitudDeDevolucion();
+        		admin.generarSolicitud();
         	}
         });
         buttonPanel.add(btnNewButton_1);
@@ -221,50 +222,4 @@ public class DevolverEntradas extends JFrame {
 
 }
 
-class ModernScrollBarUI extends BasicScrollBarUI {
-    private final Dimension d = new Dimension();
-
-    @Override
-    protected JButton createDecreaseButton(int orientation) {
-        return new JButton() {
-            @Override
-            public Dimension getPreferredSize() {
-                return d;
-            }
-        };
-    }
-
-    @Override
-    protected JButton createIncreaseButton(int orientation) {
-        return new JButton() {
-            @Override
-            public Dimension getPreferredSize() {
-                return d;
-            }
-        };
-    }
-
-    @Override
-    protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
-        g.setColor(new Color(240, 240, 240));
-        g.fillRect(trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height);
-    }
-
-    @Override
-    protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
-        g.setColor(new Color(200, 200, 200));
-        g.fillRect(thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height);
-    }
-
-    @Override
-    protected void configureScrollBarColors() {
-        LookAndFeel.installColors(scrollbar, "ScrollBar.background", "ScrollBar.foreground");
-        thumbHighlightColor = UIManager.getColor("ScrollBar.thumbHighlight");
-        thumbLightShadowColor = new ColorUIResource(new Color(200, 200, 200));
-        thumbDarkShadowColor = new ColorUIResource(new Color(200, 200, 200));
-        thumbColor = UIManager.getColor("ScrollBar.thumb");
-        trackColor = UIManager.getColor("ScrollBar.track");
-        trackHighlightColor = UIManager.getColor("ScrollBar.trackHighlight");
-    }
-}
 

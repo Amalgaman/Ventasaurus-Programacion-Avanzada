@@ -89,20 +89,18 @@ public class MenuCliente {
 
 	public void SolicitudDeDevolucion() {
 		
-		String sql="SELECT id FROM cliente WHERE dni=?";
-		int dni=Integer.parseInt(JOptionPane.showInputDialog("Ingresar dni"));
-		int idcliente=-1;
-		try {
-			
-			stmt = (PreparedStatement) conexion.prepareStatement(sql);
-			stmt.setInt(1, dni);
-			ResultSet result = stmt.executeQuery();
-			while(result.next()) {
-				idcliente=Integer.parseInt(result.getString(1)); //id
-			}
-		}catch(Exception excepcion){
-			System.out.println(excepcion.getMessage());
+		
+		//String sql="SELECT id FROM cliente WHERE dni=?";
+		String aux=JOptionPane.showInputDialog("Ingresar dni");
+		if (aux!=null && !aux.equals("")) {
+			int dni=Integer.parseInt(aux);
+			DevolverEntradas.run(dni);
+		}else {
+			MenuPrincipal.principal();
 		}
+		/*
+		int idcliente=-1;
+		
 		sql ="SELECT entrada.id, c_devolucion, concierto.nombre, localidad.nombre, localidad.precio  FROM `entrada` INNER JOIN localidad on localidad.id = entrada.id_localidad INNER JOIN concierto on localidad.id_concierto= concierto.id WHERE entrada.id_cliente=(SELECT id FROM cliente WHERE dni=?) AND c_devolucion >0 AND entrada.id not in (SELECT DISTINCT id_entrada FROM detalle_devolucion WHERE id_devolucion not in (SELECT devolucion.id FROM devolucion WHERE devolucion.estado='Aprobada'));";
 		String[] datos = new String[5]; 
 		LinkedList<Entrada> entradas =new LinkedList<Entrada>();
@@ -126,7 +124,7 @@ public class MenuCliente {
 					opcionesDev[i]=entrada.toString();
 					i++;
 				}
-				DevolverEntradas panel= new DevolverEntradas(dni);
+				//DevolverEntradas panel= new DevolverEntradas(dni);
 				String opDevolucion = (String) JOptionPane.showInputDialog(null // para que se muestre centrado
 						, "Selecciona una entrada para generar una devolucion" // Mensaje de la ventana
 						, "Ventasaurus - Devoluciones" // Titulo de la ventana
@@ -191,7 +189,7 @@ public class MenuCliente {
 		}
 		
 		//MenuPrincipal.principal();
-
+*/
 	}
 
 	public  void CompraryPagar(String nombreConcierto) {// se entrga los tickets al cliente
