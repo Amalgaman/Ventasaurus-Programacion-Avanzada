@@ -59,6 +59,10 @@ public class adminAltaLocalidades extends JFrame {
 				}else {
 					JOptionPane.showMessageDialog(null, "Hubo un error al guardar la localidad");
 				}
+				if(JOptionPane.showConfirmDialog(null, "¿Ingresar otra localidad?") == 1) {
+					dispose();
+					MenuAdmin.principal();
+				}
 			}
 		});
 		guardarBoton.setBounds(70, 214, 89, 23);

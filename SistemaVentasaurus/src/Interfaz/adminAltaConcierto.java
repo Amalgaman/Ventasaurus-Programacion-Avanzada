@@ -83,12 +83,10 @@ public class adminAltaConcierto extends JFrame {
 					int cupoLoc;
 					double precioLoc;
 					
-					//Generamos las localidades, minimo 1
-					do {
+					
+					dispose();
 						adminAltaLocalidades.run(id);
-
-					}while(JOptionPane.showConfirmDialog(null, "¿Ingresar otra localidad?") == 0);
-				
+						
 				}else {
 					JOptionPane.showMessageDialog(null, "El alta del concierto no pudo concretarse");
 					dispose();

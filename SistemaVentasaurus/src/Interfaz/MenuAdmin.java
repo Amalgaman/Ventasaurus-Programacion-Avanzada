@@ -17,7 +17,7 @@ public class MenuAdmin {
 		int op = 0;
 		String[] opciones = {"Ver Conciertos","Ver Solicitudes de Devolucion","Cerrar Sesion"};
 		
-		do {
+		
 		op = JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - Administracion", 0, 0, null, opciones, 0);
 		
 		switch(op) {
@@ -25,14 +25,14 @@ public class MenuAdmin {
 			listaConciertos();
 			break;
 		case 1:
-			listaSolicitudes();
+			
 			break;
 		case 2:
 			MenuPrincipal.principal();
 		default:
 			break;	
 		}
-		}while(op<2);
+
 		
 	}
 	
@@ -83,10 +83,9 @@ public class MenuAdmin {
 			
 			adminConcierto.run(listaTraida.get(cElegido));
 		}
-		 listaConciertos();
 	}
 	}
-	public static void altaConcierto(){
+	/*public static void altaConcierto(){
 		//En el futuro podriamos armar un Formulario con JFrame, por ahora son JOptionPanel
 		
 		String nombre = JOptionPane.showInputDialog("Introduzca nombre del concierto");
@@ -187,5 +186,5 @@ public class MenuAdmin {
 		listaSolicitudes();
 	}
 	
-	
+	*/
 }
