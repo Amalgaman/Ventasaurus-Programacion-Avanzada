@@ -17,6 +17,7 @@ import Datos.Localidad;
 import Datos.SolicitudDevolucion;
 import Jframes.DevolverEntradas;
 import Jframes.GenerarSolicitudAdmin;
+import Jframes.VentanaError;
 import Negocio.Verifica;
 
 public class MenuAdmin {
@@ -179,15 +180,23 @@ public class MenuAdmin {
 		//lista de solicitudes
 		SolicitudDevolucion aux= new SolicitudDevolucion(0,"","",0,"",0,0,null);
 		LinkedList<SolicitudDevolucion> solicitudes = aux.traerSolicitudes();
-		if (!solicitudes.isEmpty()) {
-			
-		}
-		String[] opcionesSolicitud = new String[solicitudes.size()];
+		if (solicitudes.isEmpty()) {
+			String[] opcionesSolicitud= {"Generar solicitud"};
+			opSolicitud = (String) JOptionPane.showInputDialog(
+					null // para que se muestre centrado
+					,"Selecciona una Solicitud" // Mensaje de la ventana
+					,"Ventasaurus - Administracion" // Titulo de la ventana
+					,JOptionPane.QUESTION_MESSAGE // Icono
+					,null //null para icono defecto de la ventana
+					,opcionesSolicitud // el objeto
+					,opcionesSolicitud[0] // posicion del que va aparecer seleccionado
+					);
+		} else {
+		String[] opcionesSolicitud = new String[solicitudes.size()+1];
 		opcionesSolicitud[0]="Generar solicitud";
-		for (int i=1; i<solicitudes.size();i++) {
-			opcionesSolicitud[i]=solicitudes.get(i).toString();
+		for (int i=1; i<=solicitudes.size();i++) {
+			opcionesSolicitud[i]=solicitudes.get(i-1).toString();
 		}
-		
 		opSolicitud = (String) JOptionPane.showInputDialog(
 				null // para que se muestre centrado
 				,"Selecciona una Solicitud" // Mensaje de la ventana
@@ -198,6 +207,7 @@ public class MenuAdmin {
 				,opcionesSolicitud[0] // posicion del que va aparecer seleccionado
 				);
 		
+		}
 		//Esto es para salir del menu sin que se rompa
 		if(opSolicitud == null) {
 			principal();
@@ -229,10 +239,11 @@ public class MenuAdmin {
 					default:
 						break;	
 					}
+					listaSolicitudes();
 				}
 			}
 			
-			listaSolicitudes();
+		
 		}
 	}
 	

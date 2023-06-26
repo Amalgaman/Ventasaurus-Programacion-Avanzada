@@ -11,7 +11,6 @@ public class MenuPrincipal {
 	
 	public static void principal() {
 		MenuCliente cliente=new MenuCliente();
-		MenuControl control=new MenuControl();
 		String[] opciones = {"Ver conciertos","Solicitar Devolucion","Ingreso Empleado","Salir"};
 		int eleccion;
 		boolean cerrar = false;

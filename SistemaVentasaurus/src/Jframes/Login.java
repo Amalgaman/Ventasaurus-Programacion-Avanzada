@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Interfaz.MenuAdmin;
-import Interfaz.MenuControl;
 import Interfaz.MenuPrincipal;
 import Negocio.Verifica;
 
@@ -79,7 +78,7 @@ public class Login extends JFrame {
 					break;
 				case "control":
 					dispose();
-					control.principal();
+					MenuControl.run();
 					break;
 				case "incorrecto":
 					JOptionPane.showMessageDialog(null, "DNI o Contraseña incorrectos");

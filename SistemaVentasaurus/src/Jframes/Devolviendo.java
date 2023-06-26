@@ -11,6 +11,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import Datos.Conexion;
 import Datos.Entrada;
+import Interfaz.MenuAdmin;
 
 import javax.swing.JButton;
 import java.awt.FlowLayout;
@@ -140,6 +141,7 @@ public class Devolviendo extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				dispose();
+				MenuAdmin.principal();
 			}
 		});
 		panel_1.add(btnNewButton);
@@ -154,11 +156,6 @@ public class Devolviendo extends JFrame {
 				}
 			});
 			panel_1.add(btnNewButton_1);
-		} else {
-			
-			for (Entrada entrada : ids) {
-				
-			}
 		}
 	}
 }
