@@ -55,6 +55,7 @@ public class JPagar extends JFrame {
 		});
 	}
 
+	
 	/**
 	 * Create the frame.
 	 */
@@ -137,102 +138,23 @@ public class JPagar extends JFrame {
 		continuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String texto = cantEntr.getText();
+				boolean contieneLetras = false;
+				char letra = '\0';
 				int numero = Integer.parseInt(texto);
 				try {
 					for (int i = 0; i < cantEntr.getText().length(); i++) {
-
-						if (!Character.isDigit(cantEntr.getText().charAt(i))) {
-							JDialog dialogo = new JDialog();
-							dialogo.setUndecorated(true); // Quitar decoración del diálogo
-							dialogo.setSize(300, 100);
-							dialogo.setLocationRelativeTo(null); // Centrar en la pantalla
-
-							// Crear el JLabel con el mensaje
-							JLabel etiqueta = new JLabel("Lo siguiente no es valido : " + i);
-							etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-
-							// Agregar la etiqueta al diálogo
-							dialogo.getContentPane().add(etiqueta);
-
-							// Configurar el temporizador para cerrar automáticamente el diálogo 
-							int duracionMilisegundos = 4000; // 4 segundos
-							Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									dialogo.dispose(); // Cerrar el diálogo
-									volverAlMenuPrincipal(); //Volver al menu desp de cerrar
-								}
-							});
-							temporizador.setRepeats(false); // No repetir el temporizador
-							temporizador.start();
-
-							// Mostrar el diálogo
-							dialogo.setVisible(true);
-							
-						} else if (numero >= 1 && numero <= 10) {
-							// Crear y configurar el JDialog personalizado
-							JDialog dialogo = new JDialog();
-							dialogo.setUndecorated(true); // Quitar decoración del diálogo
-							dialogo.setSize(300, 100);
-							dialogo.setLocationRelativeTo(null); // Centrar en la pantalla
-
-							// Crear el JLabel con el mensaje
-							JLabel etiqueta = new JLabel("Compraste " + cantEntr.getText() + " entradas para :");
-							etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-
-							//Sacar botones para evitar errores
-							btnCancelar.setEnabled(false);
-							continuar.setEnabled(false);
-							
-							// Agregar la etiqueta al diálogo
-							dialogo.getContentPane().add(etiqueta);
-
-							// Configurar el temporizador para cerrar automáticamente el diálogo 
-							int duracionMilisegundos = 4000; // 4 segundos
-							Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									
-									dialogo.dispose(); // Cerrar el diálogo
-									volverAlMenuPrincipal(); //Volver al menu desp de cerrar
-								}
-							});
-							temporizador.setRepeats(false); // No repetir el temporizador
-							temporizador.start();
-
-							// Mostrar el diálogo
-							dialogo.setVisible(true);
-
-			
-							
-						} else {
-							JDialog dialogo = new JDialog();
-							dialogo.setUndecorated(true); // Quitar decoración del diálogo
-							dialogo.setSize(300, 100);
-//							dialogo.setLocationRelativeTo(null); // Centrar en la pantalla
-
-							// Crear el JLabel con el mensaje
-							JLabel etiqueta = new JLabel("'" + cantEntr.getText() + "' no es valido");
-							etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-							dialogo.setLocationRelativeTo(null); // Centrar en la pantalla
-
-							// Agregar la etiqueta al diálogo
-							dialogo.getContentPane().add(etiqueta);
-
-							// Configurar el temporizador para cerrar automáticamente el diálogo
-							int duracionMilisegundos = 4000; // 4 segundos
-							Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									dialogo.dispose(); // Cerrar el diálogo
-								}
-							});
-							temporizador.setRepeats(false); // No repetir el temporizador
-							temporizador.start();
-
-							// Mostrar el diálogo
-							dialogo.setVisible(true);
-
-						}
+					/*	if (!Character.isDigit(texto.charAt(i))) {
+						contieneLetras = true;
+						letra = texto.charAt(i); // Almacenar la letra encontrada
+						break;
+					}*/
+						if (numero >= 1 && numero <= 10) {
+							mostrarMensajeError("compraste "+ numero +" entradas para :"+"");	
+							volverAlMenuPrincipal();
+						} else if(numero>=11||!Character.isDigit(texto.charAt(i))){
+							mostrarMensajeError("Error al ingresar cantidad de entradas") /*"\nCaracter a corregir "+letra)*/;
+					} 
 					}
-
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "Error \n" + e2);
 					 JMenuPrincipal nuevo  = new JMenuPrincipal();
@@ -242,11 +164,6 @@ public class JPagar extends JFrame {
 				}
 			}
 		});
-
-		
-		
-		
-		
 
 		DefaultTableModel modeloTabla = new DefaultTableModel();
 		infoLugares.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
@@ -315,6 +232,8 @@ public class JPagar extends JFrame {
 		contentPane.add(txtrCupos);
 
 		
+		
+		
 	}
 	public void volverAlMenuPrincipal(){
 		JMenuPrincipal nuevo = new JMenuPrincipal();
@@ -322,4 +241,32 @@ public class JPagar extends JFrame {
 		nuevo.setVisible(true);
 		dispose();
 	}
+	
+	   private void mostrarMensajeError(String mensaje) {
+	        JDialog dialogo = new JDialog();
+	        dialogo.setUndecorated(true);
+	        // Establecer el tamaño del diálogo en función del mensaje
+	        int ancho = 400;
+	        int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
+
+	        dialogo.setSize(ancho, alto);
+
+	        JLabel etiqueta = new JLabel(mensaje);
+	        etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+	        dialogo.setLocationRelativeTo(null);
+
+	        dialogo.getContentPane().add(etiqueta);
+
+	        int duracionMilisegundos = 3000;
+	        Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                dialogo.dispose();
+	            }
+	        });
+	        temporizador.setRepeats(false);
+	        temporizador.start();
+
+	        dialogo.setVisible(true);
+	    }
+	
 }
