@@ -70,7 +70,7 @@ public class GenerarSolicitudAdmin extends JFrame {
         panel.setLayout(new BorderLayout());
         List<String> opciones = new ArrayList<>();
         // Crear una lista de opciones
-        String sql="SELECT id,localidad,precio,concierto,c_devolucion FROM `vw_entrada` WHERE id not in (SELECT id_entrada FROM detalle_devolucion) AND id_cliente in (SELECT id FROM cliente WHERE dni=?)";
+        String sql="SELECT id,localidad,precio,concierto,c_devolucion FROM `vw_entrada` WHERE id not in (SELECT id_entrada FROM detalle_devolucion) AND id_cliente in (SELECT id FROM cliente WHERE dni=?)AND c_devolucion>0;";
         String[] datos = new String[5]; 
 		LinkedList<Entrada> entradas =new LinkedList<Entrada>();
 		try {
