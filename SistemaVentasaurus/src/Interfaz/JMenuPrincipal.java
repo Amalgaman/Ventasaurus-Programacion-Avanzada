@@ -2,18 +2,16 @@ package Interfaz;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.*;
+
 import java.awt.Font;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.UIManager;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Dimension;
 
 public class JMenuPrincipal extends JFrame {
 
@@ -26,9 +24,8 @@ public class JMenuPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					JMenuPrincipal frame = new JMenuPrincipal();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
+					ImageIcon icon = new ImageIcon("src/img/dino.jpg");
+					mostrarMensajeBienv(icon);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -42,7 +39,7 @@ public class JMenuPrincipal extends JFrame {
 	public JMenuPrincipal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setUndecorated(true);
-		setBounds(100, 100, 750, 550);
+		setBounds(100, 100, 900, 400);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,41 +58,151 @@ public class JMenuPrincipal extends JFrame {
 		});
 		
 		verConciertos.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
-		verConciertos.setBounds(458, 82, 226, 43);
+		verConciertos.setBounds(50, 70, 206, 43);
 		contentPane.add(verConciertos);
 		
 		JButton Devoluciones = new JButton("Solicitar devolución");
 		Devoluciones.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
-		Devoluciones.setBounds(482, 210, 177, 43);
+		Devoluciones.setBounds(346, 70, 211, 43);
 		contentPane.add(Devoluciones);
-		
-		JButton login = new JButton("Ingresar al sistema");
-		login.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
-		login.setBounds(482, 323, 177, 43);
-		contentPane.add(login);
-		
-		JButton salirBoton = new JButton("Salir");
-		salirBoton.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
-		salirBoton.setBounds(525, 448, 89, 23);
-		contentPane.add(salirBoton);
-		salirBoton.addActionListener(new ActionListener() {
+		Devoluciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				/*JMenuCliente nuevo = new JMenuCliente();
+				nuevo.setLocationRelativeTo(null);
+				nuevo.setVisible(true);
+				dispose();*/
+            	JOptionPane.showMessageDialog(null, "En proceso");
 			}
 		});
 		
-		JLabel imgDino = new JLabel();
-		 ImageIcon icon = new ImageIcon("src/img/dino.jpg");
-		 imgDino.setIcon(icon);
-		imgDino.setBounds(40, 54, 351, 471);
-		contentPane.add(imgDino);
+		JButton login = new JButton("Ingresar al sistema");
+		login.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
+		login.setBounds(657, 70, 182, 43);
+		contentPane.add(login);
+		login.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*JMenuCliente nuevo = new JMenuCliente();
+				nuevo.setLocationRelativeTo(null);
+				nuevo.setVisible(true);
+				dispose();*/
+            	JOptionPane.showMessageDialog(null, "En proceso");
+			}
+		});
+		
+		JButton salirBoton = new JButton("Salir");
+		salirBoton.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
+		salirBoton.setBounds(411, 349, 89, 23);
+		ImageIcon icon = new ImageIcon("src/img/chau.gif");
+//		salirBoton.setIcon(icon);
+		contentPane.add(salirBoton);
+		salirBoton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mostrarMensaje(icon);
+				dispose();
+			}
+		});
+	
 		
 		JTextArea bienvenida = new JTextArea();
 		bienvenida.setEditable(false);
 		bienvenida.setBackground(Color.LIGHT_GRAY);
 		bienvenida.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
 		bienvenida.setText("Bienvenido a Ventasaurus");
-		bienvenida.setBounds(235, 11, 250, 43);
+		bienvenida.setBounds(336, 11, 250, 43);
 		contentPane.add(bienvenida);
+		
+		JLabel conciertoImg = new JLabel("");
+		conciertoImg.setBounds(76, 136, 206, 145);
+		ImageIcon iconCon = new ImageIcon("src/img/compra.jpg");
+		conciertoImg.setIcon(iconCon);
+		contentPane.add(conciertoImg);
+		  conciertoImg.addMouseListener(new MouseAdapter() {
+	            public void mouseClicked(MouseEvent e) {
+	            	JMenuCliente nuevo = new JMenuCliente();
+					nuevo.setLocationRelativeTo(null);
+					nuevo.setVisible(true);
+					dispose();
+	            }
+	        });
+	
+		
+		JLabel devolucionImg = new JLabel("");
+		devolucionImg.setBounds(352, 136, 211, 138);
+		ImageIcon iconDev = new ImageIcon("src/img/devolucion.jpg");
+		devolucionImg.setIcon(iconDev);
+		contentPane.add(devolucionImg);
+		 devolucionImg.addMouseListener(new MouseAdapter() {
+	            public void mouseClicked(MouseEvent e) {
+	            	//Hacer devolucion
+					//dispose();
+	            	JOptionPane.showMessageDialog(null, "En proceso");
+	            }
+	        });
+		
+		JLabel loginImg = new JLabel("");
+		loginImg.setBounds(674, 135, 164, 145);
+		ImageIcon iconLog = new ImageIcon("src/img/admin.jpg");
+		loginImg.setIcon(iconLog);
+		contentPane.add(loginImg);
+		loginImg.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+            	//Hacer login
+				//dispose();
+            	JOptionPane.showMessageDialog(null, "En proceso");
+            }
+        });
+		
 	}
-}
+	 private static void mostrarMensaje(Icon mensaje) {
+	        JDialog dialogo = new JDialog();
+	        dialogo.setUndecorated(true);
+	        // Establecer el tamaño del diálogo en función del mensaje
+	        int ancho = 575;
+	        int alto = 575;
+	        dialogo.setSize(ancho, alto);
+	        JLabel etiqueta = new JLabel(mensaje);
+	        etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+	        dialogo.setLocationRelativeTo(null);
+	        dialogo.getContentPane().add(etiqueta);
+	        int duracionMilisegundos = 3000;
+	        Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                dialogo.dispose();
+	            }
+	        });
+	        temporizador.setRepeats(false);
+	        temporizador.start();
+
+	        dialogo.setVisible(true);
+	        
+	    }
+	 private static void mostrarMensajeBienv(Icon mensaje) {
+	        JDialog dialogo = new JDialog();
+	        dialogo.setUndecorated(true);
+	        // Establecer el tamaño del diálogo en función del mensaje
+	        int ancho = 575;
+	        int alto = 575;
+	        dialogo.setSize(ancho, alto);
+	        JLabel etiqueta = new JLabel(mensaje);
+	        etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+	        dialogo.setLocationRelativeTo(null);
+	        dialogo.getContentPane().add(etiqueta);
+	        int duracionMilisegundos = 3000;
+	        Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                dialogo.dispose();
+	                JMenuPrincipal frame = new JMenuPrincipal();
+	    			frame.setLocationRelativeTo(null);
+	    			frame.setVisible(true);
+	            }
+	        });
+	        temporizador.setRepeats(false);
+	        temporizador.start();
+
+	        dialogo.setVisible(true);
+	
+	      
+
+	        
+	    }
+	 }
