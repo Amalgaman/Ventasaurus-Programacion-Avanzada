@@ -24,8 +24,9 @@ public class JMenuPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ImageIcon icon = new ImageIcon("src/img/dino.jpg");
-					mostrarMensajeBienv(icon);
+					JMenuPrincipal frame = new JMenuPrincipal();
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

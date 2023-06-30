@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
@@ -16,6 +17,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -34,6 +36,7 @@ public class JPagar extends JFrame {
 	private JPanel contentPane;
 	private JTextField cantEntr;
 	private final JTable infoLugares = new JTable();
+	private static String nombreConcierto;
 
 	/**
 	 * Launch the application.
@@ -42,7 +45,7 @@ public class JPagar extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					JPagar frame = new JPagar();
+					JPagar frame = new JPagar(nombreConcierto);
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -55,11 +58,10 @@ public class JPagar extends JFrame {
 		});
 	}
 
-	
 	/**
 	 * Create the frame.
 	 */
-	public JPagar() {
+	public JPagar(String nombreConcierto) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setUndecorated(true);
 		setBounds(100, 100, 500, 340);
@@ -69,10 +71,10 @@ public class JPagar extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JComboBox lugaes = new JComboBox();
-		lugaes.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
-		lugaes.setBounds(30, 67, 192, 23);
-		contentPane.add(lugaes);
+		JComboBox lugares = new JComboBox();
+		lugares.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
+		lugares.setBounds(30, 67, 192, 23);
+		contentPane.add(lugares);
 		java.sql.Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -90,14 +92,14 @@ public class JPagar extends JFrame {
 			// Agregar los datos al JComboBox
 			while (rs.next()) {
 				String nombre = rs.getString("nombre");
-				lugaes.addItem(nombre);
+				lugares.addItem(nombre);
 			}
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error \n" + e);
 
 		}
-		
+
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		btnCancelar.setBounds(399, 292, 90, 23);
@@ -130,40 +132,6 @@ public class JPagar extends JFrame {
 		txtrIngresarCantidadDe.setBackground(Color.LIGHT_GRAY);
 		txtrIngresarCantidadDe.setBounds(284, 11, 171, 56);
 		contentPane.add(txtrIngresarCantidadDe);
-
-		JButton continuar = new JButton("Continuar");
-		continuar.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
-		continuar.setBounds(284, 292, 104, 23);
-		contentPane.add(continuar);
-		continuar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String texto = cantEntr.getText();
-				boolean contieneLetras = false;
-				char letra = '\0';
-				int numero = Integer.parseInt(texto);
-				try {
-					for (int i = 0; i < cantEntr.getText().length(); i++) {
-					/*	if (!Character.isDigit(texto.charAt(i))) {
-						contieneLetras = true;
-						letra = texto.charAt(i); // Almacenar la letra encontrada
-						break;
-					}*/
-						if (numero >= 1 && numero <= 10) {
-							mostrarMensajeError("compraste "+ numero +" entradas para :"+"");	
-							volverAlMenuPrincipal();
-						} else if(numero>=11||!Character.isDigit(texto.charAt(i))){
-							mostrarMensajeError("Error al ingresar cantidad de entradas") /*"\nCaracter a corregir "+letra)*/;
-					} 
-					}
-				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(null, "Error \n" + e2);
-					 JMenuPrincipal nuevo  = new JMenuPrincipal();
-					 nuevo.setLocationRelativeTo(null);
-						nuevo.setVisible(true);
-						dispose();
-				}
-			}
-		});
 
 		DefaultTableModel modeloTabla = new DefaultTableModel();
 		infoLugares.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
@@ -199,6 +167,58 @@ public class JPagar extends JFrame {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error \n" + e);
 		}
+
+		JButton continuar = new JButton("Continuar");
+		continuar.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
+		continuar.setBounds(284, 292, 104, 23);
+		contentPane.add(continuar);
+		continuar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String texto = cantEntr.getText();
+				int numero = Integer.parseInt(texto);
+
+				try {
+					final java.sql.Connection conn;
+
+					conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
+
+					for (int i = 0; i < cantEntr.getText().length(); i++) {
+						if (numero >= 1 && numero <= 10) {
+							String nombreLocalidad = lugares.getSelectedItem().toString();
+							String precioUnitario = "";
+							String precioFinal = "";
+
+							// Obtener el precio unitario y final de la base de datos
+							String consulta = "SELECT precio FROM localidad WHERE nombre = ?";
+							PreparedStatement pstmt = conn.prepareStatement(consulta);
+							pstmt.setString(1, nombreLocalidad);
+							ResultSet rs = pstmt.executeQuery();
+
+							if (rs.next()) {
+								double precio = rs.getDouble("precio");
+								precioUnitario = String.valueOf(precio);
+								double precioTotal = precio * numero;
+								precioFinal = String.valueOf(precioTotal);
+							}
+							continuar.setEnabled(false);
+							btnCancelar.setEnabled(false);
+							mostrarMensajeVolverMenu("Compraste " + numero + " entradas para : " + nombreConcierto
+									+ " (" + nombreLocalidad + ")\nPrecio unitario: " + precioUnitario
+									+ "\nPrecio final: " + precioFinal);
+						} else if (numero >= 11 || numero <= 0 || !Character.isDigit(texto.charAt(i))) {
+							mostrarMensajeError("Error al ingresar cantidad de entradas");
+						}
+					}
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "Error \n" + e2);
+					JMenuPrincipal nuevo = new JMenuPrincipal();
+					nuevo.setLocationRelativeTo(null);
+					nuevo.setVisible(true);
+					dispose();
+				}
+			}
+		});
+
 		JLabel imgTickets = new JLabel();
 		ImageIcon icon = new ImageIcon("src/img/ticket.jpg");
 		imgTickets.setIcon(icon);
@@ -231,42 +251,72 @@ public class JPagar extends JFrame {
 		txtrCupos.setBounds(411, 103, 78, 23);
 		contentPane.add(txtrCupos);
 
-		
-		
-		
 	}
-	public void volverAlMenuPrincipal(){
+
+	public void volverAlMenuPrincipal() {
 		JMenuPrincipal nuevo = new JMenuPrincipal();
 		nuevo.setLocationRelativeTo(null);
 		nuevo.setVisible(true);
 		dispose();
 	}
-	
-	   private void mostrarMensajeError(String mensaje) {
-	        JDialog dialogo = new JDialog();
-	        dialogo.setUndecorated(true);
-	        // Establecer el tamaño del diálogo en función del mensaje
-	        int ancho = 400;
-	        int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
 
-	        dialogo.setSize(ancho, alto);
+	private void mostrarMensajeError(String mensaje) {
+		JDialog dialogo = new JDialog();
+		dialogo.setUndecorated(true);
+		// Establecer el tamaño del diálogo en función del mensaje
+		int ancho = 400;
+		int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
 
-	        JLabel etiqueta = new JLabel(mensaje);
-	        etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-	        dialogo.setLocationRelativeTo(null);
+		dialogo.setSize(ancho, alto);
 
-	        dialogo.getContentPane().add(etiqueta);
+		JLabel etiqueta = new JLabel(mensaje);
+		etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+		dialogo.setLocationRelativeTo(null);
 
-	        int duracionMilisegundos = 3000;
-	        Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                dialogo.dispose();
-	            }
-	        });
-	        temporizador.setRepeats(false);
-	        temporizador.start();
+		dialogo.getContentPane().add(etiqueta);
 
-	        dialogo.setVisible(true);
-	    }
-	
+		int duracionMilisegundos = 3000;
+		Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dialogo.dispose();
+			}
+		});
+		temporizador.setRepeats(false);
+		temporizador.start();
+
+		dialogo.setVisible(true);
+	}
+
+	private void mostrarMensajeVolverMenu(String mensaje) {
+		JDialog dialogo = new JDialog();
+		dialogo.setUndecorated(true);
+		// Establecer el tamaño del diálogo en función del mensaje
+		int ancho = 400;
+		int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
+
+		dialogo.setSize(ancho, alto);
+
+		JTextArea etiqueta = new JTextArea(mensaje);
+		etiqueta.setEditable(false);
+		etiqueta.setBackground(null);
+		etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+		dialogo.setLocationRelativeTo(null);
+
+		dialogo.getContentPane().add(etiqueta);
+
+		int duracionMilisegundos = 10000;
+		Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dialogo.dispose();
+				JMenuPrincipal nuevo = new JMenuPrincipal();
+				nuevo.setLocationRelativeTo(null);
+				nuevo.setVisible(true);
+				dispose();
+			}
+		});
+		temporizador.setRepeats(false);
+		temporizador.start();
+
+		dialogo.setVisible(true);
+	}
 }

@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		JMenuPrincipal.main(args);
+		JBienvenida.main(args);
 		//MenuPrincipal.principal();
 		
 	}

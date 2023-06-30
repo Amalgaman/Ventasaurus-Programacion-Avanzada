@@ -2,16 +2,20 @@ package Interfaz;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-import Datos.Concierto;
+import Datos.*;
 import Datos.Conexion;
 import Negocio.Verifica;
+import javax.swing.*;
 
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -39,6 +43,10 @@ public class JMenuCliente extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtInfoDelConcierto;
+	private JPanel contentPane2;
+	private JTextField cantEntr;
+	private final JTable infoLugares = new JTable();
+	private String nombreConcierto;
 
 	/**
 	 * Launch the application.
@@ -81,65 +89,7 @@ public class JMenuCliente extends JFrame {
 		dni.setBounds(222, 68, 123, 16);
 		contentPane.add(dni);
 
-		JButton comprarPagar = new JButton("Continuar");
-		comprarPagar.setEnabled(false);
-		comprarPagar.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
-		comprarPagar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String dniText = dni.getText();
-				if (dniText.length() != 8) {
-					mostrarMensajeError("Ingrese un DNI válido (8 dígitos)");
-				} else {
-					boolean contieneLetras = false;
-					char letra = '\0'; // Variable para almacenar la letra encontrada
-					for (int i = 0; i < dniText.length(); i++) {
-						if (!Character.isDigit(dniText.charAt(i))) {
-							contieneLetras = true;
-							letra = dniText.charAt(i); // Almacenar la letra encontrada
-							break;
-						}
-					}
-					if (contieneLetras) {
-						mostrarMensajeError("El DNI no puede contener lo siguiente '" + letra + "'");
-					} else {
-						JPagar nuevo = new JPagar();
-						nuevo.setLocationRelativeTo(null);
-						nuevo.setVisible(true);
-						dispose();
-					}
-				}
-			}
-
-			private void mostrarMensajeError(String mensaje) {
-				JDialog dialogo = new JDialog();
-				dialogo.setUndecorated(true);
-				// Establecer el tamaño del diálogo en función del mensaje
-				int ancho = 400;
-				int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
-
-				dialogo.setSize(ancho, alto);
-
-				JLabel etiqueta = new JLabel(mensaje);
-				etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-				dialogo.setLocationRelativeTo(null);
-
-				dialogo.getContentPane().add(etiqueta);
-
-				int duracionMilisegundos = 3000;
-				Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dialogo.dispose();
-					}
-				});
-				temporizador.setRepeats(false);
-				temporizador.start();
-
-				dialogo.setVisible(true);
-			}
-		});
-
-		comprarPagar.setBounds(417, 428, 123, 23);
-		contentPane.add(comprarPagar);
+		
 
 		JButton volverMenuPrincipal = new JButton("Volver atras");
 		volverMenuPrincipal.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
@@ -147,7 +97,7 @@ public class JMenuCliente extends JFrame {
 		contentPane.add(volverMenuPrincipal);
 		volverMenuPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				volverAlMenuPrincipal();
+				volverAlMenuPrincipalOg();
 			}
 		});
 
@@ -169,10 +119,9 @@ public class JMenuCliente extends JFrame {
 		listaConciertos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String conciertoSeleccionado = (String) listaConciertos.getSelectedItem();
-
+		        nombreConcierto = conciertoSeleccionado;
 				if (conciertoSeleccionado != null) {
-					// Realizar la consulta a la base de datos para obtener la información del
-					// concierto seleccionado
+					
 					try (java.sql.Connection conn = DriverManager
 							.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
 							Statement stmt = conn.createStatement()) {
@@ -253,6 +202,66 @@ public class JMenuCliente extends JFrame {
 		contentPane.add(txtInfoDelConcierto);
 		txtInfoDelConcierto.setColumns(10);
 
+		JButton comprarPagar = new JButton("Continuar");
+		comprarPagar.setEnabled(false);
+		comprarPagar.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
+		comprarPagar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String dniText = dni.getText();
+				if (dniText.length() != 8) {
+					mostrarMensajeError("Ingrese un DNI válido (8 dígitos)");
+				} else {
+					boolean contieneLetras = false;
+					char letra = '\0'; // Variable para almacenar la letra encontrada
+					for (int i = 0; i < dniText.length(); i++) {
+						if (!Character.isDigit(dniText.charAt(i))) {
+							contieneLetras = true;
+							letra = dniText.charAt(i); // Almacenar la letra encontrada
+							break;
+						}
+					}
+					if (contieneLetras) {
+						mostrarMensajeError("El DNI no puede contener lo siguiente '" + letra + "'");
+					} else {
+						JPagar nuevo = new JPagar(nombreConcierto);
+						nuevo.setLocationRelativeTo(null);
+						nuevo.setVisible(true);
+						dispose();
+					}
+				}
+			}
+
+			private void mostrarMensajeError(String mensaje) {
+				JDialog dialogo = new JDialog();
+				dialogo.setUndecorated(true);
+				// Establecer el tamaño del diálogo en función del mensaje
+				int ancho = 400;
+				int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
+
+				dialogo.setSize(ancho, alto);
+
+				JLabel etiqueta = new JLabel(mensaje);
+				etiqueta.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+				dialogo.setLocationRelativeTo(null);
+
+				dialogo.getContentPane().add(etiqueta);
+
+				int duracionMilisegundos = 3000;
+				Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dialogo.dispose();
+					}
+				});
+				temporizador.setRepeats(false);
+				temporizador.start();
+
+				dialogo.setVisible(true);
+			}
+		});
+
+		comprarPagar.setBounds(417, 428, 123, 23);
+		contentPane.add(comprarPagar);
+		
 		JCheckBox soloDisponibles = new JCheckBox("Ver solo los conciertos disponibles");
 		soloDisponibles.setFont(new Font("Comic Sans MS", Font.BOLD, 11));
 		soloDisponibles.setBounds(434, 44, 207, 34);
@@ -292,11 +301,13 @@ public class JMenuCliente extends JFrame {
 		});
 
 	}
+	
 
-	public void volverAlMenuPrincipal() {
+	public void volverAlMenuPrincipalOg() {
 		JMenuPrincipal nuevo = new JMenuPrincipal();
 		nuevo.setLocationRelativeTo(null);
 		nuevo.setVisible(true);
 		dispose();
 	}
+	
 }
