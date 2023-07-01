@@ -43,8 +43,6 @@ public class JMenuCliente extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtInfoDelConcierto;
-	private JPanel contentPane2;
-	private JTextField cantEntr;
 	private final JTable infoLugares = new JTable();
 	private String nombreConcierto;
 
@@ -142,9 +140,11 @@ public class JMenuCliente extends JFrame {
 							// No se encontró información del concierto
 							infoConciertos.setText("No se encontró información del concierto");
 						}
+						conn.close();
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null,
-								"Error al obtener información del concierto:\n" + ex.getMessage());
+						ImageIcon iconsad = new ImageIcon("src/img/troste.jpg"); 
+						JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + ex.getMessage()
+								+ "\n\n Comuniquese con un administrador e intentelo más tarde",null, 0, iconsad);
 					}
 				}
 			}
@@ -165,9 +165,15 @@ public class JMenuCliente extends JFrame {
 				String nombre = rs.getString("nombre");
 				listaConciertos.addItem(nombre);
 			}
+			conn.close();
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error \n" + e);
+			ImageIcon iconsad = new ImageIcon("src/img/troste.jpg"); 
+			JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + e.getMessage()
+					+ "\n\n Comuniquese con un administrador e intentelo más tarde",null, 0, iconsad);
+			
+			 
+//			volverAlMenuPrincipalOg();
 		}
 
 		JTextArea txtrEli = new JTextArea();
@@ -268,10 +274,7 @@ public class JMenuCliente extends JFrame {
 		contentPane.add(soloDisponibles);
 		soloDisponibles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Método para actualizar la lista de conciertos según el filtro de
-				// disponibilidad
-
-				String consulta = "SELECT * FROM concierto";
+			String consulta = "SELECT * FROM concierto";
 				if (soloDisponibles.isSelected()) {
 					LocalDate fechaActual = LocalDate.now();
 					String fechaActualFormato = fechaActual.format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -291,10 +294,13 @@ public class JMenuCliente extends JFrame {
 						String nombre = rs.getString("nombre");
 						listaConciertos.addItem(nombre);
 					}
+					conn.close();
 				} catch (Exception ex) {
+					ImageIcon icon = new ImageIcon("src/img/troste.jpg"); 
 					comprarPagar.setEnabled(false);
 					JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + ex.getMessage()
-							+ "\n\n Comuniquese con un administrador e intentelo más tarde");
+							+ "\n\n Comuniquese con un administrador e intentelo más tarde",null, 0, icon);
+					
 				}
 
 			}

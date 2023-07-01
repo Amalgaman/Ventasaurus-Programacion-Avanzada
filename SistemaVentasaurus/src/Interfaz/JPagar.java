@@ -94,9 +94,11 @@ public class JPagar extends JFrame {
 				String nombre = rs.getString("nombre");
 				lugares.addItem(nombre);
 			}
-
+			conn.close();
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Error \n" + e);
+			ImageIcon icon = new ImageIcon("src/img/troste.jpg"); 
+			JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + e.getMessage()
+					+ "\n\n Comuniquese con un administrador e intentelo más tarde",null, 0, icon);
 
 		}
 
@@ -163,9 +165,12 @@ public class JPagar extends JFrame {
 				}
 				modeloTabla.addRow(fila);
 			}
-
+			conn.close();
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Error \n" + e);
+			ImageIcon icon = new ImageIcon("src/img/troste.jpg"); 
+			JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + e.getMessage()
+					+ "\n\n Comuniquese con un administrador e intentelo más tarde",null, 0, icon);
+			
 		}
 
 		JButton continuar = new JButton("Continuar");
@@ -209,12 +214,12 @@ public class JPagar extends JFrame {
 							mostrarMensajeError("Error al ingresar cantidad de entradas");
 						}
 					}
+					conn.close();
 				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(null, "Error \n" + e2);
-					JMenuPrincipal nuevo = new JMenuPrincipal();
-					nuevo.setLocationRelativeTo(null);
-					nuevo.setVisible(true);
-					dispose();
+					ImageIcon icon = new ImageIcon("src/img/troste.jpg"); 
+					JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + e2.getMessage()
+							+ "\n\n Comuniquese con un administrador e intentelo más tarde",null, 0, icon);
+					continuar.setEnabled(false);
 				}
 			}
 		});
