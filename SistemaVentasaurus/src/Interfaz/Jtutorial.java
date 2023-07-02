@@ -62,7 +62,7 @@ public class Jtutorial extends JFrame {
 		contentPane.add(volverMenuPrincipal);
 		volverMenuPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				volverAlMenuPrincipalOg();
+				volverAtras();
 			}
 		});
 		
@@ -250,8 +250,8 @@ public class Jtutorial extends JFrame {
 	}
 
 
-	public void volverAlMenuPrincipalOg() {
-		JMenuPrincipal nuevo = new JMenuPrincipal();
+	public void volverAtras() {
+		JMenuCliente nuevo = new JMenuCliente();
 		nuevo.setLocationRelativeTo(null);
 		nuevo.setVisible(true);
 		dispose();
