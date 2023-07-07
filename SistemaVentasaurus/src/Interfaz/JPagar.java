@@ -136,8 +136,8 @@ public class JPagar extends JFrame {
 		contentPane.add(txtrIngresarCantidadDe);
 
 		DefaultTableModel modeloTabla = new DefaultTableModel();
-		infoLugares.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
 		infoLugares.setShowGrid(false);
+		infoLugares.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
 		infoLugares.setEnabled(false);
 		infoLugares.setRowSelectionAllowed(false);
 		infoLugares.setModel(modeloTabla);
@@ -207,6 +207,13 @@ public class JPagar extends JFrame {
 							}
 							continuar.setEnabled(false);
 							btnCancelar.setEnabled(false);
+					/* tratar de sacar cupos segun numero ingresado (ver)		
+					  try {
+								UPDATE localidad SET cupos = cupos - numero  WHERE id_localidad = lugares.getSelectedIndex();
+							}catch (Exception e){
+								
+							}
+							*/
 							mostrarMensajeVolverMenu("Compraste " + numero + " entradas para : " + nombreConcierto
 									+ " (" + nombreLocalidad + ")\nPrecio unitario: " + precioUnitario
 									+ "\nPrecio final: " + precioFinal);
