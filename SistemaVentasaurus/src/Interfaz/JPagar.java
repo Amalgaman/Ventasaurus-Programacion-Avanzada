@@ -96,9 +96,9 @@ public class JPagar extends JFrame {
 			}
 			conn.close();
 		} catch (SQLException e) {
-			ImageIcon icon = new ImageIcon("src/img/troste.jpg"); 
+			ImageIcon icon = new ImageIcon("src/img/troste.jpg");
 			JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + e.getMessage()
-					+ "\n\n Comuniquese con un administrador e intentelo más tarde",null, 0, icon);
+					+ "\n\n Comuniquese con un administrador e intentelo más tarde", null, 0, icon);
 
 		}
 
@@ -167,10 +167,10 @@ public class JPagar extends JFrame {
 			}
 			conn.close();
 		} catch (SQLException e) {
-			ImageIcon icon = new ImageIcon("src/img/troste.jpg"); 
+			ImageIcon icon = new ImageIcon("src/img/troste.jpg");
 			JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + e.getMessage()
-					+ "\n\n Comuniquese con un administrador e intentelo más tarde",null, 0, icon);
-			
+					+ "\n\n Comuniquese con un administrador e intentelo más tarde", null, 0, icon);
+
 		}
 
 		JButton continuar = new JButton("Continuar");
@@ -188,7 +188,8 @@ public class JPagar extends JFrame {
 					conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
 
 					for (int i = 0; i < cantEntr.getText().length(); i++) {
-						if (numero >= 1 && numero <= 10) {
+						if (numero >= 1 && numero <= 9) {
+							//Bug al poner 10 se restan 20 cupos							
 							String nombreLocalidad = lugares.getSelectedItem().toString();
 							String precioUnitario = "";
 							String precioFinal = "";
@@ -206,26 +207,45 @@ public class JPagar extends JFrame {
 								precioFinal = String.valueOf(precioTotal);
 							}
 							continuar.setEnabled(false);
-							btnCancelar.setEnabled(false);
-					/* tratar de sacar cupos segun numero ingresado (ver)		
-					  try {
-								UPDATE localidad SET cupos = cupos - numero  WHERE id_localidad = lugares.getSelectedIndex();
-							}catch (Exception e){
-								
-							}
-							*/
-							mostrarMensajeVolverMenu("Compraste " + numero + " entradas para : " + nombreConcierto
+							/* tratar de sacar cupos segun numero ingresado (ver) */
+							try {
+								final java.sql.Connection con2;
+
+								con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root",
+										"");
+								int localidadId;
+								if (lugares.getSelectedIndex() != 0) {
+								    localidadId = lugares.getSelectedIndex() + 1;  
+								} else {
+								    localidadId = 1;
+								}
+								String consultaCupos = "UPDATE `localidad` SET `cupos` = CASE WHEN (`cupos` - ?) < 0 THEN NULL ELSE (`cupos` - ?) END WHERE id = ?;";
+								PreparedStatement pstmtCupos = con2.prepareStatement(consultaCupos);
+								pstmtCupos.setLong(1, numero);
+								pstmtCupos.setLong(2, numero);
+								pstmtCupos.setLong(3, localidadId);
+								pstmtCupos.executeUpdate();
+								// UPDATE localidad SET cupos = cupos - numero WHERE id_localidad =
+								btnCancelar.setEnabled(false);
+								mostrarMensajeVolverMenu("Compraste " + numero + " entradas para : " + nombreConcierto
 									+ " (" + nombreLocalidad + ")\nPrecio unitario: " + precioUnitario
 									+ "\nPrecio final: " + precioFinal);
-						} else if (numero >= 11 || numero <= 0 || !Character.isDigit(texto.charAt(i))) {
-							mostrarMensajeError("Error al ingresar cantidad de entradas");
+							} catch (Exception eee) {
+								ImageIcon icon = new ImageIcon("src/img/troste.jpg");
+								JOptionPane.showMessageDialog(null,
+										"Error \n" + eee.getMessage()
+												+ "\nComuniquese con un administrador e intentelo más tarde",
+										null, 0, icon);
+							}		
+						} else if (numero >= 10 || numero <= 0 || !Character.isDigit(texto.charAt(i))) {
+							mostrarMensajeError("Error al ingresar cantidad de entradas (maximo 9 entradas)");
 						}
 					}
 					conn.close();
 				} catch (Exception e2) {
-					ImageIcon icon = new ImageIcon("src/img/troste.jpg"); 
+					ImageIcon icon = new ImageIcon("src/img/troste.jpg");
 					JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + e2.getMessage()
-							+ "\n\n Comuniquese con un administrador e intentelo más tarde",null, 0, icon);
+							+ "\n\n Comuniquese con un administrador e intentelo más tarde", null, 0, icon);
 					continuar.setEnabled(false);
 				}
 			}
@@ -276,7 +296,7 @@ public class JPagar extends JFrame {
 		JDialog dialogo = new JDialog();
 		dialogo.setUndecorated(true);
 		// Establecer el tamaño del diálogo en función del mensaje
-		int ancho = 400;
+		int ancho = 500;
 		int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
 
 		dialogo.setSize(ancho, alto);
@@ -320,15 +340,18 @@ public class JPagar extends JFrame {
 		Timer temporizador = new Timer(duracionMilisegundos, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dialogo.dispose();
-				JMenuPrincipal nuevo = new JMenuPrincipal();
-				nuevo.setLocationRelativeTo(null);
-				nuevo.setVisible(true);
-				dispose();
+				IrEleccion();
 			}
 		});
 		temporizador.setRepeats(false);
 		temporizador.start();
 
 		dialogo.setVisible(true);
+	}
+	public void IrEleccion() {
+		JOpcion nuevo = new JOpcion();
+		nuevo.setLocationRelativeTo(null);
+		nuevo.setVisible(true);
+		dispose();
 	}
 }
