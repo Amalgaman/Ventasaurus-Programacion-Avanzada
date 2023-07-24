@@ -227,7 +227,7 @@ public class JPagar extends JFrame {
 								pstmtCupos.executeUpdate();
 								// UPDATE localidad SET cupos = cupos - numero WHERE id_localidad =
 								btnCancelar.setEnabled(false);
-								mostrarMensajeVolverMenu("Compraste " + numero + " entradas para : " + nombreConcierto
+								mostrarMensajeVolverMenu("La ventana se cerrara automaticamente en 10 seg\nCompraste " + numero + " entradas para : " + nombreConcierto
 									+ " (" + nombreLocalidad + ")\nPrecio unitario: " + precioUnitario
 									+ "\nPrecio final: " + precioFinal);
 							} catch (Exception eee) {
