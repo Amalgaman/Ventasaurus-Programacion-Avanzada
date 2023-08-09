@@ -207,23 +207,43 @@ public class Concierto {
 		}
 	}
 	
-	public boolean editarConcierto(int id) {
-		
-		String sql ="UPDATE `persona` SET `nombre`='?',`apellido`='?',`dni`='?' WHERE id = ?";
-		
-		try {
-			
-			stmt = (PreparedStatement) conexion.prepareStatement(sql);
-			stmt.setInt(1, id);
-			stmt.executeUpdate();
-			conexion.close();
-			return true;
-			
-		}catch(Exception excepcion){
-			System.out.println(excepcion.getMessage());
-			return false;
-		}
-	}
+	public boolean modificarConcierto() {
+
+        String sql ="UPDATE concierto SET nombre=?,descripcion=?,direccion=?,fecha=? WHERE id = ?";
+
+        try {
+
+            stmt = (PreparedStatement) conexion.prepareStatement(sql);
+            stmt.setString(1, this.nombre);
+            stmt.setString(2, this.descripcion);
+            stmt.setString(3, this.direccion);
+            stmt.setString(4, this.fecha);
+            stmt.setInt(5, this.id);
+            stmt.executeUpdate();
+            return true;
+
+        }catch(Exception excepcion){
+            System.out.println(excepcion.getMessage());
+            return false;
+        }
+    }
+
+    public boolean cancelarConcierto(int id) {
+        String sql ="UPDATE concierto SET cancelado=1 WHERE id = ?";
+
+        try {
+
+            stmt = (PreparedStatement) conexion.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+            return true;
+
+        }catch(Exception excepcion){
+            System.out.println(excepcion.getMessage());
+            return false;
+        }
+    }
 	
 	
 }

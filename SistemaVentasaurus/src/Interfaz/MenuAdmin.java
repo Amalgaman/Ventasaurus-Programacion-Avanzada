@@ -1,37 +1,60 @@
 package Interfaz;
 
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.LinkedList;
-
 
 import javax.swing.JOptionPane;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import Datos.Concierto;
+import Datos.Conexion;
+import Datos.Entrada;
 import Datos.Localidad;
+import Datos.SolicitudDevolucion;
+//import Jframe.DevolverEntradas;
+//import Jframe.GenerarSolicitudAdmin;
+//import Jframe.VentanaError;
 import Negocio.Verifica;
 
 public class MenuAdmin {
+	
+	
+	Conexion con = new Conexion();
+	
+	Connection conexion = (Connection) con.conectar();
+	
+	PreparedStatement stmt;
 	
 	static Verifica verifica = new Verifica();
 	
 	public static void principal() {
 		//Variables inicializadas
 		int op = 0;
-		String[] opciones = {"Ver Conciertos","Ver Solicitudes de Devolucion","Salir"};
+		String[] opciones = {"Ver Conciertos","Ver Solicitudes de Devolucion","Cerrar Sesion"};
 		
-		do {
+		
 		op = JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - Administracion", 0, 0, null, opciones, 0);
 		
 		switch(op) {
 		case 0:
-			listaConciertos();
+		listaConciertos();
+//		jframe admin concierto
+//			adminConcierto.run(null);
 			break;
 		case 1:
-			listaSolicitudes();
+			//listaSolicitudes();
+			op=3;
 			break;
+		case 2:
+			MenuPrincipal.principal();
 		default:
 			break;	
 		}
-		}while(op<2);
+
 		
 	}
 	
@@ -55,6 +78,7 @@ public class MenuAdmin {
 			i++;
 		}
 		
+		
 		opConcierto = (String) JOptionPane.showInputDialog(
 				null // para que se muestre centrado
 				,"Selecciona un Concierto" // Mensaje de la ventana
@@ -71,45 +95,19 @@ public class MenuAdmin {
 		}else {
 			
 		 if (opConcierto.equals("Crear nuevo Concierto")) {
-			altaConcierto();
+			 adminAltaConcierto.run();
 		}else {
 			for (Concierto concierto : listaTraida) {
 				if (opConcierto.equals(concierto.getNombre())) {
 					cElegido = listaTraida.indexOf(concierto);
 				}
 			}
-			System.out.println(listaTraida.get(cElegido).getLocalidades());
 			
-			op = JOptionPane.showOptionDialog(null, listaTraida.get(cElegido).getNombre()
-					+" \n"+listaTraida.get(cElegido).getDescripcion()
-					+" \nFecha: "+listaTraida.get(cElegido).getFecha()
-					+" \nDireccion: "+listaTraida.get(cElegido).getDireccion()
-					+" \nCancelado: "+listaTraida.get(cElegido).isCancelado()
-					, "Ventasaurus - Administracion", 0, 0, null, abmConcierto, 0);
-		
-			switch(op) {
-			case 0:
-				altaConcierto();
-				break;
-			case 1:
-				JOptionPane.showMessageDialog(null, "Concierto cancelado con exito");
-				break;
-			case 2:
-				if(verifica.eliminarConcierto(listaTraida.get(cElegido).getId())) {
-					JOptionPane.showMessageDialog(null, "Concierto eliminado con exito");
-				}else {
-					JOptionPane.showMessageDialog(null, "No se pudo eliminar el concierto");
-				}
-				
-				break;
-			default:
-				break;	
-			}
+			adminConcierto.run(listaTraida.get(cElegido));
 		}
-		 listaConciertos();
 	}
 	}
-	public static void altaConcierto(){
+	/*public static void altaConcierto(){
 		//En el futuro podriamos armar un Formulario con JFrame, por ahora son JOptionPanel
 		
 		String nombre = JOptionPane.showInputDialog("Introduzca nombre del concierto");
@@ -146,15 +144,32 @@ public class MenuAdmin {
 		
 	}
 	
-	public static void listaSolicitudes() {
+	public static void listaSolicitudes()  {
 		//Variables inicializadas
 	    int op = 0;
 		String opSolicitud = " ";
 		String[] abmSolicitud ={"Autorizar Devolucion","Rechazar Solicitud","Volver"};
 		
 		//lista de solicitudes
-		String[] opcionesSolicitud ={"Generar Solicitud","Ramirez Raul - 19/01/2023","Martinez Silvina- 12/02/2023","Smith Mauro- 12/12/2022","Gutierrez Oscar - 19/01/2023"};
-		
+		SolicitudDevolucion aux= new SolicitudDevolucion(0,"","",0,"",0,0,null);
+		LinkedList<SolicitudDevolucion> solicitudes = aux.traerSolicitudes();
+		if (solicitudes.isEmpty()) {
+			String[] opcionesSolicitud= {"Generar solicitud"};
+			opSolicitud = (String) JOptionPane.showInputDialog(
+					null // para que se muestre centrado
+					,"Selecciona una Solicitud" // Mensaje de la ventana
+					,"Ventasaurus - Administracion" // Titulo de la ventana
+					,JOptionPane.QUESTION_MESSAGE // Icono
+					,null //null para icono defecto de la ventana
+					,opcionesSolicitud // el objeto
+					,opcionesSolicitud[0] // posicion del que va aparecer seleccionado
+					);
+		} else {
+		String[] opcionesSolicitud = new String[solicitudes.size()+1];
+		opcionesSolicitud[0]="Generar solicitud";
+		for (int i=1; i<=solicitudes.size();i++) {
+			opcionesSolicitud[i]=solicitudes.get(i-1).toString();
+		}
 		opSolicitud = (String) JOptionPane.showInputDialog(
 				null // para que se muestre centrado
 				,"Selecciona una Solicitud" // Mensaje de la ventana
@@ -165,28 +180,55 @@ public class MenuAdmin {
 				,opcionesSolicitud[0] // posicion del que va aparecer seleccionado
 				);
 		
+		}
 		//Esto es para salir del menu sin que se rompa
 		if(opSolicitud == null) {
-		  
-		}else if (opSolicitud.equals("Generar Solicitud")) {
-			altaSolicitud();
+			principal();
+		}else if (opSolicitud.equals("Generar solicitud")) {
+			MenuAdmin aux2=new MenuAdmin();
+			aux2.generarSolicitud();
 		}else {
-			op = JOptionPane.showOptionDialog(null, opSolicitud
-					+" \nLos Redondos 19/02/2023"
-					+" \nCantidad: 2"
-					+" \nPrecio $2200", "Ventasaurus - Administracion", 0, 0, null, abmSolicitud, 0);
-			switch(op) {
-			case 0:
-				JOptionPane.showMessageDialog(null, "Devolucion autorizada con exito. "
-						+ "Se le envio un correo electronico al cliente");
-				break;
-			case 1:
-				JOptionPane.showMessageDialog(null, "Solicitud rechazada con exito");
-				break;
-			default:
-				break;	
+			for (SolicitudDevolucion solicitud : solicitudes) {
+				if (solicitud.toString().equals(opSolicitud)) {
+					
+					op = JOptionPane.showOptionDialog(null, opSolicitud
+							+ solicitud.detalle(), "Ventasaurus - Administracion", 0, 0, null, abmSolicitud, 0);
+					switch(op) {
+					case 0:
+						if (solicitud.aprobar(true)) {
+							JOptionPane.showMessageDialog(null, "Devolucion autorizada con exito. "
+									+ "Se le envio un correo electronico al cliente");
+						} else {
+							JOptionPane.showMessageDialog(null, "Ocurrió un problema y no se puede aprobar en este momento");
+						}
+						break;
+					case 1:
+						if (solicitud.aprobar(false)) {
+						JOptionPane.showMessageDialog(null, "Solicitud rechazada con exito");
+						} else {
+							JOptionPane.showMessageDialog(null, "Ocurrió un problema y no se puede rechazar en este momento");
+						}
+						break;
+					default:
+						break;	
+					}
+					listaSolicitudes();
+				}
 			}
+			
+		
 		}
+	}
+	
+public void generarSolicitud() {
+		
+	String aux=JOptionPane.showInputDialog("Ingresar dni");
+	if (aux!=null && !aux.equals("")) {
+		int dni=Integer.parseInt(aux);
+		GenerarSolicitudAdmin.run(dni,false);
+	}else {
+		this.listaSolicitudes();
+	}
 	}
 	
 	public static void altaSolicitud(){
@@ -210,5 +252,6 @@ public class MenuAdmin {
 		listaSolicitudes();
 	}
 	
-	
+	*/
 }
+

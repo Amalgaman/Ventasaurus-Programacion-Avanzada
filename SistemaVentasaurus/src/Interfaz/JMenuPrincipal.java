@@ -82,11 +82,10 @@ public class JMenuPrincipal extends JFrame {
 		contentPane.add(login);
 		login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*JMenuCliente nuevo = new JMenuCliente();
+				Login nuevo = new Login();
 				nuevo.setLocationRelativeTo(null);
 				nuevo.setVisible(true);
-				dispose();*/
-            	JOptionPane.showMessageDialog(null, "En proceso");
+				dispose();	
 			}
 		});
 		
@@ -147,9 +146,10 @@ public class JMenuPrincipal extends JFrame {
 		contentPane.add(loginImg);
 		loginImg.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-            	//Hacer devolucion
-				//dispose();
-            	JOptionPane.showMessageDialog(null, "En proceso");
+            	Login nuevo = new Login();
+        		nuevo.setLocationRelativeTo(null);
+        		nuevo.setVisible(true);
+        		dispose();
             }
         });
 		
