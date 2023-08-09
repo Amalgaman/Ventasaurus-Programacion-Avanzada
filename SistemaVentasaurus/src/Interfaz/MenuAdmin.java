@@ -171,7 +171,7 @@ public class MenuAdmin {
 		
 	}
 	
-	public static void listaSolicitudes() {
+	public static void listaSolicitudes()  {
 		//Variables inicializadas
 	    int op = 0;
 		String opSolicitud = " ";
@@ -252,7 +252,7 @@ public void generarSolicitud() {
 	String aux=JOptionPane.showInputDialog("Ingresar dni");
 	if (aux!=null && !aux.equals("")) {
 		int dni=Integer.parseInt(aux);
-		GenerarSolicitudAdmin.run(dni);
+		GenerarSolicitudAdmin.run(dni,false);
 	}else {
 		this.listaSolicitudes();
 	}

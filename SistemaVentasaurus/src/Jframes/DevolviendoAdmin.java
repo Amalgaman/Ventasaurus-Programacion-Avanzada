@@ -12,8 +12,6 @@ import com.mysql.jdbc.PreparedStatement;
 import Datos.Conexion;
 import Datos.Entrada;
 import Interfaz.MenuAdmin;
-import Interfaz.MenuCliente;
-import Interfaz.MenuPrincipal;
 
 import javax.swing.JButton;
 import java.awt.FlowLayout;
@@ -31,7 +29,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 
-public class Devolviendo extends JFrame {
+public class DevolviendoAdmin extends JFrame {
 	Conexion con = new Conexion();
 	
 	Connection conexion = (Connection) con.conectar();
@@ -45,7 +43,7 @@ public class Devolviendo extends JFrame {
 
 			public static void run(LinkedList<Entrada> ids,int dni) {
 				try {
-					Devolviendo frame = new Devolviendo(ids,dni);
+					DevolviendoAdmin frame = new DevolviendoAdmin(ids,dni);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,7 +53,7 @@ public class Devolviendo extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Devolviendo(LinkedList<Entrada>  ids,int dni) {
+	public DevolviendoAdmin(LinkedList<Entrada>  ids,int dni) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setLocationRelativeTo(null);
@@ -143,7 +141,7 @@ public class Devolviendo extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				dispose();
-				MenuPrincipal.principal();
+				MenuAdmin.principal();
 			}
 		});
 		panel_1.add(btnNewButton);
@@ -153,7 +151,7 @@ public class Devolviendo extends JFrame {
 			JButton btnNewButton_1 = new JButton("Volver");
 			btnNewButton_1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					DevolverEntradas.run(dni,false);
+					GenerarSolicitudAdmin.run(dni,false);
 					dispose();
 				}
 			});

@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-public class Concierto {
+public class Concierto { 
 	private int id;
 	private String nombre;
 	private String descripcion;

@@ -17,7 +17,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-
+ 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
@@ -26,7 +26,7 @@ public class Login extends JFrame {
 	static Verifica verifica = new Verifica();
 	private JButton volver;
 	MenuAdmin admin = new MenuAdmin();
-	MenuControl control=new MenuControl();
+	MenuControl control=new MenuControl("");
 
 	/**
 	 * Launch the application.
@@ -78,7 +78,7 @@ public class Login extends JFrame {
 					break;
 				case "control":
 					dispose();
-					MenuControl.run();
+					MenuControl.run("");
 					break;
 				case "incorrecto":
 					JOptionPane.showMessageDialog(null, "DNI o Contraseña incorrectos");

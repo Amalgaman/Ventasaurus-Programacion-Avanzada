@@ -50,9 +50,9 @@ public class GenerarSolicitudAdmin extends JFrame {
 	MenuAdmin admin= new MenuAdmin();
 	private JTextField txtCdigoDeDevolucin;
 	
-	public static void run(int id) {
+	public static void run(int id, boolean checkbox) {
 		try {
-			GenerarSolicitudAdmin frame = new GenerarSolicitudAdmin(id);
+			GenerarSolicitudAdmin frame = new GenerarSolicitudAdmin(id, checkbox);
 			frame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,7 +60,7 @@ public class GenerarSolicitudAdmin extends JFrame {
 	}
 	
 	
-    public GenerarSolicitudAdmin(int dni) {
+    public GenerarSolicitudAdmin(int dni, boolean checkbox) {
         setTitle("Selección de entradas"+dni);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
@@ -70,8 +70,12 @@ public class GenerarSolicitudAdmin extends JFrame {
         panel.setLayout(new BorderLayout());
         List<String> opciones = new ArrayList<>();
         // Crear una lista de opciones
-        String sql="SELECT id,localidad,precio,concierto,c_devolucion FROM `vw_entrada` WHERE id not in (SELECT id_entrada FROM detalle_devolucion) AND id_cliente in (SELECT id FROM cliente WHERE dni=?)AND c_devolucion>0;";
-        String[] datos = new String[5]; 
+        String sql="";
+        if (checkbox) {
+        	sql="SELECT id,localidad,precio,concierto,c_devolucion FROM `vw_entrada` WHERE id_cliente in (SELECT id FROM cliente WHERE dni=?);";
+        } else {
+        	sql="SELECT id,localidad,precio,concierto,c_devolucion FROM `vw_entrada` WHERE id not in (SELECT id_entrada FROM detalle_devolucion) AND id_cliente in (SELECT id FROM cliente WHERE dni=?)AND c_devolucion>0;";
+        }String[] datos = new String[5]; 
 		LinkedList<Entrada> entradas =new LinkedList<Entrada>();
 		try {
 			
@@ -114,6 +118,9 @@ public class GenerarSolicitudAdmin extends JFrame {
             //checkBox.setIcon(new ImageIcon(DevolverEntradas.class.getResource("imagen.png"))); // Ruta a tu icono de selección
             //checkBox.setSelectedIcon(new ImageIcon(DevolverEntradas.class.getResource("chequeado.png"))); // Ruta a tu icono de selección seleccionado
             checkBox.setBackground(new Color(240, 240, 240));
+            if (checkbox && Integer.parseInt(entradas.get(opciones.indexOf(opcion)).getCodigoDevolucion()) <0) {
+            	checkBox.setEnabled(false);
+            }
             //checkBox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             listPanel.add(checkBox);
         }
@@ -166,12 +173,12 @@ public class GenerarSolicitudAdmin extends JFrame {
             	   aber=aber.substring(0, aber.length() - 1);
                 	//cliente.SolicitudDeDevolucion();
                 }*/
-                if(!entradas.isEmpty()) {
+                if(!elegidas.isEmpty()) {
                 	if (!codigo) {
                 		VentanaError.run("Codigo incorrecto");
                 	} else {	
                 		dispose();
-                		Devolviendo.run(elegidas,dni);
+                		DevolviendoAdmin.run(elegidas,dni);
                 	}
                 } else {
                 	VentanaError.run("No se han seleccionado entradas");
@@ -216,6 +223,24 @@ public class GenerarSolicitudAdmin extends JFrame {
         txtCdigoDeDevolucin.setText("  Código de devolución");
         panel_1.add(txtCdigoDeDevolucin);
         txtCdigoDeDevolucin.setColumns(10);
+        JCheckBox chckbxNewCheckBox = new JCheckBox("Mostrar no disponibles");
+        chckbxNewCheckBox.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		if(chckbxNewCheckBox.isSelected()) {
+        			dispose();
+        			GenerarSolicitudAdmin.run(dni, true);
+        		} else {
+        			dispose();
+        			GenerarSolicitudAdmin.run(dni, false);
+        		}
+        	}
+        });
+        if (checkbox) {
+        	chckbxNewCheckBox.setSelected(true);
+        }
+        
+        panel_1.add(chckbxNewCheckBox);
         panel_1.add(relleno);
         setVisible(true);
     }

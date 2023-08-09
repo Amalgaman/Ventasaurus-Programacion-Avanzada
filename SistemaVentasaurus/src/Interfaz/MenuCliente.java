@@ -94,7 +94,7 @@ public class MenuCliente {
 		String aux=JOptionPane.showInputDialog("Ingresar dni");
 		if (aux!=null && !aux.equals("")) {
 			int dni=Integer.parseInt(aux);
-			DevolverEntradas.run(dni);
+			DevolverEntradas.run(dni,false);
 		}else {
 			MenuPrincipal.principal();
 		}

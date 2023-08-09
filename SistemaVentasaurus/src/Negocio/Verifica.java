@@ -23,7 +23,7 @@ public class Verifica {
 	nuevoconcierto.setNombre(nombre);
 	nuevoconcierto.setDescripcion(descripcion);
 	nuevoconcierto.setDireccion(direccion);
-	nuevoconcierto.setFecha(fecha);
+	nuevoconcierto.setFecha(fecha); 
 	
 	return nuevoconcierto.guardarConcierto();
 

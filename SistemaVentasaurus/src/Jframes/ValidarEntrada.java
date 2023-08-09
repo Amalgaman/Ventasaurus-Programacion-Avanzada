@@ -153,8 +153,8 @@ public class ValidarEntrada extends JFrame {
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				dispose();
-				MenuControl.run();
+				dispose(); 
+				MenuControl.run("");
 			}
 		});
 		panel.add(btnNewButton_1);
