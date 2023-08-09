@@ -72,6 +72,7 @@ public class Login extends JFrame {
 					MenuAdmin.principal();
 					break;
 				case "control":
+					MenuControl.run("");
 					dispose();
 					break;
 				case "incorrecto":

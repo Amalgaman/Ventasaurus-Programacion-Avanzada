@@ -133,9 +133,12 @@ public class JMenuPrincipal extends JFrame {
 		contentPane.add(devolucionImg);
 		 devolucionImg.addMouseListener(new MouseAdapter() {
 	            public void mouseClicked(MouseEvent e) {
-	            	//Hacer devolucion
-					//dispose();
-	            	JOptionPane.showMessageDialog(null, "En proceso");
+				//	dispose();
+				//	DevolverEntradas frame = new DevolverEntradas();
+                 //   frame.setLocationRelativeTo(null);
+                   // frame.setVisible(true);
+	            	
+
 	            }
 	        });
 		

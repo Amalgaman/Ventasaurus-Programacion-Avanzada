@@ -50,7 +50,9 @@ public class MenuAdmin {
 			op=3;
 			break;
 		case 2:
-			MenuPrincipal.principal();
+			JMenuPrincipal frame = new JMenuPrincipal();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
 		default:
 			break;	
 		}
