@@ -7,17 +7,17 @@ import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import Datos.Concierto;
 import Datos.Conexion;
 import Datos.Entrada;
 import Datos.Localidad;
 import Datos.SolicitudDevolucion;
-import Jframes.DevolverEntradas;
-import Jframes.GenerarSolicitudAdmin;
-import Jframes.VentanaError;
+import Jframe.DevolverEntradas;
+import Jframe.GenerarSolicitudAdmin;
+import Jframe.VentanaError;
 import Negocio.Verifica;
 
 public class MenuAdmin {
@@ -44,7 +44,7 @@ public class MenuAdmin {
 			listaConciertos();
 			break;
 		case 1:
-  listaSolicitudes();
+			//listaSolicitudes();
 			op=3;
 			break;
 		case 2:

@@ -8,13 +8,13 @@ import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import Datos.Conexion;
 
 import Datos.Entrada;
-import Jframes.DevolverEntradas;
+import Jframe.DevolverEntradas;
 
 public class MenuCliente {
 

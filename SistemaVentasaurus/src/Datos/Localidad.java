@@ -3,8 +3,8 @@ package Datos;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 public class Localidad {
 	

@@ -1,7 +1,7 @@
 package Interfaz;
 
 import javax.swing.JOptionPane;
-import Jframes.Login;
+import Jframe.Login;
 
 import Negocio.Verifica;
 

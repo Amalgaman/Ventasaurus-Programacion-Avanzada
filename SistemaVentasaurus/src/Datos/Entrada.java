@@ -2,8 +2,8 @@ package Datos;
 
 import java.sql.ResultSet;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 public class Entrada {
 	private int id;
