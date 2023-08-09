@@ -1,6 +1,8 @@
 package Negocio;
 
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Datos.Concierto;
 import Datos.Empleado;
@@ -20,27 +22,91 @@ public class Verifica {
 	
 	public int validarConcierto(String nombre,String descripcion, String direccion, String fecha) {
 	
-	nuevoconcierto.setNombre(nombre);
-	nuevoconcierto.setDescripcion(descripcion);
-	nuevoconcierto.setDireccion(direccion);
-	nuevoconcierto.setFecha(fecha); 
+
+		 if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]*", nombre)) {
+		    	nuevoconcierto.setNombre(nombre);
+		    	
+		    	if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]*", descripcion)) {
+		    		nuevoconcierto.setDescripcion(descripcion);
+		    		
+		    		 if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]*", direccion)) {
+		    			 nuevoconcierto.setDireccion(direccion);
+		    			 
+		    			 if(Pattern.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}", fecha)) {
+		    				 nuevoconcierto.setFecha(fecha);
+		    				 
+		    				 System.out.println("Match found");
+		    	
+		    				 return nuevoconcierto.guardarConcierto();
+		    				 
+		    			 }else {
+						      System.out.println("Fecha Match not found");
+		 			    }
+		    		 }else {
+					      System.out.println("Direccion Match not found");
+					    }
+		    	}else {
+				      System.out.println("Descripcion Match not found");
+			    }
+		    } else {
+		      System.out.println("Nombre Match not found");
+		    }
+
 	
-	return nuevoconcierto.guardarConcierto();
+	return 0;
 
 	}
+	
+	public boolean validarModificacionConcierto(String nombre,String descripcion, String direccion, String fecha,int id) {
+		
+		if(id>0) {
+			nuevoconcierto.setId(id);
+
+		    if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]*", nombre)) {
+		    	nuevoconcierto.setNombre(nombre);
+		    	
+		    	if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]*", descripcion)) {
+		    		nuevoconcierto.setDescripcion(descripcion);
+		    		
+		    		 if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]*", direccion)) {
+		    			 nuevoconcierto.setDireccion(direccion);
+		    			 
+		    			 if(Pattern.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}", fecha)) {
+		    				 nuevoconcierto.setFecha(fecha);
+		    				 
+		    				 System.out.println("Match found");
+		    	
+		    	             return nuevoconcierto.modificarConcierto();
+		    				 
+		    			 }else {
+						      System.out.println("Fecha Match not found");
+		 			    }
+		    		 }else {
+					      System.out.println("Direccion Match not found");
+					    }
+		    	}else {
+				      System.out.println("Descripcion Match not found");
+			    }
+		    } else {
+		      System.out.println("Nombre Match not found");
+		    }
+		}
+		
+		return false;
+		
+	}
+	
+	public boolean cancelarConcierto(int id) {
+
+		return nuevoconcierto.cancelarConcierto(id);
+    }
 	
 	public boolean eliminarConcierto(int id) {
 
 			return nuevoconcierto.eliminarConcierto(id);
 	}
 	
-	public boolean editarConcierto(int id) {
-		if(id>0) {
-			return nuevoconcierto.editarConcierto(id);
-		}else {
-			return false;
-		}
-	}
+
 	
    public LinkedList<Localidad> verificaListaLocalidades(){
 		
@@ -51,12 +117,29 @@ public class Verifica {
 	
 	public boolean validarLocalidad(String nombre,int cupos, double precio, int idConcierto) {
 	
-	nuevalocalidad.setNombre(nombre);
-	nuevalocalidad.setCuposTotal(cupos);
-	nuevalocalidad.setPrecio(precio);
-	
-	return nuevalocalidad.guardarLocalidad(idConcierto);
-
+		if(idConcierto > 0) {
+	    	nuevoconcierto.setNombre(nombre);
+	    	
+	    	if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]*", nombre)) {
+	    		nuevalocalidad.setNombre(nombre);
+			    	if(cupos>0) {
+			    		nuevalocalidad.setCuposTotal(cupos);
+						    	if(precio>0) {
+						    		nuevalocalidad.setPrecio(precio);
+						    		return nuevalocalidad.guardarLocalidad(idConcierto);
+						    	}else {
+								      System.out.println("Precio LocalidadMatch not found");
+							    }
+			    	}else {
+					      System.out.println("Cupos Localidad Match not found");
+				    }
+	    	}else {
+			      System.out.println("Nombre Localidad Match not found");
+		    }
+	    		
+	    	
+	    	}
+	    return false;
 	}
 	
 	public boolean eliminarLocalidad(int id) {
@@ -64,13 +147,6 @@ public class Verifica {
 			return nuevoconcierto.eliminarConcierto(id);
 	}
 	
-	public boolean editarLocalidad(int id) {
-		if(id>0) {
-			return nuevoconcierto.editarConcierto(id);
-		}else {
-			return false;
-		}
-	}
 	
 	public String verificaIngresarEmpleado(String dni, String password){
 		

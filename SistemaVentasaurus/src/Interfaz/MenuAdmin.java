@@ -34,9 +34,9 @@ public class MenuAdmin {
 	public static void principal() {
 		//Variables inicializadas
 		int op = 0;
-		String[] opciones = {"Ver Conciertos","Ver Solicitudes de Devolucion","Salir"};
+		String[] opciones = {"Ver Conciertos","Ver Solicitudes de Devolucion","Cerrar Sesion"};
 		
-		do {
+		
 		op = JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - Administracion", 0, 0, null, opciones, 0);
 		
 		switch(op) {
@@ -44,7 +44,7 @@ public class MenuAdmin {
 			listaConciertos();
 			break;
 		case 1:
-			listaSolicitudes();
+  listaSolicitudes();
 			op=3;
 			break;
 		case 2:
@@ -52,7 +52,7 @@ public class MenuAdmin {
 		default:
 			break;	
 		}
-		}while(op<2);
+
 		
 	}
 	
@@ -76,6 +76,7 @@ public class MenuAdmin {
 			i++;
 		}
 		
+		
 		opConcierto = (String) JOptionPane.showInputDialog(
 				null // para que se muestre centrado
 				,"Selecciona un Concierto" // Mensaje de la ventana
@@ -92,7 +93,7 @@ public class MenuAdmin {
 		}else {
 			
 		 if (opConcierto.equals("Crear nuevo Concierto")) {
-			altaConcierto();
+			 adminAltaConcierto.run();
 		}else {
 			for (Concierto concierto : listaTraida) {
 				if (opConcierto.equals(concierto.getNombre())) {
@@ -100,41 +101,11 @@ public class MenuAdmin {
 				}
 			}
 			
-			String mensaje = listaTraida.get(cElegido).getNombre()
-					+" \n"+listaTraida.get(cElegido).getDescripcion()
-					+" \nFecha: "+listaTraida.get(cElegido).getFecha()
-					+" \nDireccion: "+listaTraida.get(cElegido).getDireccion()
-					+" \nCancelado: "+listaTraida.get(cElegido).isCancelado()
-                    +" \nLocalidades: ";
-			
-			for (Localidad localidad : listaTraida.get(cElegido).getLocalidades()) {
-				mensaje = mensaje+" \n"+localidad;
-			}
-			
-			op = JOptionPane.showOptionDialog(null, mensaje, "Ventasaurus - Administracion", 0, 0, null, abmConcierto, 0);
-		
-			switch(op) {
-			case 0:
-				altaConcierto();
-				break;
-			case 1:
-				JOptionPane.showMessageDialog(null, "Concierto cancelado con exito");
-				break;
-			case 2:
-				if(verifica.eliminarConcierto(listaTraida.get(cElegido).getId())) {
-					JOptionPane.showMessageDialog(null, "Concierto eliminado con exito");
-				}else {
-					JOptionPane.showMessageDialog(null, "No se pudo eliminar el concierto");
-				}
-				break;
-			default:
-				break;	
-			}
+			adminConcierto.run(listaTraida.get(cElegido));
 		}
-		 listaConciertos();
 	}
 	}
-	public static void altaConcierto(){
+	/*public static void altaConcierto(){
 		//En el futuro podriamos armar un Formulario con JFrame, por ahora son JOptionPanel
 		
 		String nombre = JOptionPane.showInputDialog("Introduzca nombre del concierto");
@@ -279,5 +250,5 @@ public void generarSolicitud() {
 		listaSolicitudes();
 	}
 	
-	
+	*/
 }

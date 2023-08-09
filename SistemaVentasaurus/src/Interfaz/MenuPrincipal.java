@@ -38,19 +38,4 @@ public class MenuPrincipal {
 		
 	}
 	
-	public static String login() {
-		String dni = JOptionPane.showInputDialog("Ingresar dni");
-		
-		if (dni==null) {
-			return "null";
-		}else {
-			String password = JOptionPane.showInputDialog("Ingresar contraseña");
-			if (password==null) {
-				return "null";
-			}else {
-				return verifica.verificaIngresarEmpleado(dni, password);
-			}
-		}
-		
-	}
 }
