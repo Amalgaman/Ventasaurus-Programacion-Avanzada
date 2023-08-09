@@ -133,11 +133,9 @@ public class JMenuCliente extends JFrame {
 							String direccion = rs.getString("direccion");
 							String fecha = rs.getString("fecha");
 
-							// Mostrar la información del concierto en el JTextArea
 							infoConciertos.setText("Nombre: " + nombre + "\nDescripcion: " + descripcion + "\nFecha: "
 									+ fecha + "\nDireccion: " + direccion);
 						} else {
-							// No se encontró información del concierto
 							infoConciertos.setText("No se encontró información del concierto");
 						}
 						conn.close();
@@ -153,14 +151,12 @@ public class JMenuCliente extends JFrame {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
 
-			// Crear una sentencia SQL
+			
 			stmt = conn.createStatement();
 
-			// Ejecutar la consulta y obtener el resultado
 			String consulta = "SELECT nombre FROM concierto";
 			rs = stmt.executeQuery(consulta);
 
-			// Agregar los datos al JComboBox
 			while (rs.next()) {
 				String nombre = rs.getString("nombre");
 				listaConciertos.addItem(nombre);
@@ -218,11 +214,11 @@ public class JMenuCliente extends JFrame {
 					mostrarMensajeError("Ingrese un DNI válido (8 dígitos)");
 				} else {
 					boolean contieneLetras = false;
-					char letra = '\0'; // Variable para almacenar la letra encontrada
+					char letra = '\0'; 
 					for (int i = 0; i < dniText.length(); i++) {
 						if (!Character.isDigit(dniText.charAt(i))) {
 							contieneLetras = true;
-							letra = dniText.charAt(i); // Almacenar la letra encontrada
+							letra = dniText.charAt(i);
 							break;
 						}
 					}
@@ -240,9 +236,8 @@ public class JMenuCliente extends JFrame {
 			private void mostrarMensajeError(String mensaje) {
 				JDialog dialogo = new JDialog();
 				dialogo.setUndecorated(true);
-				// Establecer el tamaño del diálogo en función del mensaje
 				int ancho = 400;
-				int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
+				int alto = 100 + (mensaje.length() / 30) * 20; 
 
 				dialogo.setSize(ancho, alto);
 
@@ -279,9 +274,9 @@ public class JMenuCliente extends JFrame {
 					LocalDate fechaActual = LocalDate.now();
 					String fechaActualFormato = fechaActual.format(DateTimeFormatter.ISO_LOCAL_DATE);
 					consulta += " WHERE fecha >= '" + fechaActualFormato + "'";
-					comprarPagar.setEnabled(true); // Mostrar el botón "Continuar"
+					comprarPagar.setEnabled(true); 
 				} else {
-					comprarPagar.setEnabled(false); // Ocultar el botón "Continuar"
+					comprarPagar.setEnabled(false); 
 				}
 
 				try (java.sql.Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb",

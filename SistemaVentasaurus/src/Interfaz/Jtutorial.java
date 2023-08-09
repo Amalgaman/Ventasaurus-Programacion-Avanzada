@@ -134,7 +134,7 @@ public class Jtutorial extends JFrame {
 		contentPane.add(txtrPaso4);
 		
 		JTextArea txtrPaso5 = new JTextArea();
-		txtrPaso5.setText("Paso 5: Escribir la cantidad de entradas a comprar (Minimo 1, Maximo 10)");
+		txtrPaso5.setText("Paso 5: Escribir la cantidad de entradas a comprar (Minimo 1, Maximo 9)");
 		txtrPaso5.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 		txtrPaso5.setEditable(false);
 		txtrPaso5.setBackground(Color.LIGHT_GRAY);
@@ -225,9 +225,8 @@ public class Jtutorial extends JFrame {
 	private void mostrarMensaje(String mensaje) {
 		JDialog dialogo = new JDialog();
 		dialogo.setUndecorated(true);
-		// Establecer el tamaño del diálogo en función del mensaje
 		int ancho = 400;
-		int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
+		int alto = 100 + (mensaje.length() / 30) * 20; 
 
 		dialogo.setSize(ancho, alto);
 

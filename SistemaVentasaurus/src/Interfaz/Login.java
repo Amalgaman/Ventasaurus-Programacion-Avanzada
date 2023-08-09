@@ -30,6 +30,7 @@ public class Login extends JFrame {
 			public static void run() {
 				try {
 					Login frame = new Login();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,9 +41,11 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+		setResizable(false);
+		setUndecorated(true);
 		setFont(new Font("Tahoma", Font.PLAIN, 18));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 316, 233);
+		setBounds(100, 100, 300, 205);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -50,7 +53,7 @@ public class Login extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Ingrese DNI");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		lblNewLabel.setBounds(95, 11, 99, 23);
 		contentPane.add(lblNewLabel);
 		
@@ -60,7 +63,7 @@ public class Login extends JFrame {
 		inputDni.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Ingresar");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -88,12 +91,12 @@ public class Login extends JFrame {
 				
 			}
 		});
-		btnNewButton.setBounds(39, 129, 99, 35);
+		btnNewButton.setBounds(39, 148, 99, 35);
 		contentPane.add(btnNewButton);
 		
 		JLabel lblNewLabel_1 = new JLabel("Ingrese Contraseña");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_1.setBounds(69, 72, 154, 23);
+		lblNewLabel_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		lblNewLabel_1.setBounds(78, 72, 139, 23);
 		contentPane.add(lblNewLabel_1);
 		
 		inputPass = new JTextField();
@@ -102,7 +105,7 @@ public class Login extends JFrame {
 		inputPass.setColumns(10);
 		
 		volver = new JButton("Volver");
-		volver.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		volver.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		volver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JMenuPrincipal nuevo = new JMenuPrincipal();
@@ -111,7 +114,7 @@ public class Login extends JFrame {
 				dispose();
 			}
 		});
-		volver.setBounds(159, 129, 99, 35);
+		volver.setBounds(158, 148, 99, 35);
 		contentPane.add(volver);
 	}
 	

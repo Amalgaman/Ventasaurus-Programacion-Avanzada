@@ -53,7 +53,12 @@ public class MenuAdmin {
 			JMenuPrincipal frame = new JMenuPrincipal();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
+            break;
+//            Faltaba el break
 		default:
+			JMenuPrincipal frames = new JMenuPrincipal();
+            frames.setLocationRelativeTo(null);
+            frames.setVisible(true);
 			break;	
 		}
 
@@ -93,7 +98,9 @@ public class MenuAdmin {
 		
 		//Esto es para salir del menu sin que se rompa
 		if(opConcierto == null) {
-		  
+//			JMenuPrincipal frame = new JMenuPrincipal();
+//            frame.setLocationRelativeTo(null);
+//            frame.setVisible(true);
 		}else {
 			
 		 if (opConcierto.equals("Crear nuevo Concierto")) {

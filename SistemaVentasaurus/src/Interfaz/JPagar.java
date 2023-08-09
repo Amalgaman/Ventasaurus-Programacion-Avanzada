@@ -82,14 +82,12 @@ public class JPagar extends JFrame {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
 
-			// Crear una sentencia SQL
 			stmt = conn.createStatement();
 
-			// Ejecutar la consulta y obtener el resultado
+
 			String consulta = "SELECT nombre,precio FROM localidad";
 			rs = stmt.executeQuery(consulta);
 
-			// Agregar los datos al JComboBox
 			while (rs.next()) {
 				String nombre = rs.getString("nombre");
 				lugares.addItem(nombre);
@@ -143,21 +141,19 @@ public class JPagar extends JFrame {
 		infoLugares.setModel(modeloTabla);
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
-			// Crear una sentencia SQL
+
 			stmt = conn.createStatement();
 
-			// Ejecutar la consulta y obtener el resultado
 			String consulta = "SELECT nombre,precio,cupos FROM localidad";
 			rs = stmt.executeQuery(consulta);
 
-			// Obtener los metadatos de la consulta (nombres de columnas)
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int numColumnas = rsmd.getColumnCount();
 			for (int i = 1; i <= numColumnas; i++) {
 				String nombreColumna = rsmd.getColumnName(i);
 				modeloTabla.addColumn(nombreColumna);
 			}
-			// Agregar los datos a la tabla
+
 			while (rs.next()) {
 				Object[] fila = new Object[numColumnas];
 				for (int i = 1; i <= numColumnas; i++) {
@@ -189,12 +185,12 @@ public class JPagar extends JFrame {
 
 					for (int i = 0; i < cantEntr.getText().length(); i++) {
 						if (numero >= 1 && numero <= 9) {
-							//Bug al poner 10 se restan 20 cupos							
+														
 							String nombreLocalidad = lugares.getSelectedItem().toString();
 							String precioUnitario = "";
 							String precioFinal = "";
 
-							// Obtener el precio unitario y final de la base de datos
+							
 							String consulta = "SELECT precio FROM localidad WHERE nombre = ?";
 							PreparedStatement pstmt = conn.prepareStatement(consulta);
 							pstmt.setString(1, nombreLocalidad);
@@ -207,7 +203,7 @@ public class JPagar extends JFrame {
 								precioFinal = String.valueOf(precioTotal);
 							}
 							continuar.setEnabled(false);
-							/* tratar de sacar cupos segun numero ingresado (ver) */
+							
 							try {
 								final java.sql.Connection con2;
 
@@ -225,7 +221,7 @@ public class JPagar extends JFrame {
 								pstmtCupos.setLong(2, numero);
 								pstmtCupos.setLong(3, localidadId);
 								pstmtCupos.executeUpdate();
-								// UPDATE localidad SET cupos = cupos - numero WHERE id_localidad =
+							
 								btnCancelar.setEnabled(false);
 								mostrarMensajeVolverMenu("La ventana se cerrara automaticamente en 10 seg\nCompraste " + numero + " entradas para : " + nombreConcierto
 									+ " (" + nombreLocalidad + ")\nPrecio unitario: " + precioUnitario
@@ -295,10 +291,8 @@ public class JPagar extends JFrame {
 	private void mostrarMensajeError(String mensaje) {
 		JDialog dialogo = new JDialog();
 		dialogo.setUndecorated(true);
-		// Establecer el tamaño del diálogo en función del mensaje
 		int ancho = 500;
-		int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
-
+		int alto = 100 + (mensaje.length() / 30) * 20; 
 		dialogo.setSize(ancho, alto);
 
 		JLabel etiqueta = new JLabel(mensaje);
@@ -322,9 +316,8 @@ public class JPagar extends JFrame {
 	private void mostrarMensajeVolverMenu(String mensaje) {
 		JDialog dialogo = new JDialog();
 		dialogo.setUndecorated(true);
-		// Establecer el tamaño del diálogo en función del mensaje
 		int ancho = 400;
-		int alto = 100 + (mensaje.length() / 30) * 20; // Ajusta el alto según la longitud del mensaje
+		int alto = 100 + (mensaje.length() / 30) * 20; 
 
 		dialogo.setSize(ancho, alto);
 

@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class adminEditarConcierto extends JFrame {
 
@@ -33,6 +34,7 @@ public class adminEditarConcierto extends JFrame {
 			public static void run(Concierto concierto) {
 				try {
 					adminEditarConcierto frame = new adminEditarConcierto(concierto);
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +47,8 @@ public class adminEditarConcierto extends JFrame {
 	 */
 	public adminEditarConcierto(Concierto concierto) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 400, 325);
+		setUndecorated(true);
+		setBounds(100, 100, 390, 290);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -53,45 +56,54 @@ public class adminEditarConcierto extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Nombre");
+		lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 		lblNewLabel.setBounds(22, 11, 270, 14);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Descripcion");
+		lblNewLabel_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 		lblNewLabel_1.setBounds(22, 64, 342, 14);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Direccion");
+		lblNewLabel_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 		lblNewLabel_2.setBounds(22, 153, 377, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Fecha");
+		lblNewLabel_3.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 		lblNewLabel_3.setBounds(22, 196, 46, 14);
 		contentPane.add(lblNewLabel_3);
 		
 		inputNombre = new JTextField();
+		inputNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 		inputNombre.setBounds(20, 33, 348, 20);
 		inputNombre.setText(concierto.getNombre());
 		contentPane.add(inputNombre);
 		inputNombre.setColumns(10);
 		
 		JTextArea inputDescripcion = new JTextArea();
+		inputDescripcion.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 		inputDescripcion.setBounds(22, 89, 342, 61);
 		inputDescripcion.setText(concierto.getDescripcion());
 		contentPane.add(inputDescripcion);
 		
 		inputDireccion = new JTextField();
+		inputDireccion.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 		inputDireccion.setBounds(22, 169, 342, 20);
 		inputDireccion.setText(concierto.getDireccion());
 		contentPane.add(inputDireccion);
 		inputDireccion.setColumns(10);
 		
 		inputFecha = new JTextField();
+		inputFecha.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 		inputFecha.setBounds(22, 215, 342, 20);
 		inputFecha.setText(concierto.getFecha());
 		contentPane.add(inputFecha);
 		inputFecha.setColumns(10);
 		
 		JButton guardarButton = new JButton("Guardar");
+		guardarButton.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
 		guardarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(verifica.validarModificacionConcierto(inputNombre.getText(), inputDescripcion.getText(), inputDireccion.getText(), inputFecha.getText(),concierto.getId())) {
@@ -108,6 +120,7 @@ public class adminEditarConcierto extends JFrame {
 		contentPane.add(guardarButton);
 		
 		JButton vaolverButton = new JButton("Cancelar");
+		vaolverButton.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
 		vaolverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
