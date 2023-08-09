@@ -1,4 +1,4 @@
-package Interfaz;
+package Jframes;
 
 import java.awt.EventQueue;
 
@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Interfaz.MenuAdmin;
+import Interfaz.MenuPrincipal;
 import Negocio.Verifica;
 
 import javax.swing.JLabel;
@@ -15,7 +17,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-
+ 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
@@ -23,6 +25,8 @@ public class Login extends JFrame {
 	private JTextField inputPass;
 	static Verifica verifica = new Verifica();
 	private JButton volver;
+	MenuAdmin admin = new MenuAdmin();
+	MenuControl control=new MenuControl("");
 
 	/**
 	 * Launch the application.
@@ -43,6 +47,7 @@ public class Login extends JFrame {
 		setFont(new Font("Tahoma", Font.PLAIN, 18));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 316, 233);
+		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -73,6 +78,7 @@ public class Login extends JFrame {
 					break;
 				case "control":
 					dispose();
+					MenuControl.run("");
 					break;
 				case "incorrecto":
 					JOptionPane.showMessageDialog(null, "DNI o Contraseña incorrectos");
@@ -104,7 +110,7 @@ public class Login extends JFrame {
 		volver.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		volver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				dispose();
 				MenuPrincipal.principal();
 			}
 		});

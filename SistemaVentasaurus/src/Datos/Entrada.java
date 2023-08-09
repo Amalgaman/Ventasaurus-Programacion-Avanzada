@@ -2,8 +2,8 @@ package Datos;
 
 import java.sql.ResultSet;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 public class Entrada {
 	private int id;
@@ -67,6 +67,12 @@ public class Entrada {
 		this.codigoDevolucion = codigoDevolucion;
 	}
 	
+	
+	@Override
+	public String toString() {
+		return id+"["+concierto+"] [" + localidad + "] [" + precio + "]";
+	}
+
 	public int contarEntradas(int idLocalidad) {
 		String sql ="SELECT COUNT(*) FROM `entrada` WHERE id_localidad = ?";
 		int entradas = 0;

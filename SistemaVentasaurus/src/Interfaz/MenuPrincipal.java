@@ -1,6 +1,7 @@
 package Interfaz;
 
 import javax.swing.JOptionPane;
+import Jframe.Login;
 
 import Negocio.Verifica;
 
@@ -9,6 +10,7 @@ public class MenuPrincipal {
 	static Verifica verifica = new Verifica();
 	
 	public static void principal() {
+		MenuCliente cliente=new MenuCliente();
 		String[] opciones = {"Ver conciertos","Solicitar Devolucion","Ingreso Empleado","Salir"};
 		int eleccion;
 		boolean cerrar = false;
@@ -17,10 +19,11 @@ public class MenuPrincipal {
 	
 		switch (eleccion) {
 		case 0:
-			MenuCliente.listaConciertosCliente();
+			cliente.listaConciertosCliente();
 			break;
 		case 1:
-			MenuCliente.SolicitudDeDevolucion();
+			cliente.SolicitudDeDevolucion();
+			cerrar=true;
 			break;
 		case 2:
 			Login.run();
