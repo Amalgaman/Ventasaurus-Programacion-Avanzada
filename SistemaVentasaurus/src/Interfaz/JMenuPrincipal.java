@@ -155,13 +155,31 @@ public class JMenuPrincipal extends JFrame {
 		contentPane.add(devolucionImg);
 		 devolucionImg.addMouseListener(new MouseAdapter() {
 	            public void mouseClicked(MouseEvent e) {
-				//	dispose();
-				//	DevolverEntradas frame = new DevolverEntradas();
-                 //   frame.setLocationRelativeTo(null);
-                   // frame.setVisible(true);
-	            	
+	            	Verifica verifica = new Verifica();
 
-	            }
+					ImageIcon icon = new ImageIcon("src/img/dni.jpg");
+
+					String aux = (String) JOptionPane.showInputDialog(null // para que se muestre centrado
+							, "Ingrese DNI" // Mensaje de la ventana
+							, "Ventasaurus - Devoluciones" // Titulo de la ventana
+							, JOptionPane.QUESTION_MESSAGE // Icono
+							, icon // null para icono defecto de la ventana
+							, null // el objeto
+							, null // posicion del que va aparecer seleccionado
+					);
+					
+					if (aux!=null && !aux.equals("")) {
+						
+						if(verifica.verificarDni(aux)) {
+							int dni = Integer.parseInt(aux);
+							dispose();
+						    DevolverEntradas.run(dni,false);
+						}else {
+							JOptionPane.showMessageDialog(null, "DNI ingresado es incorrecto, debe contener 8 caracteres numericos.");
+						}
+						
+					}
+				}
 	        });
 		
 		JLabel loginImg = new JLabel("");

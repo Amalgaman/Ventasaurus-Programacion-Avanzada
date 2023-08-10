@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import javax.swing.JPasswordField;
 
 public class Login extends JFrame {
 
@@ -23,6 +24,7 @@ public class Login extends JFrame {
 	private JTextField inputPass;
 	static Verifica verifica = new Verifica();
 	private JButton volver;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -67,7 +69,7 @@ public class Login extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				switch(verifica.verificaIngresarEmpleado(inputDni.getText(), inputPass.getText())) {
+				switch(verifica.verificaIngresarEmpleado(inputDni.getText(), passwordField.getText())) {
 				case "null": //Esto es por si el usuario toca "Cancelar" o "Cerrar"
 					break;
 				case "admin":
@@ -98,11 +100,7 @@ public class Login extends JFrame {
 		lblNewLabel_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		lblNewLabel_1.setBounds(78, 72, 139, 23);
 		contentPane.add(lblNewLabel_1);
-		
-		inputPass = new JTextField();
-		inputPass.setBounds(59, 98, 170, 20);
-		contentPane.add(inputPass);
-		inputPass.setColumns(10);
+
 		
 		volver = new JButton("Volver");
 		volver.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
@@ -116,6 +114,9 @@ public class Login extends JFrame {
 		});
 		volver.setBounds(158, 148, 99, 35);
 		contentPane.add(volver);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(59, 98, 170, 23);
+		contentPane.add(passwordField);
 	}
-	
 }
