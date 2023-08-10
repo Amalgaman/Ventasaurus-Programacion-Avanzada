@@ -44,6 +44,7 @@ public class DevolviendoAdmin extends JFrame {
 			public static void run(LinkedList<Entrada> ids,int dni) {
 				try {
 					DevolviendoAdmin frame = new DevolviendoAdmin(ids,dni);
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,6 +58,8 @@ public class DevolviendoAdmin extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setLocationRelativeTo(null);
+		setResizable(false);
+		setUndecorated(true);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

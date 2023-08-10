@@ -54,6 +54,7 @@ public class DevolverEntradas extends JFrame {
 	public static void run(int id, boolean checkbox) {
 		try {
 			DevolverEntradas frame = new DevolverEntradas(id, checkbox);
+			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,6 +67,8 @@ public class DevolverEntradas extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
         setLocationRelativeTo(null);
+        setResizable(false);
+		setUndecorated(true);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -144,6 +147,7 @@ public class DevolverEntradas extends JFrame {
         LinkedList<Integer> ids= new LinkedList<Integer>();
         
         JButton btnNewButton = new JButton("Aceptar");
+        btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
         btnNewButton.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -193,6 +197,7 @@ public class DevolverEntradas extends JFrame {
         buttonPanel.add(btnNewButton);
         
         JButton btnNewButton_1 = new JButton("Volver");
+        btnNewButton_1.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
         btnNewButton_1.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -214,7 +219,7 @@ public class DevolverEntradas extends JFrame {
         panel_1.add(lblNewLabel_1);
         
         JLabel lblNewLabel_2 = new JLabel("  Selección de entradas a devolver:");
-        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblNewLabel_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
         lblNewLabel_2.setHorizontalAlignment(SwingConstants.LEFT);
         panel_1.add(lblNewLabel_2);
         
@@ -224,11 +229,13 @@ public class DevolverEntradas extends JFrame {
         panel_1.add(lblNewLabel);
         
         txtCdigoDeDevolucin = new JTextField();
+        txtCdigoDeDevolucin.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
         txtCdigoDeDevolucin.setText("  Código de devolución");
         panel_1.add(txtCdigoDeDevolucin);
         txtCdigoDeDevolucin.setColumns(10);
         
         JCheckBox chckbxNewCheckBox = new JCheckBox("Mostrar no disponibles");
+        chckbxNewCheckBox.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
         chckbxNewCheckBox.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {

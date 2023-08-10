@@ -46,6 +46,7 @@ public class ValidarEntrada extends JFrame {
 			public static void run(Concierto concierto) {
 				try {
 					ValidarEntrada frame = new ValidarEntrada(concierto);
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,6 +62,8 @@ public class ValidarEntrada extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setLocationRelativeTo(null);
+		setResizable(false);
+		setUndecorated(true);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -80,12 +83,13 @@ public class ValidarEntrada extends JFrame {
 		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Ingresar dni");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(10, 10, 406, 50);
 		panel_1.add(lblNewLabel);
 		
 		textField = new JTextField();
+		textField.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		textField.setBounds(164, 70, 96, 19);
 		panel_1.add(textField);
 		textField.setColumns(10);
@@ -99,6 +103,7 @@ public class ValidarEntrada extends JFrame {
 		panel_1.add(lblNewLabel_1);
 		
 		JButton btnNewButton = new JButton("Validar");
+		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -151,6 +156,7 @@ public class ValidarEntrada extends JFrame {
 		panel.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Volver");
+		btnNewButton_1.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

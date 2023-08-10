@@ -32,6 +32,7 @@ public class adminAltaLocalidades extends JFrame {
 			public static void run(int id) {
 				try {
 					adminAltaLocalidades frame = new adminAltaLocalidades(id);
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,14 +45,17 @@ public class adminAltaLocalidades extends JFrame {
 	 */
 	public adminAltaLocalidades(int id) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 417, 300);
+		setBounds(100, 100, 415, 250);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		setLocationRelativeTo(null);
+		setResizable(false);
+		setUndecorated(true);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JButton guardarBoton = new JButton("Guardar");
+		guardarBoton.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		guardarBoton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(verifica.validarLocalidad(inputNombre.getText(),Integer.parseInt(inputCupos.getText()), Double.parseDouble(inputPrecio.getText()), id)) {
@@ -69,6 +73,7 @@ public class adminAltaLocalidades extends JFrame {
 		contentPane.add(guardarBoton);
 		
 		JButton cancelarBoton = new JButton("Cancelar");
+		cancelarBoton.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		cancelarBoton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -79,34 +84,40 @@ public class adminAltaLocalidades extends JFrame {
 		contentPane.add(cancelarBoton);
 		
 		JLabel lblNewLabel = new JLabel("Nombre");
-		lblNewLabel.setBounds(35, 42, 46, 14);
+		lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
+		lblNewLabel.setBounds(35, 42, 69, 14);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Ingresar Nueva Localidad");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setBounds(0, 5, 401, 23);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Precio");
-		lblNewLabel_2.setBounds(35, 97, 46, 14);
+		lblNewLabel_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
+		lblNewLabel_2.setBounds(35, 97, 53, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Cupos Totales");
-		lblNewLabel_3.setBounds(35, 147, 89, 14);
+		lblNewLabel_3.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
+		lblNewLabel_3.setBounds(35, 147, 99, 14);
 		contentPane.add(lblNewLabel_3);
 		
 		inputNombre = new JTextField();
+		inputNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		inputNombre.setBounds(35, 67, 347, 20);
 		contentPane.add(inputNombre);
 		inputNombre.setColumns(10);
 		
 		inputPrecio = new JTextField();
+		inputPrecio.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		inputPrecio.setBounds(35, 121, 347, 20);
 		contentPane.add(inputPrecio);
 		inputPrecio.setColumns(10);
 		
 		inputCupos = new JTextField();
+		inputCupos.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		inputCupos.setBounds(35, 172, 344, 20);
 		contentPane.add(inputCupos);
 		inputCupos.setColumns(10);

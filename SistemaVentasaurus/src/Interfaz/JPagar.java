@@ -167,6 +167,14 @@ public class JPagar extends JFrame {
 
 			localidades = aux.traerLocalidadesXConcierto(id);
 			
+		/*
+			
+		 	if (localidades.equals(null)) {
+				JOptionPane.showMessageDialog(null, "No hay localidades para este concierto en este momento\nIntentelo más tarde y/o comuniquese con un administrador");
+				IrEleccion();
+			}
+		 */
+			
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
 
 			stmt = conn.createStatement();

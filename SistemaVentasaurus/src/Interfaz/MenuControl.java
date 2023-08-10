@@ -49,6 +49,7 @@ public class MenuControl extends JFrame {
 			public static void run(String buscar) {
 				try {
 					MenuControl frame = new MenuControl(buscar);
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -64,6 +65,8 @@ public class MenuControl extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 334, 209);
 		setLocationRelativeTo(null);
+		setResizable(false);
+		setUndecorated(true);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -129,26 +132,30 @@ public class MenuControl extends JFrame {
 		} else {
 		} 
 		JComboBox comboBox = new JComboBox(conciertoLista);
+		comboBox.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		comboBox.setBounds(10, 52, 290, 21);
 		
 		panel_1.add(comboBox);
 		
 		JLabel lblNewLabel = new JLabel("Selección de concierto");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(10, 10, 290, 54);
 		panel_1.add(lblNewLabel);
 		
 		textField = new JTextField();
+		textField.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		textField.setBounds(10, 112, 290, 19);
 		panel_1.add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Buscar por nombre");
-		lblNewLabel_1.setBounds(10, 93, 109, 19);
+		lblNewLabel_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
+		lblNewLabel_1.setBounds(10, 93, 127, 19);
 		panel_1.add(lblNewLabel_1);
 		
 		JButton btnNewButton_2 = new JButton("Buscar");
+		btnNewButton_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -165,6 +172,7 @@ public class MenuControl extends JFrame {
 		panel_1.add(btnNewButton_2);
 		
 		JButton btnNewButton = new JButton("Seleccionar");
+		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		btnNewButton.setBackground(new Color(255, 255, 255));
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -180,6 +188,7 @@ public class MenuControl extends JFrame {
 		panel.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Volver");
+		btnNewButton_1.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		btnNewButton_1.setBackground(new Color(255, 255, 255));
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override

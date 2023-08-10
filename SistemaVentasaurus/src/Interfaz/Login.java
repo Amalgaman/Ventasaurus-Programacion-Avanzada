@@ -60,6 +60,7 @@ public class Login extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		inputDni = new JTextField();
+		inputDni.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		inputDni.setBounds(59, 45, 170, 20);
 		contentPane.add(inputDni);
 		inputDni.setColumns(10);
@@ -116,6 +117,7 @@ public class Login extends JFrame {
 		contentPane.add(volver);
 		
 		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		passwordField.setBounds(59, 98, 170, 23);
 		contentPane.add(passwordField);
 	}
