@@ -7,6 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import Datos.Localidad;
+
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
@@ -22,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -75,24 +79,34 @@ public class JPagar extends JFrame {
 		lugares.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		lugares.setBounds(30, 67, 192, 23);
 		contentPane.add(lugares);
+		LinkedList<Localidad> localidades = new LinkedList<Localidad>();
+		Localidad aux = new Localidad(0, "", 0, 0, 0);
 		java.sql.Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-
+		int id = 0;
+		
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
 
+			
 			stmt = conn.createStatement();
 
-
-			String consulta = "SELECT nombre,precio FROM localidad";
+			String consulta = "SELECT id FROM concierto WHERE nombre = '" + nombreConcierto + "'";
 			rs = stmt.executeQuery(consulta);
-
-			while (rs.next()) {
-				String nombre = rs.getString("nombre");
-				lugares.addItem(nombre);
+			if(rs.next()){
+				id =  ((Number) rs.getObject(1)).intValue();
 			}
-			conn.close();
+
+			
+			localidades = aux.traerLocalidadesXConcierto(id);
+			
+			for (Localidad localidad : localidades) {
+				lugares.addItem(localidad.getNombre());
+			}
+				
+			
+
 		} catch (SQLException e) {
 			ImageIcon icon = new ImageIcon("src/img/troste.jpg");
 			JOptionPane.showMessageDialog(null, "Error al obtener la lista de conciertos:\n" + e.getMessage()
@@ -142,9 +156,22 @@ public class JPagar extends JFrame {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
 
+			
 			stmt = conn.createStatement();
 
-			String consulta = "SELECT nombre,precio,cupos FROM localidad";
+			String consulta = "SELECT id FROM concierto WHERE nombre = '" + nombreConcierto + "'";
+			rs = stmt.executeQuery(consulta);
+			if(rs.next()){
+				id =  ((Number) rs.getObject(1)).intValue();
+			}
+
+			localidades = aux.traerLocalidadesXConcierto(id);
+			
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventasaurusdb", "root", "");
+
+			stmt = conn.createStatement();
+
+			consulta = "SELECT nombre,precio,cupos FROM localidad WHERE id_concierto = '" + id + "'";
 			rs = stmt.executeQuery(consulta);
 
 			ResultSetMetaData rsmd = rs.getMetaData();
