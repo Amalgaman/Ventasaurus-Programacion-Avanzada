@@ -36,18 +36,19 @@ public class MenuAdmin {
 		int op = 0;
 		String[] opciones = {"Ver Conciertos","Ver Solicitudes de Devolucion","Cerrar Sesion"};
 		
+		do {
 		
 		op = JOptionPane.showOptionDialog(null, "Seleccione una opcion", "Ventasaurus - Administracion", 0, 0, null, opciones, 0);
 		
 		switch(op) {
 		case 0:
-		listaConciertos();
+		op = listaConciertos();
 //		jframe admin concierto
 //			adminConcierto.run(null);
 			break;
 		case 1:
-			//listaSolicitudes();
-			op=3;
+			listaSolicitudes();
+			
 			break;
 		case 2:
 			JMenuPrincipal frame = new JMenuPrincipal();
@@ -62,10 +63,10 @@ public class MenuAdmin {
 			break;	
 		}
 
-		
+		}while(op<2 && op>-1);
 	}
 	
-	public static void listaConciertos() {
+	public static int listaConciertos() {
 		
 		//Variables inicializadas
 		int op = 0, i=0, cElegido=0;
@@ -113,44 +114,9 @@ public class MenuAdmin {
 			}
 			
 			adminConcierto.run(listaTraida.get(cElegido));
+			return 3;
 		}
-	}
-	}
-	/*public static void altaConcierto(){
-		//En el futuro podriamos armar un Formulario con JFrame, por ahora son JOptionPanel
-		
-		String nombre = JOptionPane.showInputDialog("Introduzca nombre del concierto");
-		String descripcion = JOptionPane.showInputDialog("Introduzca descripcion");
-		String direccion = JOptionPane.showInputDialog("Introduzca direccion del concierto");
-		String fecha = JOptionPane.showInputDialog("Introduzca fecha del concierto");
-		
-		//Validamos la informacion ingresada, devolvemos el id del concierto creado. Si la operacion falla, devuelve 0
-		int id = verifica.validarConcierto(nombre, descripcion, direccion, fecha);
-		
-		if(id > 0) {
-			
-			JOptionPane.showMessageDialog(null, "El concierto se genero con exito");
-			String nombreLoc;
-			int cupoLoc;
-			double precioLoc;
-			
-			//Generamos las localidades, minimo 1
-			do {
-				nombreLoc = JOptionPane.showInputDialog("Introduzca nombre de la localidad");
-				cupoLoc = Integer.parseInt(JOptionPane.showInputDialog("Introduzca cupos totales"));
-				precioLoc = Double.parseDouble(JOptionPane.showInputDialog("Introduzca precio de localidad"));
-				
-				if(verifica.validarLocalidad(nombreLoc, cupoLoc, precioLoc, id)) {
-					JOptionPane.showMessageDialog(null, "La localidad se guardo con exito");
-				}else {
-					JOptionPane.showMessageDialog(null, "Hubo un error al guardar la localidad");
-				}
-			}while(JOptionPane.showConfirmDialog(null, "¿Ingresar otra localidad?") == 0);
-		
-		}else {
-			JOptionPane.showMessageDialog(null, "El alta del concierto no pudo concretarse");
-		}
-		
+	} return 0;
 	}
 	
 	public static void listaSolicitudes()  {
@@ -162,7 +128,8 @@ public class MenuAdmin {
 		//lista de solicitudes
 		SolicitudDevolucion aux= new SolicitudDevolucion(0,"","",0,"",0,0,null);
 		LinkedList<SolicitudDevolucion> solicitudes = aux.traerSolicitudes();
-		if (solicitudes.isEmpty()) {
+		
+		if (solicitudes == null) {
 			String[] opcionesSolicitud= {"Generar solicitud"};
 			opSolicitud = (String) JOptionPane.showInputDialog(
 					null // para que se muestre centrado
@@ -174,11 +141,13 @@ public class MenuAdmin {
 					,opcionesSolicitud[0] // posicion del que va aparecer seleccionado
 					);
 		} else {
+			
 		String[] opcionesSolicitud = new String[solicitudes.size()+1];
 		opcionesSolicitud[0]="Generar solicitud";
 		for (int i=1; i<=solicitudes.size();i++) {
 			opcionesSolicitud[i]=solicitudes.get(i-1).toString();
 		}
+		
 		opSolicitud = (String) JOptionPane.showInputDialog(
 				null // para que se muestre centrado
 				,"Selecciona una Solicitud" // Mensaje de la ventana
@@ -261,6 +230,8 @@ public void generarSolicitud() {
 		listaSolicitudes();
 	}
 	
-	*/
+	
+	
+	
 }
 

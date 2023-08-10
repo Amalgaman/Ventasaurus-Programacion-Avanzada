@@ -156,14 +156,20 @@ public class Verifica {
 		}
 	}
 
-	public void verificarDni(int dni) {
-		ImageIcon icon = new ImageIcon("src/img/dni.jpg");
-		// ver si el (String) rompe algo
-		do {
-			dni = Integer.parseInt((String) JOptionPane.showInputDialog(null, "Ingrese su DNI", "Dni",
-					JOptionPane.PLAIN_MESSAGE, icon, null, ""));
-		} while (dni <= 11111111 || dni >= 99999999);
-
+	public boolean verificarDni(String aux) {
+		
+		if(aux != null && aux.matches("[0-9]+")){
+			
+			int dni = Integer.parseInt(aux);
+			
+			if(dni > 11111110 && dni < 100000000) {
+				
+				return true;
+			
+		    }
+		}
+		return false;
+		
 	}
 
 	public LinkedList<Localidad> verificaListaLocalidades() {

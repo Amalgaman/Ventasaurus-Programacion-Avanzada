@@ -31,7 +31,6 @@ import java.sql.PreparedStatement;
 import Datos.Conexion;
 import Datos.Entrada;
 import Interfaz.MenuAdmin;
-import Interfaz.MenuCliente;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;

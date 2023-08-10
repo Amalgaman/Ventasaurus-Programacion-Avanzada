@@ -30,7 +30,7 @@ import java.sql.PreparedStatement;
 
 import Datos.Conexion;
 import Datos.Entrada;
-import Interfaz.MenuCliente;
+
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -48,7 +48,7 @@ public class DevolverEntradas extends JFrame {
 	
 	PreparedStatement stmt;
 	
-	MenuCliente cliente= new MenuCliente();
+
 	private JTextField txtCdigoDeDevolucin;
 	
 	public static void run(int id, boolean checkbox) {
@@ -197,7 +197,9 @@ public class DevolverEntradas extends JFrame {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		dispose();
-        		cliente.SolicitudDeDevolucion();
+        		JMenuPrincipal frame = new JMenuPrincipal();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
         	}
         });
         buttonPanel.add(btnNewButton_1);

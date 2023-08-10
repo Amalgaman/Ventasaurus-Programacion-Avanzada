@@ -3,6 +3,9 @@ package Interfaz;
 import java.awt.EventQueue;
 
 import javax.swing.border.EmptyBorder;
+
+import Negocio.Verifica;
+
 import javax.swing.*;
 
 import java.awt.Font;
@@ -68,11 +71,30 @@ public class JMenuPrincipal extends JFrame {
 		contentPane.add(Devoluciones);
 		Devoluciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*JMenuCliente nuevo = new JMenuCliente();
-				nuevo.setLocationRelativeTo(null);
-				nuevo.setVisible(true);
-				dispose();*/
-            	JOptionPane.showMessageDialog(null, "En proceso");
+				Verifica verifica = new Verifica();
+
+				ImageIcon icon = new ImageIcon("src/img/dni.jpg");
+
+				String aux = (String) JOptionPane.showInputDialog(null // para que se muestre centrado
+						, "Ingrese DNI" // Mensaje de la ventana
+						, "Ventasaurus - Devoluciones" // Titulo de la ventana
+						, JOptionPane.QUESTION_MESSAGE // Icono
+						, icon // null para icono defecto de la ventana
+						, null // el objeto
+						, null // posicion del que va aparecer seleccionado
+				);
+				
+				if (aux!=null && !aux.equals("")) {
+					
+					if(verifica.verificarDni(aux)) {
+						int dni = Integer.parseInt(aux);
+						dispose();
+					    DevolverEntradas.run(dni,false);
+					}else {
+						JOptionPane.showMessageDialog(null, "DNI ingresado es incorrecto, debe contener 8 caracteres numericos.");
+					}
+					
+				}
 			}
 		});
 		
