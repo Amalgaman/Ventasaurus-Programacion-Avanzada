@@ -67,6 +67,11 @@ public class Entrada {
 		this.codigoDevolucion = codigoDevolucion;
 	}
 	
+	@Override
+	public String toString() {
+		return id+"["+concierto+"] [" + localidad + "] [" + precio + "]";
+	}
+	
 	public int contarEntradas(int idLocalidad) {
 		String sql ="SELECT COUNT(*) FROM `entrada` WHERE id_localidad = ?";
 		int entradas = 0;
