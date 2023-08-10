@@ -339,14 +339,51 @@ public class SolicitudDevolucion {
 			stmt.setString(1, estado);
 			stmt.setInt(2, this.getId());
 			stmt.executeUpdate();
-			conexion.close();
-			return true;
+			
 			
 		}catch(Exception excepcion){
 			System.out.println(excepcion.getMessage());
 			return false;
 		}
+		if (op) {
+			for (Entrada entrada : this.lista) {
+				int id=-1;
+				sql="SELECT id FROM `localidad` WHERE nombre=? AND id_concierto = (SELECT concierto.id from concierto WHERE concierto.nombre=?);";
+				try {
+					
+					stmt = (PreparedStatement) conexion.prepareStatement(sql);
+					stmt.setString(1, entrada.getLocalidad());
+					stmt.setString(2, entrada.getConcierto());
+					ResultSet result = stmt.executeQuery();
+					while(result.next()) {
+						id=Integer.parseInt(result.getString(1));
+					}
+					
+					
+				}catch(Exception excepcion){
+					System.out.println("Error1"+excepcion.getMessage());
+				}
+				sql="UPDATE `localidad` SET `cupos` = (`cupos` + 1) WHERE `localidad`.`id` = ?;";
+				try {
+					
+					stmt = (PreparedStatement) conexion.prepareStatement(sql);
+					stmt.setInt(1, id);
+					stmt.executeUpdate();
+					
+					
+				}catch(Exception excepcion){
+					System.out.println("Error2"+excepcion.getMessage());
+				}
+			}
+		}
+		return true;
 		
+	}
+	
+	public void sumarCupos() {
+		for (Entrada entrada : this.lista) {
+			
+		}
 	}
 	
 }

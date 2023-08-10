@@ -70,7 +70,7 @@ public class GenerarSolicitudAdmin extends JFrame {
         // Crear una lista de opciones
         String sql="";
         if (checkbox) {
-        	sql="SELECT id,localidad,precio,concierto,c_devolucion FROM `vw_entrada` WHERE id_cliente in (SELECT id FROM cliente WHERE dni=?);";
+        	sql="SELECT id,localidad,precio,concierto,c_devolucion FROM `vw_entrada` WHERE id_cliente in (SELECT id FROM cliente WHERE dni=?) AND id IN (SELECT id_entrada FROM detalle_devolucion WHERE detalle_devolucion.id_devolucion NOT IN (SELECT devolucion.id FROM devolucion WHERE devolucion.estado='aprobada'));";
         } else {
         	sql="SELECT id,localidad,precio,concierto,c_devolucion FROM `vw_entrada` WHERE id not in (SELECT id_entrada FROM detalle_devolucion) AND id_cliente in (SELECT id FROM cliente WHERE dni=?)AND c_devolucion>0;";
         }String[] datos = new String[5]; 

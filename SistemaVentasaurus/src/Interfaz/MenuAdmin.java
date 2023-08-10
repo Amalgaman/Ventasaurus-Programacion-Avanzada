@@ -196,6 +196,8 @@ public class MenuAdmin {
 		}
 	}
 	
+	
+	
 public static void generarSolicitud() {
 		
 	String aux=JOptionPane.showInputDialog("Ingresar dni");
