@@ -193,6 +193,7 @@ public class GenerarSolicitudAdmin extends JFrame {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		dispose();
+        		MenuAdmin.principal();
         	}
         });
         buttonPanel.add(btnNewButton_1);

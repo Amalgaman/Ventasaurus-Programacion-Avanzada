@@ -42,20 +42,16 @@ public class MenuAdmin {
 		
 		switch(op) {
 		case 0:
-		op = listaConciertos();
-//		jframe admin concierto
-//			adminConcierto.run(null);
+			op = listaConciertos();
 			break;
 		case 1:
-			listaSolicitudes();
-			
+			op = listaSolicitudes();
 			break;
 		case 2:
 			JMenuPrincipal frame = new JMenuPrincipal();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
             break;
-//            Faltaba el break
 		default:
 			JMenuPrincipal frames = new JMenuPrincipal();
             frames.setLocationRelativeTo(null);
@@ -106,6 +102,7 @@ public class MenuAdmin {
 			
 		 if (opConcierto.equals("Crear nuevo Concierto")) {
 			 adminAltaConcierto.run();
+			 return 3;
 		}else {
 			for (Concierto concierto : listaTraida) {
 				if (opConcierto.equals(concierto.getNombre())) {
@@ -119,7 +116,7 @@ public class MenuAdmin {
 	} return 0;
 	}
 	
-	public static void listaSolicitudes()  {
+	public static int listaSolicitudes()  {
 		//Variables inicializadas
 	    int op = 0;
 		String opSolicitud = " ";
@@ -161,10 +158,11 @@ public class MenuAdmin {
 		}
 		//Esto es para salir del menu sin que se rompa
 		if(opSolicitud == null) {
-			principal();
+			return 1;
 		}else if (opSolicitud.equals("Generar solicitud")) {
-			MenuAdmin aux2=new MenuAdmin();
-			aux2.generarSolicitud();
+
+			generarSolicitud();
+			return 3;
 		}else {
 			for (SolicitudDevolucion solicitud : solicitudes) {
 				if (solicitud.toString().equals(opSolicitud)) {
@@ -190,22 +188,20 @@ public class MenuAdmin {
 					default:
 						break;	
 					}
-					listaSolicitudes();
+					
 				}
 			}
-			
+			return 3;
 		
 		}
 	}
 	
-public void generarSolicitud() {
+public static void generarSolicitud() {
 		
 	String aux=JOptionPane.showInputDialog("Ingresar dni");
 	if (aux!=null && !aux.equals("")) {
 		int dni=Integer.parseInt(aux);
 		GenerarSolicitudAdmin.run(dni,false);
-	}else {
-		this.listaSolicitudes();
 	}
 	}
 	
@@ -227,7 +223,7 @@ public void generarSolicitud() {
 		
 		JOptionPane.showMessageDialog(null, "La solicitud se genero con exito");
 		
-		listaSolicitudes();
+
 	}
 	
 	
