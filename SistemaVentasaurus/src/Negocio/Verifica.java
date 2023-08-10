@@ -25,17 +25,24 @@ public class Verifica {
 
 	public int validarConcierto(String nombre,String descripcion, String direccion, String fecha) {
 
+		Pattern p1 = Pattern.compile("[a-zA-Z-0-9 ,.¿?]*");
+		Pattern p2 = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+		
+		Matcher m1 = p1.matcher(nombre);
+		Matcher m2 =p1.matcher(descripcion);
+		Matcher m3 =p1.matcher(direccion);
+		Matcher m4 =p2.matcher(fecha);
 
-        if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]", nombre)) {
+        if(m1.find()) {
                nuevoconcierto.setNombre(nombre);
 
-               if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]", descripcion)) {
+               if(m2.find()) {
                    nuevoconcierto.setDescripcion(descripcion);
 
-                    if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]*", direccion)) {
+                    if(m3.find()) {
                         nuevoconcierto.setDireccion(direccion);
 
-                        if(Pattern.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}", fecha)) {
+                        if(m4.find()) {
                             nuevoconcierto.setFecha(fecha);
 
                             System.out.println("Match found");
@@ -65,34 +72,43 @@ public class Verifica {
         if(id>0) {
             nuevoconcierto.setId(id);
 
-            if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]", nombre)) {
-                nuevoconcierto.setNombre(nombre);
+    		Pattern p1 = Pattern.compile("[a-zA-Z-0-9 ,.¿?]*");
+    		Pattern p2 = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+    		
+    		Matcher m1 = p1.matcher(nombre);
+    		Matcher m2 =p1.matcher(descripcion);
+    		Matcher m3 =p1.matcher(direccion);
+    		Matcher m4 =p2.matcher(fecha);
 
-                if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]", descripcion)) {
-                    nuevoconcierto.setDescripcion(descripcion);
+            if(m1.find()) {
+                   nuevoconcierto.setNombre(nombre);
 
-                     if(Pattern.matches("[a-zA-Z-0-9 ,.¿?]*", direccion)) {
-                         nuevoconcierto.setDireccion(direccion);
+                   if(m2.find()) {
+                       nuevoconcierto.setDescripcion(descripcion);
 
-                         if(Pattern.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}", fecha)) {
-                             nuevoconcierto.setFecha(fecha);
+                        if(m3.find()) {
+                            nuevoconcierto.setDireccion(direccion);
 
-                             System.out.println("Match found");
+                            if(m4.find()) {
+                                nuevoconcierto.setFecha(fecha);
 
-                             return nuevoconcierto.modificarConcierto();
+                                System.out.println("Match found");
 
-                         }else {
-                              System.out.println("Fecha Match not found");
-                         }
-                     }else {
-                          System.out.println("Direccion Match not found");
-                        }
-                }else {
-                      System.out.println("Descripcion Match not found");
-                }
-            } else {
-              System.out.println("Nombre Match not found");
-            }
+                                return nuevoconcierto.modificarConcierto();
+
+                            }else {
+                                 System.out.println("Fecha Match not found");
+                            }
+                        }else {
+                             System.out.println("Direccion Match not found");
+                           }
+                   }else {
+                         System.out.println("Descripcion Match not found");
+                   }
+               } else {
+                 System.out.println("Nombre Match not found");
+               }
+
         }
 
         return false;
