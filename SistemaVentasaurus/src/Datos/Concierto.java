@@ -111,7 +111,7 @@ public class Concierto {
 			while(result.next()) {
 			id = 1 + result.getInt(1);
 			}
-			    conexion.close();
+
 			    return id;
 			    
 			}catch(Exception excepcion){
@@ -140,7 +140,6 @@ public class Concierto {
 				stmt.setString(5, this.getFecha());
 				stmt.setBoolean(6, this.isCancelado());
 				stmt.executeUpdate();
-				conexion.close();
 				return id;
 				
 			}catch(Exception excepcion){
@@ -198,7 +197,6 @@ public class Concierto {
 			stmt = (PreparedStatement) conexion.prepareStatement(sql);
 			stmt.setInt(1, id);
 			stmt.executeUpdate();
-			conexion.close();
 			return true;
 			
 		}catch(Exception excepcion){
